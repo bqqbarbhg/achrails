@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+# Read the ruby version for Heroku
+File.open(File.expand_path('../.ruby-version', __FILE__), 'r') do |f|
+  ruby f.read.strip
+end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
