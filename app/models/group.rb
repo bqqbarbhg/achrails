@@ -7,6 +7,10 @@ class Group < ActiveRecord::Base
     memberships.create(user: user) if user
   end
 
+  def leave(user)
+    memberships.where(user: user).delete_all if user
+  end
+
   def member(user)
     memberships.where(user: user).first if user
   end

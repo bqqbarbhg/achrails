@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :groups do
     member do
       post 'join'
+      post 'leave'
     end
   end
 

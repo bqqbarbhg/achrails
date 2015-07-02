@@ -15,5 +15,9 @@
 <% end %>
 </ul>
 
-<%= link_to(t(:join_group), join_group_path(@group), method: :post) %>
+<% unless @group.member(current_user) %>
+  <%= link_to(t(:join_group), join_group_path(@group), method: :post) %>
+<% else %>
+  <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
+<% end %>
 
