@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
 
   has_many :memberships
 
+  def name
+    email.split('@')[0].gsub(/\W+/, ' ').gsub(/[\d_]+/, '').titlecase
+  end
+
 end

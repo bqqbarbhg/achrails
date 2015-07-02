@@ -1,4 +1,17 @@
 <h1><%= @group.name %></h1>
 <% if @group.admin?(current_user) %>
-  <%= link_to(t(:delete_group), group_path(@group), method: :delete) %>
+  <%= link_to(t(:delete_group), @group, method: :delete) %>
 <% end %>
+
+<ul>
+<% for membership in @group.memberships %>
+  <% user = membership.user %>
+  <li>
+    <%= link_to(user.name, user) %>
+    <% if membership.admin %>
+      (admin)
+    <% end %>
+  </li>
+<% end %>
+</ul>
+
