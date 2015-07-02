@@ -1,0 +1,8 @@
+<% for group in @groups %>
+  <%= link_to(group.name, group_path(group)) %>
+<% end %>
+
+<%= form_for :group do |f| %>
+  <%= f.text_field :name %>
+  <%= f.submit %>
+<% end %>
