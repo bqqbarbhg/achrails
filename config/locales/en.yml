@@ -22,3 +22,5 @@
 en:
   sign_out: "Sign out"
   delete_group: "Delete group"
+  join_group: "Join group"
+  leave_group: "Leave group"
