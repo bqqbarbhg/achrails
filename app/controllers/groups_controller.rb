@@ -25,6 +25,13 @@ class GroupsController < ApplicationController
     redirect_to action: :index
   end
 
+  def join
+    @group = Group.find(params[:id])
+    @group.join(current_user)
+
+    redirect_to action: :show, id: @group.id
+  end
+
 protected
   def group_params
     params.require(:group).permit(:name)

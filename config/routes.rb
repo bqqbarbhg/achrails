@@ -8,7 +8,12 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  resources :groups
+  resources :groups do
+    member do
+      post 'join'
+    end
+  end
+
   resources :users
 
   # Example of regular route:
