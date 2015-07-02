@@ -20,3 +20,6 @@
 /.vagrant
 /provisioning/*.log
 
+# Ignore rspec output
+/spec/examples.txt
+

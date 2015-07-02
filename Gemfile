@@ -33,6 +33,13 @@ group :development, :test do
   # Better REPL
   gem 'pry'
   gem 'pry-rails'
+
+  # Better tests
+  gem 'rspec'
+  gem 'rspec-rails'
+
+  # Clear the database between tests
+  gem 'database_cleaner'
 end
 
 group :production do
