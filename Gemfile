@@ -29,5 +29,13 @@ gem 'jbuilder', '~> 2.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+
+  # Better REPL
+  gem 'pry'
+  gem 'pry-rails'
 end
 
+group :production do
+  # Adds Heroku-specific configuration for production environments.
+  gem 'rails_12factor'
+end
