@@ -5,15 +5,15 @@ class Group < ActiveRecord::Base
   validates :name, presence: true
 
   def join(user)
-    memberships.where(user: user).first_or_create if user
+    memberships.first_or_create(user: user) if user
   end
 
   def leave(user)
-    memberships.where(user: user).delete_all if user
+    memberships.delete_all(user: user) if user
   end
 
   def member(user)
-    memberships.where(user: user).first if user
+    memberships.find_by(user: user) if user
   end
 
   def admin?(user)
