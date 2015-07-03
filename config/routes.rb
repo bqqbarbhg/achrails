@@ -12,10 +12,13 @@ Rails.application.routes.draw do
     member do
       post 'join'
       post 'leave'
+      post 'invite'
     end
   end
 
   resources :users
+
+  resources :invitations
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

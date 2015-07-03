@@ -39,6 +39,21 @@ class GroupsController < ApplicationController
     redirect_to action: :show
   end
 
+  def invite
+    @group = Group.find(params[:id])
+    addresses = params[:address]
+
+    for i, address in addresses
+      next unless address.include?('@')
+      invitation = Invitation.create(expect_email: address, group: @group)
+      next unless invitation
+
+      InvitationMailer.invite_email(invitation).deliver_later
+    end
+
+    redirect_to action: :show
+  end
+
 protected
   def group_params
     params.require(:group).permit(:name)

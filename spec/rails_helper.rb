@@ -29,6 +29,10 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
 
+  config.before(:each) do |example|
+    ActionMailer::Base.deliveries.clear
+  end
+
   # This is needed to test controllers showing the right pages
   config.render_views
   

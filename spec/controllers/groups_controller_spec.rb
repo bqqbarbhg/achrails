@@ -1,4 +1,12 @@
 
+# Delived mails immediately for these tests
+# TODO: Isolate this somewhere?
+class ActionMailer::MessageDelivery
+  def deliver_later
+    deliver_now
+  end
+end
+
 RSpec.describe GroupsController do
 
   describe 'POST /groups' do
@@ -38,6 +46,25 @@ RSpec.describe GroupsController do
     it 'does not allow to joint twice' do
       post :join, id: @group
       expect(@group.memberships.where(user: @user).count).to eq(1)
+    end
+
+  end
+
+  describe 'POST /groups/:id/invite' do
+
+    before do
+      @user = User.create!(email: 'other@example.com', password: 'otherother')
+      sign_in @user
+      @group = Group.create!(name: 'test')
+      @invitee = 'test@example.com' 
+      post :invite, id: @group, address: { 0 => @invitee }
+    end
+
+    it 'sends mail' do
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
+    end
+    it 'makes the current user a member' do
+      expect(ActionMailer::Base.deliveries.first.to).to eq([@invitee])
     end
 
   end
