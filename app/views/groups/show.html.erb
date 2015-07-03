@@ -21,3 +21,93 @@
   <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
 <% end %>
 
+<%= form_tag(invite_group_path(@group)) do %>
+    <div id="addresses">
+    </div>
+    <noscript>
+        <% (0..9).each do |n| %>
+          <%= text_field_tag 'address[#{n.to_s}]', '', placeholder: 'Add address to invite' %>
+        <% end %>
+    </noscript>
+    <%= submit_tag 'Create' %>
+<% end %>
+
+<script>
+
+function makeInput() {
+    var $input = $('<input type="email" placeholder="Add address to invite">');
+
+    $input.on('input', function(e) {
+
+        var $target = $(e.target);
+
+        // Try to split the input into multiple whitespaces-separated addresses
+        var parts = $target.val().split(/\s+/);
+        if (parts.length > 1 && parts[1] != '') {
+
+            // Keep the first address in self
+            $target.val(parts[0]);
+
+            // Make new inputs for the rest
+            var $last = $target;
+            for (var i = 1; i < parts.length; i++) {
+
+                var $splitInput = makeInput();
+                $splitInput.val(parts[i]);
+
+                // Insert after each other
+                $splitInput.insertAfter($last);
+                $last = $splitInput;
+            }
+
+            // And select the last one created
+            $last.focus();
+        }
+
+        updateAddressList();
+    });
+    return $input;
+}
+
+function updateAddressList() {
+    var $container = $("#addresses");
+    var inputs = $container.children();
+    var count = inputs.length;
+
+    if (count == 0) {
+        // Add an input if there are none
+        $container.append(makeInput());
+    } else {
+
+        // Remove empty inputs from the middle
+        // Note: Loop doesn't check the last one
+        for (var i = 0; i < count - 1; i++) {
+            var input = inputs[i];
+            if (input.value == '') {
+                $(input).remove();
+
+                // Focus on the previous one if the empty input is not the first
+                // one, otherwise select the next one (that will replace this)
+                inputs[i > 0 ? (i - 1) : (i + 1)].focus();
+            }
+        }
+
+        // Since the empty inputs from the middle are removed always keep the
+        // last one empty. (So add a new one if the last one isn't empty)
+        if (inputs[count - 1].value != '') {
+            $container.append(makeInput());
+        }
+    }
+
+    // Update the names of the inputs
+    var newInputs = $container.children();
+    var newCount = newInputs.length;
+    for (var i = 0; i < newCount; i++) {
+      newInputs[i].name = "address[" + i + "]";
+    }
+}
+
+updateAddressList();
+
+</script>
+
