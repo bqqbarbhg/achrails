@@ -13,7 +13,7 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.create!(group_params)
-    @group.join(current_user).update(admin?: true)
+    @group.join(current_user).update(admin: true)
 
     redirect_to action: :show, id: @group.id
   end
