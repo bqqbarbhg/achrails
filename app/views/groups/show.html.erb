@@ -8,7 +8,7 @@
   <% user = membership.user %>
   <li>
     <%= link_to(user.name, user) %>
-    <% if membership.admin %>
+    <% if membership.admin? %>
       (admin)
     <% end %>
   </li>
