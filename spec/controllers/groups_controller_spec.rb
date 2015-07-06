@@ -31,7 +31,7 @@ RSpec.describe GroupsController do
   describe 'POST /groups/:id/join' do
 
     before do
-      @group = Group.create!(name: 'test')
+      @group = Group.create!(name: 'test', visibility: :unlisted)
       @user = User.create!(email: 'other@example.com', password: 'otherother')
       sign_in @user
       post :join, id: @group
@@ -55,8 +55,8 @@ RSpec.describe GroupsController do
     before do
       @user = User.create!(email: 'other@example.com', password: 'otherother')
       sign_in @user
-      @group = Group.create!(name: 'test')
-      @group.join(@user)
+      @group = Group.create!(name: 'test', visibility: :invite_only)
+      @group.join(@user).update(admin: true)
       @invitee = 'test@example.com' 
       post :invite, id: @group, address: { 0 => @invitee }
     end

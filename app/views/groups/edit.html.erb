@@ -1,6 +1,11 @@
 <%= form_for @group do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name %>
+  
+  <% Group.visibilities.keys.each do |key| %>
+    <%= f.radio_button :visibility, key %>
+    <%= f.label key.to_sym %>
+  <% end %>
 
   <%= f.submit %>
 <% end %>

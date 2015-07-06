@@ -2,7 +2,7 @@
 class GroupsController < ApplicationController
 
   def index
-    @groups = Group.all
+    @groups = policy_scope(Group)
     render :index
   end
 
@@ -86,7 +86,7 @@ class GroupsController < ApplicationController
 
 protected
   def group_params
-    params.require(:group).permit(:name)
+    params.require(:group).permit(:name, :visibility)
   end
 end
 

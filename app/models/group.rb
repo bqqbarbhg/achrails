@@ -2,7 +2,13 @@ class Group < ActiveRecord::Base
 
   has_many :memberships
   has_many :members, through: :memberships, source: :user
+
   validates :name, presence: true
+  enum visibility: [:invite_only, :unlisted, :listed]
+
+  def public_show?
+    unlisted? || listed?
+  end
 
   def join(user)
     memberships.where(user: user).first_or_create if user

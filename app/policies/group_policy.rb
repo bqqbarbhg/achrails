@@ -1,8 +1,9 @@
 class GroupPolicy < Struct.new(:user, :group)
   class Scope < Struct.new(:user, :scope)
     def resolve
-      # TODO: Filter unlisted groups
-      scope.all
+      # Show only groups we are a member of and ones that are publicly listed
+      scope.joins(:memberships)
+           .where('memberships.user_id = ? OR visibility = ?', user, 2)
     end
   end
 
@@ -12,8 +13,7 @@ class GroupPolicy < Struct.new(:user, :group)
   end
 
   def show?
-    # TODO: Filter hidden groups
-    true
+    group.public_show? || group.member?(user)
   end
 
   def create?
@@ -36,7 +36,6 @@ class GroupPolicy < Struct.new(:user, :group)
   end
 
   def join?
-    # TODO: Should there be a special permission
     # Only non-members can join
     show? && !group.member?(user)
   end
