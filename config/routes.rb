@@ -20,6 +20,9 @@ Rails.application.routes.draw do
 
   resources :invitations
 
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
+
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

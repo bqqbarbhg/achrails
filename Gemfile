@@ -26,6 +26,11 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 
+group :development do
+  # View sent emails
+  gem 'letter_opener_web'
+end
+
 group :development, :test do
   # Better REPL
   gem 'pry'
