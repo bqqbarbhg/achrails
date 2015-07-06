@@ -13,6 +13,12 @@ class GroupsController < ApplicationController
     render :show
   end
 
+  def new
+    @group = Group.new
+    
+    render :edit
+  end
+
   def create
     @group = Group.create!(group_params)
     authorize @group
@@ -20,6 +26,22 @@ class GroupsController < ApplicationController
     @group.join(current_user).update(admin: true)
 
     redirect_to action: :show, id: @group.id
+  end
+
+  def update
+    @group = Group.find(params[:id])
+    authorize @group
+
+    @group.update(group_params)
+
+    redirect_to action: :show, id: @group.id
+  end
+
+  def edit
+    @group = Group.find(params[:id])
+    authorize @group
+    
+    render :edit
   end
 
   def destroy

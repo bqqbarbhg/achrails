@@ -21,6 +21,9 @@
 <% if policy(@group).leave? %>
   <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
 <% end %>
+<% if policy(@group).edit? %>
+  <%= link_to(t(:edit_group), edit_group_path(@group)) %>
+<% end %>
 
 <% if policy(@group).invite? %>
 <%= form_tag(invite_group_path(@group)) do %>

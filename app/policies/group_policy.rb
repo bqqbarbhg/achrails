@@ -26,6 +26,10 @@ class GroupPolicy < Struct.new(:user, :group)
     group.admin?(user)
   end
 
+  def edit?
+    update?
+  end
+
   def destroy?
     # Same as for updating
     update?
