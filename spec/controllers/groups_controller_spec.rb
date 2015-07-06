@@ -63,7 +63,7 @@ RSpec.describe GroupsController do
     it 'sends mail' do
       expect(ActionMailer::Base.deliveries.count).to eq(1)
     end
-    it 'makes the current user a member' do
+    it 'sends the mail to the right address' do
       expect(ActionMailer::Base.deliveries.first.to).to eq([@invitee])
     end
 
