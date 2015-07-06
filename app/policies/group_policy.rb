@@ -48,8 +48,8 @@ class GroupPolicy < Struct.new(:user, :group)
   end
 
   def invite?
-    # All members for now
-    group.member?(user)
+    # Only admins
+    group.admin?(user)
   end
 
 end
