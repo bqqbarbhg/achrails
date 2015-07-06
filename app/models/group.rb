@@ -1,7 +1,7 @@
 class Group < ActiveRecord::Base
 
   has_many :memberships
-  has_many :members, through: :memberships, class_name: :user
+  has_many :members, through: :memberships, source: :user
   validates :name, presence: true
 
   def join(user)
