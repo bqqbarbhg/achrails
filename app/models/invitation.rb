@@ -10,6 +10,10 @@ class Invitation < ActiveRecord::Base
     token
   end
 
+  def can_join?(user)
+    expect_email == user.email
+  end
+
 protected
   def generate_token
     self.token ||= loop do
