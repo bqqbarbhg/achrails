@@ -1,5 +1,5 @@
 <h1><%= @group.name %></h1>
-<% if @group.admin?(current_user) %>
+<% if policy(@group).destroy? %>
   <%= link_to(t(:delete_group), @group, method: :delete) %>
 <% end %>
 
@@ -15,12 +15,14 @@
 <% end %>
 </ul>
 
-<% unless @group.member(current_user) %>
+<% if policy(@group).join? %>
   <%= link_to(t(:join_group), join_group_path(@group), method: :post) %>
-<% else %>
+<% end %>
+<% if @group.member?(current_user) %>
   <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
 <% end %>
 
+<% if policy(@group).invite? %>
 <%= form_tag(invite_group_path(@group)) do %>
     <div id="addresses">
     </div>
@@ -30,6 +32,7 @@
         <% end %>
     </noscript>
     <%= submit_tag 'Create' %>
+<% end %>
 <% end %>
 
 <script>

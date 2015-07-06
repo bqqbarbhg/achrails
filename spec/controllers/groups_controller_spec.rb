@@ -21,7 +21,7 @@ RSpec.describe GroupsController do
       expect(response).to redirect_to(group_path(@group))
     end
     it 'makes the current user a member' do
-      expect(@group.member(@user)).not_to be_nil
+      expect(@group.member?(@user)).to be true
     end
     it 'makes the current user an admin' do
       expect(@group.admin?(@user)).to be true
@@ -41,7 +41,7 @@ RSpec.describe GroupsController do
       expect(response).to redirect_to(group_path(@group))
     end
     it 'makes the current user a member' do
-      expect(@group.member(@user)).not_to be_nil
+      expect(@group.member?(@user)).to be true
     end
     it 'does not allow to joint twice' do
       post :join, id: @group
@@ -56,6 +56,7 @@ RSpec.describe GroupsController do
       @user = User.create!(email: 'other@example.com', password: 'otherother')
       sign_in @user
       @group = Group.create!(name: 'test')
+      @group.join(@user)
       @invitee = 'test@example.com' 
       post :invite, id: @group, address: { 0 => @invitee }
     end

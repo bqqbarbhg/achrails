@@ -12,12 +12,16 @@ class Group < ActiveRecord::Base
     memberships.where(user: user).destroy_all if user
   end
 
-  def member(user)
+  def membership_for(user)
     memberships.find_by(user: user) if user
   end
 
+  def member?(user)
+    !membership_for(user).nil?
+  end
+
   def admin?(user)
-    member(user).try(:admin?)
+    membership_for(user).try(:admin?)
   end
 
 end

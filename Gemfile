@@ -20,6 +20,8 @@ gem 'therubyracer'
 
 # For authentication
 gem 'devise'
+# For authorization
+gem 'pundit'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
