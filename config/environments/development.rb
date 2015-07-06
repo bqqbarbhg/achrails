@@ -37,7 +37,7 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
   
-  Rails.application.default_url_options[:host] = 'ach-so.test:9292'
+  Rails.application.default_url_options[:host] = '10.11.12.13:9292'
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
