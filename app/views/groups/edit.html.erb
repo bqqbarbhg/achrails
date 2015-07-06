@@ -1,10 +1,13 @@
 <%= form_for @group do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name %>
+
+  <h3><%= t('visibility') %></h3>
   
   <% Group.visibilities.keys.each do |key| %>
     <%= f.radio_button :visibility, key %>
     <%= f.label key.to_sym %>
+    <%= content_tag(:p, t('description.visibility.' + key)) %>
   <% end %>
 
   <%= f.submit %>
