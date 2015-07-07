@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :memberships
+  has_many :authored_videos, class_name: :video, foreign_key: :author_id
 
   def name
     email.split('@')[0].gsub(/\W+/, ' ').gsub(/[\d_]+/, '').titlecase
