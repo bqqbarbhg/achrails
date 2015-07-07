@@ -31,15 +31,9 @@ class VideosController < ApplicationController
 
     shares = params[:share]
     
-    @video.groups.clear
-
-    # TODO: Make this atomic
-    # TODO: Check if this is possible to do with only id:s
-    if shares
-      for key, val in shares
-        @video.groups << Group.find(key.to_i)
-      end
-    end
+    # NOTE: This might be slow, if so find out how to do with only ids
+    new_groups = shares.keys.map { |id| Group.find(id) }
+    @video.groups.replace(new_groups)
 
     redirect_to :back
   end
