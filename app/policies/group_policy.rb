@@ -22,7 +22,7 @@ class GroupPolicy < Struct.new(:user, :group)
   end
 
   def update?
-    # Only group admins are allowed to update skills
+    # Only group admins are allowed to update groups
     group.admin?(user)
   end
 
