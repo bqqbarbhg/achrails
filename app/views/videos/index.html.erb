@@ -1,6 +1,8 @@
+<ul>
 <% for video in @videos %>
-  <%= link_to(video.title, video_path(video)) %>
+  <li><%= link_to(video.title, video_path(video)) %></li>
 <% end %>
+</ul>
 
 <%= form_tag("/videos/upload", multipart: true) do %>
   <%= file_field_tag 'manifest' %>
