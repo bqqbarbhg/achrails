@@ -2,15 +2,7 @@
 <h1><%= @video.title %></h1>
 By: <%= link_to(@video.author.name, @video.author) %>
 
-
-<% if policy(@video).update? %>
-<%= form_tag("/videos/#{@video.id}", method: :patch) do %>
-  <% for group in current_user.groups %>
-    <%= check_box_tag "share[#{group.id}]", 1, @video.groups.where(id: group.id).count > 0 %>
-    <%= label_tag "share_#{group.id}", group.name %>
-  <% end %>
-
-  <%= submit_tag t(:share_video) %>
-<% end %>
+<% if policy(@video).share? %>
+  <%= link_to(t(:share_video), share_video_path(@video)) %>
 <% end %>
 

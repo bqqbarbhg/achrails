@@ -36,7 +36,10 @@ class VideoPolicy < Struct.new(:user, :video)
   end
 
   def destroy?
-    # Same as for updating
+    update?
+  end
+
+  def share?
     update?
   end
 

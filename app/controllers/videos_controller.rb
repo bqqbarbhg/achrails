@@ -29,11 +29,13 @@ class VideosController < ApplicationController
     @video = Video.find(params[:id])
     authorize @video
 
-    shares = params[:share]
-    
-    # NOTE: This might be slow, if so find out how to do with only ids
-    new_groups = shares.keys.map { |id| Group.find(id) }
-    @video.groups.replace(new_groups)
+    if shares = params[:share]
+      # NOTE: This might be slow, if so find out how to do with only ids
+      new_groups = shares.reject { |_, v| v == "0" }
+                         .keys.map { |id| Group.find(id) }
+
+      @video.groups.replace(new_groups)
+    end
 
     redirect_to :back
   end
@@ -45,6 +47,13 @@ class VideosController < ApplicationController
     @video.destroy
 
     redirect_to :back
+  end
+
+  def share
+    @video = Video.find(params[:id])
+    authorize @video
+
+    render
   end
 
 protected

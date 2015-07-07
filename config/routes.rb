@@ -22,6 +22,9 @@ Rails.application.routes.draw do
     collection do
       post 'upload'
     end
+    member do
+      get 'share'
+    end
   end
 
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
