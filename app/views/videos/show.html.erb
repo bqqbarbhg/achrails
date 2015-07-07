@@ -1,5 +1,6 @@
 
 <h1><%= @video.title %></h1>
+By: <%= link_to(@video.author.name, @video.author) %>
 
 
 <%= form_tag("/videos/#{@video.id}", method: :patch) do %>
