@@ -5,9 +5,13 @@
   <h3><%= t('visibility') %></h3>
   
   <% Group.visibilities.keys.each do |key| %>
-    <%= f.radio_button :visibility, key %>
-    <%= f.label key.to_sym %>
-    <%= content_tag(:p, t('description.visibility.' + key)) %>
+    <label>
+      <div>
+        <%= f.radio_button :visibility, key %>
+        <%= t(key.to_sym) %>
+        <%= content_tag(:p, t('description.visibility.' + key)) %>
+      </div>
+    </label>
   <% end %>
 
   <%= f.submit %>

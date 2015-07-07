@@ -26,12 +26,9 @@ en:
   leave_group: "Leave group"
   upload_video: "Upload video"
   share_video: "Share video"
-  helpers:
-    label:
-      group:
-        invite_only: "Invite only"
-        unlisted: "Unlisted"
-        listed: "Public listed"
+  invite_only: "Invite only"
+  unlisted: "Unlisted"
+  listed: "Public listed"
   description:
     visibility:
       invite_only: "Only users with email invitation can see or join this group."
