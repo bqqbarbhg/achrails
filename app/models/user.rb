@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :memberships
+  has_many :groups, through: :memberships, source: :group
+
   has_many :authored_videos, class_name: "Video", foreign_key: :author_id
 
   def name
