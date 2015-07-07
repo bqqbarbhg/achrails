@@ -9,7 +9,7 @@ class VideosController < ApplicationController
 
   def show
     @video = Video.find(params[:id])
-    # TODO: Authorize
+    authorize @video
 
     render
   end
@@ -26,9 +26,10 @@ class VideosController < ApplicationController
   def update
     # TODO: Share logic with create
 
-    shares = params[:share]
     @video = Video.find(params[:id])
-    # TODO: Authorize
+    authorize @video
+
+    shares = params[:share]
     
     @video.groups.clear
 
@@ -45,7 +46,7 @@ class VideosController < ApplicationController
 
   def destroy
     @video = Video.find(params[:id])
-    # TODO: Authorize
+    authorize @video
 
     @video.destroy
 
