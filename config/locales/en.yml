@@ -25,6 +25,7 @@ en:
   join_group: "Join group"
   leave_group: "Leave group"
   upload_video: "Upload video"
+  share_video: "Share video"
   helpers:
     label:
       group:

@@ -23,6 +23,26 @@ class VideosController < ApplicationController
     redirect_to action: :show, id: @video.id
   end
 
+  def update
+    # TODO: Share logic with create
+
+    shares = params[:share]
+    @video = Video.find(params[:id])
+    # TODO: Authorize
+    
+    @video.groups.clear
+
+    # TODO: Make this atomic
+    # TODO: Check if this is possible to do with only id:s
+    if shares
+      for key, val in shares
+        @video.groups << Group.find(key.to_i)
+      end
+    end
+
+    redirect_to :back
+  end
+
   def destroy
     @video = Video.find(params[:id])
     # TODO: Authorize

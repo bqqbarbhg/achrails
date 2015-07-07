@@ -1,3 +1,14 @@
 
 <h1><%= @video.title %></h1>
 
+
+<%= form_tag("/videos/#{@video.id}", method: :patch) do %>
+  <% for group in current_user.groups %>
+    <%= check_box_tag "share[#{group.id}]", 1, @video.groups.where(id: group.id).count > 0 %>
+    <%= label_tag "share_#{group.id}", group.name %>
+  <% end %>
+
+  <%= submit_tag t(:share_video) %>
+<% end %>
+
+
