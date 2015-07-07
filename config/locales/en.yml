@@ -24,6 +24,7 @@ en:
   delete_group: "Delete group"
   join_group: "Join group"
   leave_group: "Leave group"
+  upload_video: "Upload video"
   helpers:
     label:
       group:

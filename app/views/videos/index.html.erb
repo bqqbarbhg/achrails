@@ -1,0 +1,9 @@
+<% for video in @videos %>
+  <%= link_to(video.title, video_path(video)) %>
+<% end %>
+
+<%= form_tag("/videos/upload", multipart: true) do %>
+    <%= file_field_tag 'manifest' %>
+    <%= submit_tag t(:upload_video) %>
+<% end %>
+

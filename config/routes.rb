@@ -17,8 +17,12 @@ Rails.application.routes.draw do
   end
 
   resources :users
-
   resources :invitations
+  resources :videos do
+    collection do
+      post 'upload'
+    end
+  end
 
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
