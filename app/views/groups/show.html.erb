@@ -3,6 +3,8 @@
   <%= link_to(t(:delete_group), @group, method: :delete) %>
 <% end %>
 
+<h2>Members</h2>
+
 <ul>
 <% for membership in @group.memberships %>
   <% user = membership.user %>
@@ -11,6 +13,16 @@
     <% if membership.admin? %>
       (admin)
     <% end %>
+  </li>
+<% end %>
+</ul>
+
+<h2>Videos</h2>
+
+<ul>
+<% for video in @group.videos %>
+  <li>
+    <%= link_to(video.title, video) %>
   </li>
 <% end %>
 </ul>
