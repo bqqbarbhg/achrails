@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     end
     member do
       get 'share'
+      resources 'shares', only: [:index, :create, :destroy], param: :group
     end
   end
 

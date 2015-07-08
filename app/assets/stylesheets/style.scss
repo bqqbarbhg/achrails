@@ -1,3 +1,25 @@
 body {
   font: 100% sans-serif;
 }
+
+.share-button {
+  padding: 20px 10px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+
+  transition: all 0.2s;
+}
+
+.share-button.shared {
+  background-color: #afa;
+}
+
+.share-button.pending {
+  padding-left: 30px;
+  cursor: default;
+}

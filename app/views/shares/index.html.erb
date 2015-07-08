@@ -1,0 +1,90 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js">
+</script>
+
+<% for group in current_user.groups %>
+  <% shared = @video.groups.where(id: group.id).count > 0 %>
+  <% shareclass = shared ? 'shared' : 'unshared' %>
+  <div id="group<%= group.id %>" class="share-button <%= shareclass %>"><%= group.name %></div>
+<% end %>
+
+<script>
+  var groups = document.querySelectorAll(".share-button");
+  var pending = { };
+  var shared = { };
+
+  var token = $('meta[name=csrf-token]').attr('content');;
+  var http = new HTTP();
+  http.globalHeader("X-CSRF-Token", token);
+
+  var classyGroup = beClassy({
+    shared: ['unshared', 'shared'],
+    pending: 'pending'
+  });
+
+  for (var i = 0; i < groups.length; i++) {
+    var group = groups[i];
+    var id = group.id.substring(5);
+
+    pending[id] = false;
+    shared[id] = group.classList.contains('shared');
+
+    group.addEventListener("click", (function(id) {
+      return function(e) {
+        if (pending[id]) {
+          return;
+        }
+        shared[id] = !shared[id];
+        pending[id] = true;
+
+        var success = (function(id) { return function(xhr) {
+          console.log(xhr, id);
+          pending[id] = false;
+          shared[id] = JSON.parse(xhr.response).indexOf(id) >= 0;
+          refresh();
+        }; })(id);
+
+        var error = function(xhr) {
+          console.log(xhr);
+          /*
+            document.open();
+            document.write(xhr.response);
+            document.close();
+          */
+        };
+
+        var params = {
+          headers: {
+           "Content-Type": "application/json",
+           "Accept": "application/json",
+          },
+          success: success,
+          error: error,
+        }
+
+        if (shared[id]) {
+          http.postJson("<%= shares_url(@video) %>", { 'group': id }, params);
+        } else {
+          http.delete_("<%= shares_url(@video) %>/" + id, params);
+        }
+
+        refresh();
+      }
+    })(id));
+  }
+
+  function refresh() {
+    for (var i = 0; i < groups.length; i++) {
+      var group = groups[i];
+      var id = group.id.substring(5);
+
+      classyGroup(group, {
+        shared: shared[id],
+        pending: pending[id],
+      });
+    }
+  }
+
+  refresh();
+
+</script>
+
