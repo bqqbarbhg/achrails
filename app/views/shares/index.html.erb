@@ -45,11 +45,12 @@
 
         var error = function(xhr) {
           console.log(xhr);
-          /*
-            document.open();
-            document.write(xhr.response);
-            document.close();
-          */
+          <% if Rails.env.development? %>
+          // In development environment flush the page with the error message.
+          document.open();
+          document.write(xhr.response);
+          document.close();
+          <% end %>
         };
 
         var params = {
