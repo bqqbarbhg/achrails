@@ -3,6 +3,6 @@
 By: <%= link_to(@video.author.name, @video.author) %>
 
 <% if policy(@video).share? %>
-  <%= link_to(t(:share_video), share_video_path(@video)) %>
+  <%= link_to(t(:share_video), shares_path(@video)) %>
 <% end %>
 
