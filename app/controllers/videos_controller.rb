@@ -31,14 +31,6 @@ class VideosController < ApplicationController
 
     redirect_to :back
   end
-
-  def share
-    @video = Video.find(params[:id])
-    authorize @video
-
-    render
-  end
-
 protected
   def video_params
     p = params.require(:video).accept(:title)
