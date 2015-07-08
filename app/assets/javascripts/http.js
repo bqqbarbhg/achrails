@@ -61,11 +61,35 @@ HTTP.prototype.delete_ = function(url, options) {
     this.request('DELETE', url, null, options);
 };
 
+HTTP.prototype.getJson = function(url, body, options) {
+    options = options || { };
+    options.headers = _.assign(options.headers || { }, {
+       "Accept": "application/json",
+    });
+    this.get(url, options);
+};
 HTTP.prototype.postJson = function(url, body, options) {
+    options = options || { };
+    options.headers = _.assign(options.headers || { }, {
+       "Content-Type": "application/json",
+       "Accept": "application/json",
+    });
     this.post(url, JSON.stringify(body), options);
 };
 HTTP.prototype.patchJson = function(url, body, options) {
+    options = options || { };
+    options.headers = _.assign(options.headers || { }, {
+       "Content-Type": "application/json",
+       "Accept": "application/json",
+    });
     this.patch(url, JSON.stringify(body), options);
+};
+HTTP.prototype.deleteJson = function(url, options) {
+    options = options || { };
+    options.headers = _.assign(options.headers || { }, {
+       "Accept": "application/json",
+    });
+    this.delete_(url, options);
 };
 
 HTTP.prototype.globalHeader = function(header, value) {

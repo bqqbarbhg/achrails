@@ -54,10 +54,6 @@
         };
 
         var params = {
-          headers: {
-           "Content-Type": "application/json",
-           "Accept": "application/json",
-          },
           success: success,
           error: error,
         }
@@ -65,7 +61,7 @@
         if (shared[id]) {
           http.postJson("<%= shares_url(@video) %>", { 'group': id }, params);
         } else {
-          http.delete_("<%= shares_url(@video) %>/" + id, params);
+          http.deleteJson("<%= shares_url(@video) %>/" + id, params);
         }
 
         refresh();
