@@ -11,7 +11,10 @@ class SharesController < ApplicationController
     @video = Video.find(params[:id])
     authorize @video
 
-    @video.groups << Group.find(params[:group])
+    # NOTE: This might be slow, but it doesn't seem that there's really any obvious
+    # better way to do it.
+    group = Group.find(params[:group])
+    @video.groups << group unless @video.groups.exists?(group)
 
     respond_to do |format|
       format.json { render json: @video.groups.select(:id).map{|u| u.id.to_s } }

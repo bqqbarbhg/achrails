@@ -2,7 +2,7 @@ class Group < ActiveRecord::Base
 
   has_many :memberships
   has_many :members, through: :memberships, source: :user
-  has_and_belongs_to_many :videos
+  has_and_belongs_to_many :videos, uniq: true
 
   validates :name, presence: true
   enum visibility: [:invite_only, :unlisted, :listed]
