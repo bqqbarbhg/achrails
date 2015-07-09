@@ -20,6 +20,61 @@ body {
 }
 
 .share-button.pending {
-    padding-left: 30px;
     cursor: default;
+}
+
+.share-icon-container {
+    width: 50px;
+    height: 10px;
+}
+
+.share-icon {
+    opacity: 0.0;
+}
+.shared > .share-icon.fa-check-square-o {
+    opacity: 1.0;
+}
+.unshared > .share-icon.fa-square-o {
+    opacity: 1.0;
+}
+.shared.pending > .share-icon.fa-check-square-o {
+    opacity: 0.0;
+}
+.unshared.pending > .share-icon.fa-square-o {
+    opacity: 0.0;
+}
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
+ 
+@-webkit-keyframes spinner {
+    to {-webkit-transform: rotate(360deg);}
+}
+
+.pending > .share-spinner {
+    width: 24px;
+    height: 24px;
+    position: absolute; 
+    z-index: 1
+}
+
+.pending > .share-spinner:before {
+    content: 'Loading…';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin-top: -10px;
+    margin-left: -10px;
+}
+
+.pending > .share-spinner:not(:required):before {
+    content: '';
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 1.0);
+    border-bottom-color: rgba(0, 0, 0, 0.0);
+    animation: spinner 0.4s linear infinite;
+    -webkit-animation: spinner 0.4s linear infinite;
 }

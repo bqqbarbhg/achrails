@@ -1,10 +1,18 @@
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js">
 </script>
 
 <% for group in current_user.groups %>
   <% shared = @video.groups.where(id: group.id).count > 0 %>
   <% shareclass = shared ? 'shared' : 'unshared' %>
-  <div id="group<%= group.id %>" class="share-button <%= shareclass %>"><%= group.name %></div>
+  <%# TODO: Rename share-button class, it trips up some ad-blockers %>
+  <div id="group<%= group.id %>" class="share-button <%= shareclass %>">
+    <i class="fa fa-square-o fa-2x share-icon" style="position: absolute; z-index: 1"></i>
+    <div class="share-spinner"></div>
+    <i class="fa fa-check-square-o fa-2x share-icon"></i>
+    <%= group.name %>
+  </div>
 <% end %>
 
 <script>
