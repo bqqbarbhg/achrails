@@ -3,6 +3,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js">
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js">
+</script>
+
 <% for group in current_user.groups %>
   <% shared = @video.groups.where(id: group.id).count > 0 %>
   <% shareclass = shared ? 'shared' : 'unshared' %>
@@ -16,6 +19,10 @@
 <% end %>
 
 <script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+
   var groups = document.querySelectorAll(".share-button");
   var pending = { };
   var shared = { };
