@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+
 # Read the ruby version for Heroku
 File.open(File.expand_path('../.ruby-version', __FILE__), 'r') do |f|
   ruby f.read.strip
@@ -22,6 +23,9 @@ gem 'therubyracer'
 gem 'devise'
 # For authorization
 gem 'pundit'
+
+# For hosting files
+gem 'paperclip', '~> 4.3'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
