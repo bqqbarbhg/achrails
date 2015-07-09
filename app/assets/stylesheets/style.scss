@@ -11,6 +11,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     cursor: pointer;
+    height: 40px;
 
     transition: all 0.2s;
 }
@@ -29,6 +30,7 @@ body {
 }
 
 .share-icon {
+    position: absolute;
     opacity: 0.0;
 }
 .shared > .share-icon.fa-check-square-o {
@@ -42,6 +44,12 @@ body {
 }
 .unshared.pending > .share-icon.fa-square-o {
     opacity: 0.0;
+}
+
+.share-text {
+    position: relative;
+    left: 34px;
+    top: 6px;
 }
 
 @keyframes spinner {
