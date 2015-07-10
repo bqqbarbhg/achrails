@@ -11,16 +11,27 @@ class VideosController < ApplicationController
     @video = Video.find(params[:id])
     authorize @video
 
-    render
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @video.read_manifest }
+    end
+  end
+
+  def create
+    @video = create_video(request.body.read)
+    redirect_to action: :show, id: @video.id
   end
 
   def upload
-    json = JSON.parse(params[:manifest].read)
-    @video = Video.create!(
-      title: json["title"],
-      author: current_user)
-
+    @video = create_video(params[:manifest].read)
     redirect_to action: :show, id: @video.id
+  end
+
+  def create_video(json)
+    json = JSON.parse(json)
+    Video.create! title: json["title"],
+                  author: current_user,
+                  manifest: StringIO.new(JSON.generate json)
   end
 
   def destroy
