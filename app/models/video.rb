@@ -11,6 +11,10 @@ class Video < ActiveRecord::Base
       size: { in: 0..10.kilobytes }
   do_not_validate_attachment_file_type :manifest
 
+  def group_id_list
+    groups.select(:id).map{|u| u.id.to_s }
+  end
+
   def read_manifest
       Paperclip.io_adapters.for(manifest).read 
   end

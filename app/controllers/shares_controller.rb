@@ -17,7 +17,7 @@ class SharesController < ApplicationController
     @video.groups << group unless @video.groups.exists?(group)
 
     respond_to do |format|
-      format.json { render json: @video.groups.select(:id).map{|u| u.id.to_s } }
+      format.json { render json: @video.group_id_list }
     end
   end
 
@@ -28,9 +28,11 @@ class SharesController < ApplicationController
     @video.groups.destroy(Group.find(params[:group]))
 
     respond_to do |format|
-      format.json { render json: @video.groups.select(:id).map{|u| u.id.to_s } }
+      format.json { render json: @video.group_id_list }
     end
   end
+
+protected:
 
 end
 
