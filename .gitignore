@@ -23,3 +23,6 @@
 # Ignore rspec output
 /spec/examples.txt
 
+# Ignore paperclip uploads
+/public/system
+
