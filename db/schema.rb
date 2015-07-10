@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150709162125) do
+ActiveRecord::Schema.define(version: 20150710115058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,13 +70,14 @@ ActiveRecord::Schema.define(version: 20150709162125) do
 
   create_table "videos", force: :cascade do |t|
     t.integer  "author_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "title"
     t.string   "manifest_file_name"
     t.string   "manifest_content_type"
     t.integer  "manifest_file_size"
     t.datetime "manifest_updated_at"
+    t.integer  "revision",              default: 1, null: false
   end
 
 end
