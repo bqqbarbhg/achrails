@@ -2,9 +2,26 @@
 class VideosController < ApplicationController
 
   def index
-    @videos = current_user.authored_videos
 
-    render
+    # TODO: This returns different data sets now for html and json.
+    # TODO: Think about routes harder.
+
+    respond_to do |format|
+      format.html do
+        @videos = current_user.authored_videos
+        render
+      end
+      format.json do
+
+        own_video_columns = current_user.authored_videos.pluck(:id, :manifest_updated_at)
+        group_video_columns = current_user.videos.pluck(:id, :manifest_updated_at)
+
+        all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
+        all_videos = all_video_columns.map { |c| { id: c[0].to_s, last_modified: c[1] } }
+
+        render json: all_videos
+      end
+    end
   end
 
   def show
