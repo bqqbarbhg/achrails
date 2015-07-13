@@ -32,7 +32,7 @@ class SharesController < ApplicationController
     end
   end
 
-protected:
+protected
 
 end
 
