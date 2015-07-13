@@ -20,4 +20,8 @@ class Video < ActiveRecord::Base
       Paperclip.io_adapters.for(manifest).read 
   end
 
+  def to_param
+    uuid
+  end
+
 end

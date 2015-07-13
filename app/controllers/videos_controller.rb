@@ -25,7 +25,7 @@ class VideosController < ApplicationController
   end
 
   def show
-    @video = Video.find(params[:id])
+    @video = Video.find_by_uuid(params[:id])
     authorize @video
 
     respond_to do |format|
@@ -39,12 +39,12 @@ class VideosController < ApplicationController
 
   def create
     @video = create_video(request.body.read)
-    redirect_to action: :show, id: @video.id
+    redirect_to action: :show, id: @video.uuid
   end
 
   def upload
     @video = create_video(params[:manifest].read)
-    redirect_to action: :show, id: @video.id
+    redirect_to action: :show, id: @video.uuid
   end
 
   def create_video(json)
@@ -56,7 +56,7 @@ class VideosController < ApplicationController
   end
 
   def destroy
-    @video = Video.find(params[:id])
+    @video = Video.find_by_uuid(params[:id])
     authorize @video
 
     @video.destroy

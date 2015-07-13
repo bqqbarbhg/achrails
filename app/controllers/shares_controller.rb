@@ -1,14 +1,14 @@
 
 class SharesController < ApplicationController
   def index
-    @video = Video.find(params[:id])
+    @video = Video.find_by_uuid(params[:id])
     authorize @video
 
     render
   end
 
   def create
-    @video = Video.find(params[:id])
+    @video = Video.find_by_uuid(params[:id])
     authorize @video
 
     # NOTE: This might be slow, but it doesn't seem that there's really any obvious
