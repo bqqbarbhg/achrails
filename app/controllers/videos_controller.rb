@@ -38,24 +38,33 @@ class VideosController < ApplicationController
   end
 
   def create
-    @video = create_video(request.body.read)
+    @video = Video.create(video_params(request.body.read))
     respond_to do |format|
       format.html { redirect_to action: :show, id: @video.uuid }
       format.json { render json: { url: video_url(@video) } }
     end
   end
 
-  def upload
-    @video = create_video(params[:manifest].read)
-    redirect_to action: :show, id: @video.uuid
+  def update
+    @old_video = Video.find_by_uuid(params[:id])
+    params = video_params(request.body.read)
+
+    if @old_video
+      params[:revision] = @old_video.revision + 1
+      @old_video.update(params)
+      @new_video = @old_video
+    else
+      @new_video = Video.create(params)
+    end
+
+    headers['ETag'] = '"' + @new_video.id.to_s + ':' + @new_video.revision.to_s + '"'
+    status = @old_video ? :ok : :created
+    render nothing: true, status: status
   end
 
-  def create_video(json)
-    json = JSON.parse(json)
-    Video.create! title: json["title"],
-                  uuid: json["id"],
-                  author: current_user,
-                  manifest: StringIO.new(JSON.generate json)
+  def upload
+    @video = Video.create(video_params(params[:manifest].read))
+    redirect_to action: :show, id: @video.uuid
   end
 
   def destroy
@@ -68,9 +77,12 @@ class VideosController < ApplicationController
   end
 
 protected
-  def video_params
-    p = params.require(:video).accept(:title)
-    p[:author] = current_user
+  def video_params(manifest)
+    json = JSON.parse(manifest)
+    { title: json["title"],
+      uuid: json["id"],
+      author: current_user,
+      manifest: StringIO.new(JSON.generate json) }
   end
 end
 
