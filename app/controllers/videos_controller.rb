@@ -17,9 +17,9 @@ class VideosController < ApplicationController
         group_video_columns = current_user.videos.pluck(:id, :uuid, :manifest_updated_at)
 
         all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
-        all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2] } }
+        all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2].httpdate } }
 
-        render json: all_videos
+        render json: { videos: all_videos }
       end
     end
   end
