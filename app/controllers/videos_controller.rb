@@ -13,11 +13,11 @@ class VideosController < ApplicationController
       end
       format.json do
 
-        own_video_columns = current_user.authored_videos.pluck(:id, :manifest_updated_at)
-        group_video_columns = current_user.videos.pluck(:id, :manifest_updated_at)
+        own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :manifest_updated_at)
+        group_video_columns = current_user.videos.pluck(:id, :uuid, :manifest_updated_at)
 
         all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
-        all_videos = all_video_columns.map { |c| { id: c[0].to_s, last_modified: c[1] } }
+        all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2] } }
 
         render json: all_videos
       end
@@ -50,6 +50,7 @@ class VideosController < ApplicationController
   def create_video(json)
     json = JSON.parse(json)
     Video.create! title: json["title"],
+                  uuid: json["id"],
                   author: current_user,
                   manifest: StringIO.new(JSON.generate json)
   end

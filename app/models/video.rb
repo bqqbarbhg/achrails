@@ -6,6 +6,7 @@ class Video < ActiveRecord::Base
   has_and_belongs_to_many :groups, uniq: true
 
   validates :title, presence: true
+  validates :uuid, presence: true
 
   validates_attachment :manifest, presence: true,
       size: { in: 0..10.kilobytes }
