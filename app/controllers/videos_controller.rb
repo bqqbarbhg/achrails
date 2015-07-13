@@ -39,7 +39,10 @@ class VideosController < ApplicationController
 
   def create
     @video = create_video(request.body.read)
-    redirect_to action: :show, id: @video.uuid
+    respond_to do |format|
+      format.html { redirect_to action: :show, id: @video.uuid }
+      format.json { render json: { url: video_url(@video) } }
+    end
   end
 
   def upload
