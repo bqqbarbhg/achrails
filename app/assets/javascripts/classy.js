@@ -21,39 +21,37 @@
  */
 
 function beClassy(schema) {
+
+    var getClass = function(cl, classes) {
+        if (Array.isArray(classes)) {
+            for (var i = 0; i < classes.length; i++) {
+                if (cl.contains(classes[i])) return i;
+            }
+            return -1;
+        } else {
+            return cl.contains(classes);
+        }
+    }
+
+    var setClass = function(cl, classes, value) {
+        if (Array.isArray(classes)) {
+            var index = value | 0;
+            for (var i = 0; i < classes.length; i++) {
+                if (i == index) cl.add(classes[i]);
+                else            cl.remove(classes[i]);
+            }
+        } else {
+            if (value) cl.add(classes);
+            else       cl.remove(classes);
+        }
+    }
+
     var attr = function(key) {
         return function(element, value) {
-            var cl = element.classList;
-            var classes = schema[key];
-
             if (value !== undefined) {
-                if (Array.isArray(classes)) {
-                    var index = value | 0;
-                    for (var i = 0; i < classes.length; i++) {
-                        if (i == index) {
-                            cl.add(classes[i]);
-                        } else {
-                            cl.remove(classes[i]);
-                        }
-                    }
-                } else {
-                    if (value) {
-                        cl.add(classes);
-                    } else {
-                        cl.remove(classes);
-                    }
-                }
+                setClass(element.classList, schema[key], value);
             } else {
-                if (Array.isArray(classes)) {
-                    for (var i = 0; i < classes.length; i++) {
-                        if (cl.contains(classes[i])) {
-                            return i;
-                        }
-                    }
-                    return -1;
-                } else {
-                    return cl.contains(classes);
-                }
+                return getClass(element.classList, schema[key]);
             }
         }
     }
@@ -64,42 +62,13 @@ function beClassy(schema) {
         if (options !== undefined) {
             for (var key in options) {
                 if (!schema.hasOwnProperty(key)) continue;
-
-                var classes = schema[key];
-                var val = options[key] || 0;
-                if (Array.isArray(classes)) {
-                    var index = val | 0;
-                    for (var i = 0; i < classes.length; i++) {
-                        if (i == index) {
-                            cl.add(classes[i]);
-                        } else {
-                            cl.remove(classes[i]);
-                        }
-                    }
-                } else {
-                    if (val) {
-                        cl.add(classes);
-                    } else {
-                        cl.remove(classes);
-                    }
-                }
+                setClass(cl, schema[key], options[key]);
             }
         } else {
             var ret = { };
             for (var key in schema) {
                 if (!schema.hasOwnProperty(key)) continue;
-
-                var classes = schema[key];
-                if (Array.isArray(classes)) {
-                    ret[key] = -1;
-                    for (var i = 0; i < classes.length; i++) {
-                        if (cl.contains(classes[i])) {
-                            ret[key] = i;
-                        }
-                    }
-                } else {
-                    ret[key] = cl.contains(classes);
-                }
+                ret[key] = getClass(cl, schema[key]);
             }
             return ret;
         }
