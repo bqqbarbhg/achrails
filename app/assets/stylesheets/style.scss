@@ -38,10 +38,16 @@ body {
 .unshared > .share-icon.fa-square-o {
     opacity: 1.0;
 }
+.mixed > .share-icon.fa-square {
+    opacity: 1.0;
+}
 .shared.pending > .share-icon.fa-check-square-o {
     opacity: 0.0;
 }
 .unshared.pending > .share-icon.fa-square-o {
+    opacity: 0.0;
+}
+.mixed.pending > .share-icon.fa-square {
     opacity: 0.0;
 }
 

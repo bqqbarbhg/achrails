@@ -10,13 +10,16 @@
   <% shared = @videos.map do |video|
       video.groups.where(id: group.id).count > 0
     end
-    shareclass = shared.any? ? 'shared' : 'unshared' 
+    shareclass = shared.any? ? 'shared' : 'unshared'
+    shareclass = 'mixed' if shared.any? { |x| x != shared.first }
   %>
   <%# TODO: Rename share-button class, it trips up some ad-blockers %>
   <div id="group<%= group.id %>" class="share-button <%= shareclass %>">
     <i class="fa fa-square-o fa-2x share-icon"></i>
     <div class="share-spinner"></div>
     <i class="fa fa-check-square-o fa-2x share-icon"></i>
+    <i class="fa fa-square fa-2x share-icon"></i>
+
     <div class="share-text"><%= group.name %></div>
   </div>
 <% end %>
@@ -28,14 +31,14 @@
 
   var groups = document.querySelectorAll(".share-button");
   var pending = { };
-  var shared = { };
+  var state = { };
 
   var token = $('meta[name=csrf-token]').attr('content');;
   var http = new HTTP();
   http.globalHeader("X-CSRF-Token", token);
 
   var classyGroup = beClassy({
-    shared: ['unshared', 'shared'],
+    state: ['unshared', 'mixed', 'shared'],
     pending: 'pending'
   });
 
@@ -44,14 +47,16 @@
     var id = group.id.substring(5);
 
     pending[id] = false;
-    shared[id] = group.classList.contains('shared');
+    state[id] = classyGroup.state(group);
 
     group.addEventListener("click", (function(id) {
       return function(e) {
         if (pending[id]) {
           return;
         }
-        shared[id] = !shared[id];
+
+        // Mixed does upload with this logic
+        state[id] = state[id] == 2 ? 0 : 2;
         pending[id] = true;
 
         var success = (function(id) { return function(xhr) {
@@ -77,7 +82,7 @@
           error: error,
         }
 
-        if (shared[id]) {
+        if (state[id]) {
           http.postJson("", { 'group': id }, params);
         } else {
           http.deleteJson("shares/" + id, params);
@@ -94,7 +99,7 @@
       var id = group.id.substring(5);
 
       classyGroup(group, {
-        shared: shared[id],
+        state: state[id],
         pending: pending[id],
       });
     }
