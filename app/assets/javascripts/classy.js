@@ -1,3 +1,25 @@
+/*
+ * Helper for managing classes.
+ *
+ * Creating a schema:
+ *    var classyForSchema = beClassy({
+ *         flag: "flagTrue",
+ *         toggle: ["toggleFalse", "toggleTrue"],
+ *         select: ["select0", "select1", "select2"],
+ *     });
+ *
+ * Setting classes:
+ *     classyForSchema(element, { flag: true, toggle: false, select: 2 });
+ * or
+ *     classyForSchema.flag(element, false)
+ *
+ *
+ * Getting classes:
+ *     classyForSchema(element).flag // checks all the classes
+ * or
+ *     classyForSchema.flag(element) // checks one class
+ */
+
 function beClassy(schema) {
     var attr = function(key) {
         return function(element, value) {
