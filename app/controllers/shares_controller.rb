@@ -1,34 +1,47 @@
 
 class SharesController < ApplicationController
   def index
-    @video = Video.find_by_uuid(params[:id])
-    authorize @video
+    ids = params[:id].split(',')
+    @videos = Video.where(uuid: ids)
+    @videos.each do |video|
+      authorize video, :share?
+    end
 
     render
   end
 
   def create
-    @video = Video.find_by_uuid(params[:id])
-    authorize @video
+    ids = params[:id].split(',')
+    @videos = Video.where(uuid: ids)
+
+    group = Group.find(params[:group])
+    authorize group, :share?
 
     # NOTE: This might be slow, but it doesn't seem that there's really any obvious
     # better way to do it.
-    group = Group.find(params[:group])
-    @video.groups << group unless @video.groups.exists?(group)
+    @videos.each do |video|
+      authorize video, :share?
+      video.groups << group unless video.groups.exists?(group)
+    end
 
     respond_to do |format|
-      format.json { render json: @video.group_id_list }
+      # TODO: Figure out a response format
+      format.json { render json: { } }
     end
   end
 
   def destroy
-    @video = Video.find(params[:id])
-    authorize @video
+    ids = params[:id].split(',')
+    @videos = Video.where(uuid: ids)
 
-    @video.groups.destroy(Group.find(params[:group]))
+    @videos.each do |video|
+      authorize video, :share?
+      video.groups.destroy(Group.find(params[:group]))
+    end
 
     respond_to do |format|
-      format.json { render json: @video.group_id_list }
+      # TODO: Figure out a response format
+      format.json { render json: { } }
     end
   end
 

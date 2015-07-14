@@ -46,6 +46,11 @@ class GroupPolicy < Struct.new(:user, :group)
     group.member?(user) && !group.admin?(user)
   end
 
+  def share?
+    # Only members can share videos
+    group.member?(user)
+  end
+
   def invite?
     # Only admins
     group.admin?(user)
