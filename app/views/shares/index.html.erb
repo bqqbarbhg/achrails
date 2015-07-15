@@ -6,21 +6,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js">
 </script>
 
-<% for group in current_user.groups %>
-  <% shared = @videos.map do |video|
-      video.groups.where(id: group.id).count > 0
-    end
-    shareclass = shared.any? ? 'shared' : 'unshared'
-    shareclass = 'mixed' if shared.any? { |x| x != shared.first }
-  %>
+<% for share_group in @share_groups %>
   <%# TODO: Rename share-button class, it trips up some ad-blockers %>
-  <div id="group<%= group.id %>" class="share-button <%= shareclass %>">
+  <div id="group<%= share_group.group.id %>" class="share-button <%= share_group.shareclass %>">
     <i class="fa fa-square-o fa-2x share-icon"></i>
     <div class="share-spinner"></div>
     <i class="fa fa-check-square-o fa-2x share-icon"></i>
     <i class="fa fa-square fa-2x share-icon"></i>
 
-    <div class="share-text"><%= group.name %></div>
+    <div class="share-text"><%= share_group.group.name %></div>
   </div>
 <% end %>
 
