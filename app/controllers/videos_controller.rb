@@ -73,7 +73,7 @@ class VideosController < ApplicationController
 
     @video.destroy
 
-    redirect_to :back
+    redirect_to action: :index
   end
 
 protected

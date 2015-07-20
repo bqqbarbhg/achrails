@@ -6,3 +6,7 @@ By: <%= link_to(@video.author.name, @video.author) %>
   <%= link_to(t(:share_video), shares_path(@video)) %>
 <% end %>
 
+<% if policy(@video).destroy? %>
+  <%= link_to(t(:delete_video), video_path(@video), method: :delete) %>
+<% end %>
+
