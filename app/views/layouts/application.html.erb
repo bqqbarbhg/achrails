@@ -15,6 +15,10 @@
 <%= link_to "Sign in", user_omniauth_authorize_path(:learning_layers_oidc) %>
 <% end %>
 
+<% flash.each do |name, msg| -%>
+  <%= content_tag :div, msg, class: name %>
+<% end -%>
+
 <hr>
 
 <%= yield %>
