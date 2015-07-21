@@ -240,7 +240,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   config.omniauth :learning_layers_oidc, ENV['LL_OIDC_CLIENT_ID'],
-    ENV['LL_OIDC_CLIENT_SECRET'], scope: 'user,email'
+    ENV['LL_OIDC_CLIENT_SECRET'], scope: 'openid,email'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
