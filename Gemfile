@@ -21,6 +21,8 @@ gem 'therubyracer'
 
 # For authentication
 gem 'devise'
+# For Learning Layers OIDC
+gem 'omniauth-oauth2'
 # For authorization
 gem 'pundit'
 
