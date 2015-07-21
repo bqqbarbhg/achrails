@@ -82,7 +82,7 @@ protected
     { title: json["title"],
       uuid: json["id"],
       author: current_user,
-      manifest_text: JSON.generate(json) }
+      manifest_json: json }
   end
 end
 

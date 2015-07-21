@@ -11,7 +11,7 @@ class Video < ActiveRecord::Base
   end
 
   def read_manifest
-      manifest_text
+      manifest_json
   end
 
   def to_param
