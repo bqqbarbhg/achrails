@@ -10,7 +10,7 @@ module OmniAuth
         token_url: "/o/oauth2/token"
       
       uid do
-        raw_info['id']
+        raw_info['sub']
       end
 
       info do
