@@ -10,7 +10,6 @@
 
 <% if current_user %>
   <span>Logged in as <strong><%= current_user.name %></strong></span>
-  <%= #link_to(t(:sign_out), destroy_user_session_path, method: :delete) %>
 <% else %>
 <%= link_to "Sign in", user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https') %>
 <% end %>
