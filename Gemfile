@@ -26,9 +26,6 @@ gem 'omniauth-oauth2'
 # For authorization
 gem 'pundit'
 
-# For hosting files
-gem 'paperclip', '~> 4.3'
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
