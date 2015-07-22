@@ -15,7 +15,7 @@ RSpec.describe HomeController do
   end
 
   context 'logged in' do
-    let(:user) { User.create!(email: 'test@example.com', password: 'testtest') }
+    let(:user) { User.create!(email: 'test@example.com', uid: '1', provider: 'test') }
 
     it 'renders the index' do
       expect(response).to render_template(:index)
