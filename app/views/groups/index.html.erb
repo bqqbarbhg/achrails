@@ -1,4 +1,6 @@
 <% for group in @groups %>
   <%= link_to(group.name, group) %>
 <% end %>
-<%= link_to(t(:create_group), new_group_path()) %>
+<% if policy(:group).create? %>
+  <%= link_to(t(:create_group), new_group_path()) %>
+<% end %>

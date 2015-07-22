@@ -26,8 +26,8 @@ class VideoPolicy < Struct.new(:user, :video)
   end
 
   def create?
-    # Everyone can create a group
-    true
+    # Users can upload videos
+    user.present?
   end
 
   def update?

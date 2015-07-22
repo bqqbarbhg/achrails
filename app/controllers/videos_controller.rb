@@ -5,6 +5,9 @@ class VideosController < ApplicationController
 
     # TODO: This returns different data sets now for html and json.
     # TODO: Think about routes harder.
+    # TODO: Logged out view
+
+    authenticate_user!
 
     respond_to do |format|
       format.html do
