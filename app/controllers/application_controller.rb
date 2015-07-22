@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
     protect_from_forgery with: :null_session
   end
 
+  # Visitors can view public content without having to authenticate, authentication
+  # checks are mostly done now in policies or per route authenticate_user! calls.
   # before_action :authenticate_user!
 
   def render_forbidden
