@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   devise :rememberable, :omniauthable,
-    omniauth_providers: [:learning_layers_oidc]
+    omniauth_providers: if Rails.env.production?
+                          [:learning_layers_oidc]
+                        else
+                          [:developer]
+                        end
 
   has_many :memberships
   has_many :groups, through: :memberships, source: :group

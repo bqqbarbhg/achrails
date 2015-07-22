@@ -11,7 +11,11 @@
 <% if current_user %>
   <span>Logged in as <strong><%= current_user.name %></strong></span>
 <% else %>
-<%= link_to "Sign in", user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https') %>
+  <% if Rails.env.production? %>
+    <%= link_to "Sign in", user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https') %>
+  <% else %>
+    <%= link_to "Sign in (developer)", user_omniauth_authorize_url(:developer) %>
+  <% end %>
 <% end %>
 
 <% flash.each do |name, msg| -%>
