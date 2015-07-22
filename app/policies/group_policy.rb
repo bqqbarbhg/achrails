@@ -17,8 +17,8 @@ class GroupPolicy < Struct.new(:user, :group)
   end
 
   def create?
-    # Everyone can create a group
-    true
+    # Users can create groups
+    user.present?
   end
 
   def update?
@@ -36,8 +36,8 @@ class GroupPolicy < Struct.new(:user, :group)
   end
 
   def join?
-    # Only non-members can join
-    show? && !group.member?(user)
+    # Only non-member users can join
+    show? && user.present? && !group.member?(user)
   end
 
   def leave?
