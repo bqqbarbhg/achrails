@@ -26,10 +26,7 @@ Warden::Strategies.add(:bearer_authentication) do
 
     token = OAuth2::AccessToken.new(client, bearer)
     response = token.get('/o/oauth2/userinfo')
-    fail if response.code != 200
-
     user_info = LearningLayersUser.new(resposne.parsed)
-
     # TODO: Better check here
 
     if user_info
@@ -38,6 +35,8 @@ Warden::Strategies.add(:bearer_authentication) do
     else
       fail
     end
+  rescue OAuth2::Error
+    fail
   end
 
 protected
