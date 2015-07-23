@@ -26,7 +26,7 @@ Warden::Strategies.add(:bearer_authentication) do
 
     token = OAuth2::AccessToken.new(client, bearer)
     response = token.get('/o/oauth2/userinfo')
-    user_info = LearningLayersUser.new(resposne.parsed)
+    user_info = LearningLayersUser.new(response.parsed)
     # TODO: Better check here
 
     if user_info
