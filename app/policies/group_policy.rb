@@ -4,6 +4,7 @@ class GroupPolicy < Struct.new(:user, :group)
       # Show only groups we are a member of and ones that are publicly listed
       scope.joins(:memberships)
            .where('memberships.user_id = ? OR visibility = ?', user, 2)
+           .group(:id)
     end
   end
 
