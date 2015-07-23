@@ -41,7 +41,6 @@ Warden::Strategies.add(:bearer_authentication) do
 protected
 
   def authorization
-    Rails.logger.debug request.authorization
     request.authorization
   end
 
