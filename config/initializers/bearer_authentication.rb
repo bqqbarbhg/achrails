@@ -25,8 +25,10 @@ Warden::Strategies.add(:bearer_authentication) do
                                 site: ENV["LL_OIDC_HOST"])
 
     token = OAuth2::AccessToken.new(client, bearer)
-    user_info_hash = token.get('/o/oauth2/userinfo').parsed
-    user_info = LearningLayersUser.new(user_info_hash) if user_info_hash
+    response = token.get('/o/oauth2/userinfo')
+    fail if response.code != 200
+
+    user_info = LearningLayersUser.new(resposne.parsed)
 
     # TODO: Better check here
 
