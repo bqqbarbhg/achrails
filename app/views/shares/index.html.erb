@@ -6,6 +6,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js">
 </script>
 
+<h2>Share <%= @videos.count %> videos</h2>
+
 <% for share_group in @share_groups %>
   <%# TODO: Rename share-button class, it trips up some ad-blockers %>
   <div id="group<%= share_group.group.id %>" class="share-button <%= share_group.shareclass %>">
