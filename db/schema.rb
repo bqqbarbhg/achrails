@@ -51,11 +51,12 @@ ActiveRecord::Schema.define(version: 20150728091356) do
   add_index "memberships", ["user_id"], name: "index_memberships_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",      default: "", null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "provider",                null: false
-    t.string   "uid",                     null: false
+    t.string   "email",               default: "", null: false
+    t.datetime "remember_created_at"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "provider",                         null: false
+    t.string   "uid",                              null: false
     t.string   "name"
   end
 
