@@ -11,7 +11,7 @@ RSpec.describe GroupsController do
 
   describe 'POST /groups' do
     before do
-      @user = User.create!(email: 'test@example.com', uid: '1', provider: 'test')
+      @user = User.create!(email: 'test@example.com', name: 'Test', uid: '1', provider: 'test')
       sign_in @user
       post :create, group: { name: 'test' }
       @group = assigns(:group)
@@ -32,7 +32,7 @@ RSpec.describe GroupsController do
 
     before do
       @group = Group.create!(name: 'test', visibility: :unlisted)
-      @user = User.create!(email: 'other@example.com', uid: '1', provider: 'test')
+      @user = User.create!(email: 'other@example.com', name: 'Test', uid: '1', provider: 'test')
       sign_in @user
       post :join, id: @group
     end
@@ -53,7 +53,7 @@ RSpec.describe GroupsController do
   describe 'POST /groups/:id/invite' do
 
     before do
-      @user = User.create!(email: 'other@example.com', uid: '1', provider: 'test')
+      @user = User.create!(email: 'other@example.com', name: 'Test', uid: '1', provider: 'test')
       sign_in @user
       @group = Group.create!(name: 'test', visibility: :invite_only)
       @group.join(@user).update(admin: true)
