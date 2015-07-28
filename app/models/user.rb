@@ -12,14 +12,13 @@ class User < ActiveRecord::Base
 
   has_many :authored_videos, class_name: "Video", foreign_key: :author_id
 
+  validates :name, presence: true
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
+      user.name = auth.info.name
     end
-  end
-
-  def name
-    email.split('@')[0].gsub(/\W+/, ' ').gsub(/[\d_]+/, '').titlecase
   end
 
 end
