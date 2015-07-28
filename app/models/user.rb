@@ -15,10 +15,11 @@ class User < ActiveRecord::Base
   validates :name, presence: true
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create.update({
-      email: auth.info.email,
-      name: auth.info.name
-    })
+    user = where(provider: auth.provider, uid: auth.uid).first_or_create
+    user.email = auth.info.email,
+    user.name = auth.info.name
+    user.save!
+    user
   end
 
 end
