@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 
   def self.from_omniauth(auth)
     user = where(provider: auth.provider, uid: auth.uid).first_or_create
-    user.email = auth.info.email
+    user.email = auth.info.email if auth.info.email
     user.name = auth.info.name
     user.save!
     user
