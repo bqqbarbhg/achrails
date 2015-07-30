@@ -7,6 +7,11 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.find_by(token: params[:id])
     @group = @invitation.group
 
+    if current_user && current_user.email.blank?
+      redirect_to oidc_action_error_path(failed_action: "accept_invitation")
+      return
+    end
+
     unless @invitation.can_join?(current_user)
       render status: :forbidden
       return

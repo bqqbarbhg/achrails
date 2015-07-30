@@ -1,0 +1,10 @@
+<%= t(@failed_action) %>
+<br>
+<% if @infos %>
+Required information:
+  <ul>
+    <% for info in @infos %>
+      <li><%= t(info) %></li>
+    <% end %>
+  </ul>
+<% end %>

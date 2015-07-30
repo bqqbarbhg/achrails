@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   validates :name, presence: true
 
   def self.from_omniauth(auth)
+    return nil if [auth.info.name, auth.provider, auth.uid].any? &:blank?
+
     user = where(provider: auth.provider, uid: auth.uid).first_or_create
     user.email = auth.info.email if auth.info.email
     user.name = auth.info.name
