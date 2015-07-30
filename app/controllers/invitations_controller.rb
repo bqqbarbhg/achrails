@@ -2,6 +2,8 @@
 class InvitationsController < ApplicationController
 
   def show
+    authenticate_user!
+
     @invitation = Invitation.find_by(token: params[:id])
     @group = @invitation.group
 
