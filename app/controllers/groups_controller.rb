@@ -10,7 +10,7 @@ class GroupsController < ApplicationController
           ids = group.videos.pluck(:uuid)
           group.as_json.merge({ videos: ids.as_json })
         end
-        render json: group_json
+        render json: { groups: group_json }
       end
       format.html { render :index }
     end
