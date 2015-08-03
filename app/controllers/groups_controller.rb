@@ -2,17 +2,22 @@
 class GroupsController < ApplicationController
 
   def index
-    @groups = policy_scope(Group)
+    # TODO: Fix this to another endpoint with videos
 
     respond_to do |format|
       format.json do
+        authenticate_user!
+        @groups = current_user.groups
         group_json = @groups.map do |group|
           ids = group.videos.pluck(:uuid)
           group.as_json.merge({ videos: ids.as_json })
         end
         render json: { groups: group_json }
       end
-      format.html { render :index }
+      format.html do
+        @groups = policy_scope(Group)
+        render :index
+      end
     end
   end
 
