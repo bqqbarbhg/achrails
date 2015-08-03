@@ -3,7 +3,17 @@ class GroupsController < ApplicationController
 
   def index
     @groups = policy_scope(Group)
-    render :index
+
+    respond_to do |format|
+      format.json do
+        group_json = @groups.map do |group|
+          ids = group.videos.pluck(:uuid)
+          group.as_json.merge({ videos: ids.as_json })
+        end
+        render json: group_json
+      end
+      format.html { render :index }
+    end
   end
 
   def show
