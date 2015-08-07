@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sss
-    @sss ||= do
+    @sss ||= begin
       sss_url = ENV["SSS_URL"]
       SSS::SocialSemanticServer.new(sss_url, current_user.bearer) if sss_url
     end
