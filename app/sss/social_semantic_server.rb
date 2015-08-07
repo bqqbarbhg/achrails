@@ -43,7 +43,8 @@ module SSS
     end
 
     def groups
-      data = get('/circles/circles')
+      response = get('/circles/circles')
+      data = respoonse.body
       data.deep_symbolize_keys!
       circles = data[:circles]
 
