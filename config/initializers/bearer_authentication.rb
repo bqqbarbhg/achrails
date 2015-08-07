@@ -2,16 +2,20 @@
 class LearningLayersUser
   class UserInfo < Struct.new(:email, :name)
   end
+  class Extra < Struct.new(:bearer)
+  end
 
   attr_reader :uid
   attr_reader :provider
   attr_reader :info
+  attr_reader :extra
 
-  def initialize(hash)
+  def initialize(hash, bearer)
     @uid = hash['sub']
     @provider = 'learning_layers_oidc'
 
     @info = UserInfo.new(hash['email'], hash['name'])
+    @extra = Extra.new(bearer)
   end
 end
 
@@ -26,7 +30,7 @@ Warden::Strategies.add(:bearer_authentication) do
 
     token = OAuth2::AccessToken.new(client, bearer)
     response = token.get('/o/oauth2/userinfo')
-    user_info = LearningLayersUser.new(response.parsed)
+    user_info = LearningLayersUser.new(response.parsed, bearer)
     # TODO: Better check here
 
     if user_info

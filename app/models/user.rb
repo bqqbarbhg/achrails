@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
     user = where(provider: auth.provider, uid: auth.uid).first_or_create
     user.email = auth.info.email if auth.info.email
     user.name = auth.info.name
+    user.bearer_token = auth.extra.try(:bearer)
     user.save!
     user
   end

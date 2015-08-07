@@ -22,8 +22,12 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find(params[:id])
-    authorize @group
+    if sss
+      @group = sss.group(params[:id])
+    else
+      @group = Group.find(params[:id])
+      authorize @group
+    end
 
     render :show
   end

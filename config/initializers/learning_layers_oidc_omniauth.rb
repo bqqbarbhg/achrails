@@ -25,7 +25,7 @@ module OmniAuth
 
       extra do
         {
-          'raw_info': raw_info
+          'bearer': access_token.token
         }
       end
 

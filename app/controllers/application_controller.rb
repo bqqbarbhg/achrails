@@ -17,5 +17,12 @@ class ApplicationController < ActionController::Base
     render nothing: true, status: :forbidden
   end
 
+  def sss
+    @sss ||= do
+      sss_url = ENV["SSS_URL"]
+      SSS::SocialSemanticServer.new(sss_url, current_user.bearer) if sss_url
+    end
+  end
+
   rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
 end

@@ -26,6 +26,9 @@ gem 'omniauth-oauth2'
 # For authorization
 gem 'pundit'
 
+# For HTTP requests to SSS
+gem 'faraday'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
