@@ -15,7 +15,11 @@ class GroupsController < ApplicationController
         render json: { groups: group_json }
       end
       format.html do
-        @groups = policy_scope(Group)
+        if sss
+          @groups = sss.groups
+        else
+          @groups = policy_scope(Group)
+        end
         render :index
       end
     end

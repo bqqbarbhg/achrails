@@ -17,10 +17,13 @@ class ApplicationController < ActionController::Base
     render nothing: true, status: :forbidden
   end
 
-  def sss
+  def sss(user=nil)
+    user ||= current_user
+
     @sss ||= begin
       sss_url = ENV["SSS_URL"]
-      SSS::SocialSemanticServer.new(sss_url, current_user.bearer) if sss_url
+      bearer = current_user.bearer
+      SocialSemanticServer.new(sss_url, bearer) if sss_url
     end
   end
 

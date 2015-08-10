@@ -28,8 +28,12 @@ class VideosController < ApplicationController
   end
 
   def show
-    @video = Video.find_by_uuid(params[:id])
-    authorize @video
+    if sss
+      @video = sss.video(params[:id])
+    else
+      @video = Video.find_by_uuid(params[:id])
+      authorize @video
+    end
 
     respond_to do |format|
       format.html { render }
