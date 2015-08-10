@@ -9,7 +9,7 @@
 <% for membership in @group.memberships %>
   <% user = membership.user %>
   <li>
-    <%= link_to(user.name, user) %>
+    <%= user.name %>
     <% if membership.admin? %>
       (admin)
     <% end %>
