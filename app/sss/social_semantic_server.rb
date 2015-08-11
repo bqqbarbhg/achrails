@@ -25,6 +25,20 @@ class SocialSemanticServer
     data.deep_symbolize_keys! if data
   end
 
+  def post(path, content_type, body)
+    @conn.post do |req|
+      req.url @root + path
+      req.headers['Content-Type'] = content_type
+      req.body = body
+    end
+  end
+
+  def post_json(path, json)
+    response = post(path, 'application/json', json.to_json)
+    data = JSON.parse(response.body)
+    data.deep_symbolize_keys! if data
+  end
+
   def isolate_uuid(str)
     str[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/]
   end
@@ -53,7 +67,7 @@ class SocialSemanticServer
       group.memberships = circle_hash[:users].map do |user|
         Membership.new(
           group: group,
-          user: to_person(user),
+          user: full_person(user),
           admin?: user[:id] == author_id,
         )
       end
@@ -71,40 +85,67 @@ class SocialSemanticServer
     @videos[id] ||= Video.new(
       uuid: id,
       title: video_hash[:label],
-      author: to_person(video_hash[:author]),
+      author: full_person(video_hash[:author]),
     )
   end
 
   def groups
-    data = get_json('/circles/circles')
-    circles = data[:circles]
+    @groups_cached ||= begin
+      data = get_json('/circles/circles')
+      circles = data[:circles]
 
-    circles.map { |circle| to_group(circle) }
+      circles.map { |circle| to_group(circle) }
+    end
   end
 
   def group(id)
     groups.select { |group| group.id == id }.first
   end
 
-  def people
-    data = get_json('/users/users')
-    users = data[:users]
+  def create_group(params)
+    hash = post_json 'circles/circles/',
+      label: params[:name],
+      description: params[:description] || ''
 
-    users.map { |user| to_person(user) }
+    isolate_id(hash[:circle])
+  end
+
+  def people
+    @people_cached ||= begin
+      data = get_json('/users/users')
+      users = data[:users]
+
+      users.map { |user| to_person(user) }
+    end
   end
 
   def person(id)
     people.select { |person| person.id == id }.first
   end
 
+  def full_person(partial_user_hash)
+    id = isolate_id(partial_user_hash[:id])
+    person(id)
+  end
+
   def auth_person
-    data = get_json('/auth/auth')
-    user_id = isolate_id(data[:user])
-    person(user_id)
+    @auth_person_cached ||= begin
+      data = get_json('/auth/auth')
+      user_id = isolate_id(data[:user])
+      person(user_id)
+    end
   end
 
   def videos
+    @videos_cached ||= begin
+      data = get_json('/videos/videos')
+      videos = data[:videos]
 
+      videos.map { |video| to_video(video) }
+    end
   end
 
+  def video(uuid)
+    videos.select { |video| video.uuid == uuid }.first
+  end
 end

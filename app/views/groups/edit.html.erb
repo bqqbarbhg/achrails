@@ -2,17 +2,20 @@
   <%= f.label :name %>
   <%= f.text_field :name %>
 
-  <h3><%= t('visibility') %></h3>
-  
-  <% Group.visibilities.keys.each do |key| %>
-    <label>
-      <div>
-        <%= f.radio_button :visibility, key %>
-        <%= t(key.to_sym) %>
-        <%= content_tag(:p, t('description.visibility.' + key)) %>
-      </div>
-    </label>
-  <% end %>
+  <% unless sss # Visibilities are not supported by SSS %>
+
+    <h3><%= t('visibility') %></h3>
+    <% Group.visibilities.keys.each do |key| %>
+      <label>
+        <div>
+          <%= f.radio_button :visibility, key %>
+          <%= t(key.to_sym) %>
+          <%= content_tag(:p, t('description.visibility.' + key)) %>
+        </div>
+      </label>
+    <% end %>
+
+<% end %>
 
   <%= f.submit %>
 <% end %>

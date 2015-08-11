@@ -44,12 +44,16 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = Group.create!(group_params)
-    authorize @group
+    if sss
+      group_id = sss.create_group(group_params)
+    else
+      @group = Group.create!(group_params)
+      authorize @group
+      @group.join(current_user).update(admin: true)
+      group_id = @group.id
+    end
 
-    @group.join(current_user).update(admin: true)
-
-    redirect_to action: :show, id: @group.id
+    redirect_to action: :show, id: group_id
   end
 
   def update

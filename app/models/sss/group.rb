@@ -1,11 +1,12 @@
 class Group < Struct.new(:id, :name, :memberships, :videos)
   include ActiveModel::Model
-  def initialize(hash)
-    hash.each { |key, value| self[key] = value }
+  def initialize(hash=nil)
+    @persisted = !!hash
+    hash.each { |key, value| self[key] = value } if hash
   end
 
   def persisted?
-    true
+    @persisted
   end
 
   def members
