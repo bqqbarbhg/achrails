@@ -1,3 +1,4 @@
+unless SSS
 class Video < ActiveRecord::Base
 
   belongs_to :author, class_name: "User"
@@ -17,4 +18,5 @@ class Video < ActiveRecord::Base
   def to_param
     uuid
   end
+end
 end

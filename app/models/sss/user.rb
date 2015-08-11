@@ -1,3 +1,4 @@
+if SSS
 class User < ActiveRecord::Base
   devise :rememberable, :omniauthable,
     omniauth_providers: if Rails.env.production?
@@ -17,4 +18,5 @@ class User < ActiveRecord::Base
     user
   end
 
+end
 end

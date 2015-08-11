@@ -1,3 +1,4 @@
+unless SSS
 class Group < ActiveRecord::Base
 
   has_many :memberships
@@ -30,4 +31,5 @@ class Group < ActiveRecord::Base
   def public_show?
     unlisted? || listed?
   end
+end
 end

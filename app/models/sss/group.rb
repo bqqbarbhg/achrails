@@ -1,3 +1,4 @@
+if SSS
 class Group < Struct.new(:id, :name, :memberships, :videos)
   include ActiveModel::Model
   def initialize(hash=nil)
@@ -26,4 +27,5 @@ class Group < Struct.new(:id, :name, :memberships, :videos)
   def public_show?
     true
   end
+end
 end

@@ -1,3 +1,4 @@
+if SSS
 class Video < Struct.new(:uuid, :title, :author, :groups)
   include ActiveModel::Model
   def initialize(hash)
@@ -18,4 +19,5 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
   def to_param
     uuid
   end
+end
 end
