@@ -2,7 +2,7 @@
   <%= f.label :name %>
   <%= f.text_field :name %>
 
-  <% unless sss # Visibilities are not supported by SSS %>
+  <% unless sss # @SSS_Support(circle visibility) %>
 
     <h3><%= t('visibility') %></h3>
     <% Group.visibilities.keys.each do |key| %>
