@@ -177,4 +177,12 @@ class SocialSemanticServer
   def video(uuid)
     videos.select { |video| video.uuid == uuid }.first
   end
+
+  def create_video(video)
+    post_json '/videos/videos',
+      uuid: video.uuid,
+      link: Rails.application.routes.url_helpers.video_url(video),
+      label: video.title
+  end
+
 end

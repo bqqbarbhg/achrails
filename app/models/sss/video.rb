@@ -8,12 +8,17 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
     true
   end
 
-  def group_id_list
-    groups.map &:id
+  def self.from_manifest(manifest)
+    json = JSON.parse(manifest)
+    uuid = json["id"]
+    VideoManifest.first_or_create(uuid: uuid).update(manifest_json: json)
+    Video.new(
+      title: json["title"],
+      uuid: uuid)
   end
 
   def read_manifest
-      manifest_json
+    VideoManifest.where(uuid: uuid).first.read_manifest
   end
 
   def to_param

@@ -49,7 +49,10 @@ class VideosController < ApplicationController
   end
 
   def create
-    @video = Video.create(video_params(request.body.read))
+    @video = Video.from_manifest(request.body.read)
+    if sss
+      sss.create_video(@video)
+    end
     respond_to do |format|
       format.html { redirect_to action: :show, id: @video.uuid }
       format.json { render json: { url: video_url(@video) } }
@@ -74,7 +77,10 @@ class VideosController < ApplicationController
   end
 
   def upload
-    @video = Video.create(video_params(params[:manifest].read))
+    @video = Video.from_manifest(params[:manifest].read)
+    if sss
+      sss.create_video(@video)
+    end
     redirect_to action: :show, id: @video.uuid
   end
 

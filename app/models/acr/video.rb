@@ -7,12 +7,17 @@ class Video < ActiveRecord::Base
   validates :title, presence: true
   validates :uuid, presence: true
 
-  def group_id_list
-    groups.select(:id).map{|u| u.id.to_s }
+  def self.from_manifest(manifest)
+    json = JSON.parse(manifest)
+    Video.create(
+      title: json["title"],
+      uuid: json["uuid"],
+      author: current_user,
+      manifest_json: json)
   end
 
   def read_manifest
-      manifest_json
+    manifest_json
   end
 
   def to_param
