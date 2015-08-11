@@ -103,7 +103,7 @@ class SocialSemanticServer
   end
 
   def create_group(params)
-    hash = post_json 'circles/circles/',
+    hash = post_json '/circles/circles/',
       label: params[:name],
       description: params[:description] || ''
 
