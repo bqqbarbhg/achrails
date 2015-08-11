@@ -4,7 +4,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     
     user_sss = sss(@user)
     if user_sss
-      @user.person = user_sss.auth_person
+      @user.person_id = user_sss.auth_person.id
     end
 
     if @user.nil?
