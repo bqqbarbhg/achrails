@@ -14,8 +14,8 @@ class Group < Struct.new(:id, :name, :memberships, :videos)
     memberships.map &:user
   end
   def membership_for(user)
-    person = user.person
-    memberships.select { |membership| membership.user == person }.first
+    person_id = user.person_id
+    memberships.select { |membership| membership.user.id == person_id }.first
   end
 
   def member?(user)
