@@ -11,7 +11,10 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
   def self.from_manifest(manifest)
     json = JSON.parse(manifest)
     uuid = json["id"]
-    VideoManifest.first_or_create(uuid: uuid).update(manifest_json: json)
+    video_manifest = VideoManifest.first_or_initialize(uuid: uuid)
+    video_manifest.manifest_json = json
+    video_manifest.save!
+
     Video.new(
       title: json["title"],
       uuid: uuid)
