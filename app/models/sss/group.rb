@@ -27,5 +27,8 @@ class Group < Struct.new(:id, :name, :memberships, :videos)
   def public_show?
     true
   end
+  def has_video?(video)
+    videos.include?(video)
+  end
 end
 end

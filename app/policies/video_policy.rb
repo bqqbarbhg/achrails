@@ -15,7 +15,7 @@ class VideoPolicy < Struct.new(:user, :video)
 
   def show?
     # Video author can see unconditionally
-    return true if video.author == user
+    return true if video.author?(user)
 
     # Other people if it has been shared into a group they can see
     # NOTE: This might be slow, SQL optimize if needed
@@ -32,7 +32,7 @@ class VideoPolicy < Struct.new(:user, :video)
 
   def update?
     # Only authors are allowed to update their videos
-    video.author == user
+    video.author?(user)
   end
 
   def edit?

@@ -19,5 +19,9 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
   def to_param
     uuid
   end
+
+  def author?(user)
+    author.id == user.person_id
+  end
 end
 end

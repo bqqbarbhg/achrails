@@ -39,16 +39,28 @@ class SocialSemanticServer
     data.deep_symbolize_keys! if data
   end
 
+  def delete(path)
+    @conn.delete(@root + path)
+  end
+
+  def delete_json(path, body)
+    response = @conn.run_request(:delete, @root + path, body.to_json,
+      'Content-Type' => 'application/json')
+    data = JSON.parse(response.body)
+    data.deep_symbolize_keys! if data
+  end
+
   def isolate_uuid(str)
-    str[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/]
+    str[/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/] if str
   end
 
   def isolate_id(str)
-    str[/\d+/]
+    str[/\d+/] if str
   end
 
   def to_person(user_hash)
     id = isolate_id(user_hash[:id])
+    return nil unless id
     @users[id] ||= Person.new(
       id: id,
       name: user_hash[:label],
@@ -57,6 +69,7 @@ class SocialSemanticServer
 
   def to_group(circle_hash)
     id = isolate_id(circle_hash[:id])
+    return nil unless id
     @groups[id] ||= begin
       group = Group.new(
         id: id,
@@ -82,6 +95,7 @@ class SocialSemanticServer
 
   def to_video(video_hash)
     id = isolate_uuid(video_hash[:id])
+    return nil unless id
     @videos[id] ||= Video.new(
       uuid: id,
       title: video_hash[:label],
@@ -94,12 +108,22 @@ class SocialSemanticServer
       data = get_json('/circles/circles')
       circles = data[:circles]
 
-      circles.map { |circle| to_group(circle) }
+      circles.map { |circle| to_group(circle) }.reject &:nil?
     end
   end
 
   def group(id)
     groups.select { |group| group.id == id }.first
+  end
+
+  def group_add_videos(group, videos)
+    ids = videos.map(&:uuid).join(',')
+    post_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
+  end
+
+  def group_remove_videos(group, videos)
+    ids = videos.map(&:uuid).join(',')
+    delete_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
   end
 
   def create_group(params)
@@ -110,12 +134,17 @@ class SocialSemanticServer
     isolate_id(hash[:circle])
   end
 
+  def delete_group(group)
+    id = group.id
+    delete("/circles/circles/#{id}")
+  end
+
   def people
     @people_cached ||= begin
       data = get_json('/users/users')
       users = data[:users]
 
-      users.map { |user| to_person(user) }
+      users.map { |user| to_person(user) }.reject &:nil?
     end
   end
 
@@ -141,7 +170,7 @@ class SocialSemanticServer
       data = get_json('/videos/videos')
       videos = data[:videos]
 
-      videos.map { |video| to_video(video) }
+      videos.map { |video| to_video(video) }.reject &:nil?
     end
   end
 

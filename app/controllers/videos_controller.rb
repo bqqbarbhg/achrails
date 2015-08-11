@@ -11,7 +11,11 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @videos = current_user.authored_videos
+        if sss
+          @videos = sss.videos
+        else
+          @videos = current_user.authored_videos
+        end
         render
       end
       format.json do

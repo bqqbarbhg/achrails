@@ -31,5 +31,9 @@ class Group < ActiveRecord::Base
   def public_show?
     unlisted? || listed?
   end
+
+  def has_video?(video)
+    video.groups.where(id: id).count > 0
+  end
 end
 end

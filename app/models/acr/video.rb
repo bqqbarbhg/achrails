@@ -18,5 +18,9 @@ class Video < ActiveRecord::Base
   def to_param
     uuid
   end
+
+  def author?(user)
+    author == user
+  end
 end
 end
