@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-SSS = false
+SSS = (ENV["SSS_URL"] && !ENV["DISABLE_SSS"])
 
 module Achrails
   class Application < Rails::Application
