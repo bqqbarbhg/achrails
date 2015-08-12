@@ -7,10 +7,18 @@ class GroupsController < ApplicationController
     respond_to do |format|
       format.json do
         authenticate_user!
-        @groups = current_user.groups
-        group_json = @groups.map do |group|
-          ids = group.videos.pluck(:uuid)
-          group.as_json.merge({ videos: ids.as_json })
+        if sss
+          @groups = sss.groups_for(current_user.person)
+          group_json = @groups.map do |group|
+            ids = group.videos.map &:uuid
+            group.as_json.slice("name").merge({ videos: ids.as_json })
+          end
+        else
+          @groups = current_user.groups
+          group_json = @groups.map do |group|
+            ids = group.videos.pluck(:uuid)
+            group.as_json.merge({ videos: ids.as_json })
+          end
         end
         render json: { groups: group_json }
       end

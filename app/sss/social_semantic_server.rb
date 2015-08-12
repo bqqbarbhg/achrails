@@ -139,6 +139,10 @@ class SocialSemanticServer
     delete("/circles/circles/#{id}")
   end
 
+  def groups_for(user)
+    groups.select { |group| group.member?(user) }
+  end
+
   def people
     @people_cached ||= begin
       data = get_json('/users/users')
