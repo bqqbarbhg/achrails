@@ -60,6 +60,7 @@ class VideosController < ApplicationController
   end
 
   def update
+    # @SSS_Support(edit videos)
     @old_video = Video.find_by_uuid(params[:id])
     params = video_params(request.body.read)
 
@@ -85,6 +86,7 @@ class VideosController < ApplicationController
   end
 
   def destroy
+    # SSS_Support(delete video)
     @video = Video.find_by_uuid(params[:id])
     authorize @video
 

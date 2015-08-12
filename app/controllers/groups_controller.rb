@@ -57,6 +57,7 @@ class GroupsController < ApplicationController
   end
 
   def update
+    # @SSS_Support(edit circles)
     @group = Group.find(params[:id])
     authorize @group
 
@@ -66,6 +67,7 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    # @SSS_Support(edit circles)
     @group = Group.find(params[:id])
     authorize @group
     
@@ -87,6 +89,7 @@ class GroupsController < ApplicationController
   end
 
   def join
+    # TODO (blocked by LL-1189)
     @group = Group.find(params[:id])
     authorize @group
 
@@ -95,6 +98,7 @@ class GroupsController < ApplicationController
   end
 
   def leave
+    # TODO (blocked by LL-1189)
     @group = Group.find(params[:id])
     authorize @group
 
@@ -103,6 +107,7 @@ class GroupsController < ApplicationController
   end
 
   def invite
+    # TODO (blocked by LL-1189)
     @group = Group.find(params[:id])
     authorize @group
 
