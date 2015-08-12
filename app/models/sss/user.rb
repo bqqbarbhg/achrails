@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
                           [:developer]
                         end
 
-  attr_accessor :person
-
   def self.from_omniauth(auth)
     return nil if [auth.info.name, auth.provider, auth.uid].any? &:blank?
 
