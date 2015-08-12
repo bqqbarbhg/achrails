@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
       format.json do
         authenticate_user!
         if sss
-          @groups = sss.groups_for(current_user.person)
+          @groups = sss.groups_for(current_user)
           group_json = @groups.map do |group|
             ids = group.videos.map &:uuid
             group.as_json.slice("name").merge({ videos: ids.as_json })
