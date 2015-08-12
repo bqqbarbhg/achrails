@@ -60,16 +60,21 @@ class VideosController < ApplicationController
   end
 
   def update
-    # @SSS_Support(edit videos)
-    @old_video = Video.find_by_uuid(params[:id])
-    params = video_params(request.body.read)
-
-    if @old_video
-      params[:revision] = @old_video.revision + 1
-      @old_video.update(params)
-      @new_video = @old_video
+    if sss
+      # Creating videos in SSS with the same UUID results in overwriting the old one.
+      @video = Video.from_manifest(request.body.read, current_user)
+      sss.create_video(@video)
     else
-      @new_video = Video.create(params)
+      @old_video = Video.find_by_uuid(params[:id])
+      params = video_params(request.body.read)
+
+      if @old_video
+        params[:revision] = @old_video.revision + 1
+        @old_video.update(params)
+        @new_video = @old_video
+      else
+        @new_video = Video.create(params)
+      end
     end
 
     headers['ETag'] = '"' + @new_video.id.to_s + ':' + @new_video.revision.to_s + '"'
