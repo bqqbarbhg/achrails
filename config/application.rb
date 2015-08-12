@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-SSS = true
+SSS = false
 
 module Achrails
   class Application < Rails::Application
@@ -22,7 +22,11 @@ module Achrails
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.autoload_paths << Rails.root.join('app/models/sss')
+    if SSS
+      config.autoload_paths << Rails.root.join('app/models/sss')
+    else
+      config.autoload_paths << Rails.root.join('app/models/acr')
+    end
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true

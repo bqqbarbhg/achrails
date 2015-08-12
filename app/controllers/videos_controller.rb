@@ -49,7 +49,7 @@ class VideosController < ApplicationController
   end
 
   def create
-    @video = Video.from_manifest(request.body.read)
+    @video = Video.from_manifest(request.body.read, current_user)
     if sss
       sss.create_video(@video)
     end
@@ -78,7 +78,7 @@ class VideosController < ApplicationController
   end
 
   def upload
-    @video = Video.from_manifest(params[:manifest].read)
+    @video = Video.from_manifest(params[:manifest].read, current_user)
     if sss
       sss.create_video(@video)
     end

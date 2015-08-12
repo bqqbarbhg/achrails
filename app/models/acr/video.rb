@@ -7,12 +7,12 @@ class Video < ActiveRecord::Base
   validates :title, presence: true
   validates :uuid, presence: true
 
-  def self.from_manifest(manifest)
+  def self.from_manifest(manifest, user)
     json = JSON.parse(manifest)
-    Video.create(
+    Video.create!(
       title: json["title"],
-      uuid: json["uuid"],
-      author: current_user,
+      uuid: json["id"],
+      author: user,
       manifest_json: json)
   end
 

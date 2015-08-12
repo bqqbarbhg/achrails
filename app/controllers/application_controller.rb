@@ -18,6 +18,8 @@ class ApplicationController < ActionController::Base
   end
 
   def sss(user=nil)
+    return nil unless SSS
+
     user ||= current_user
 
     @sss ||= begin
