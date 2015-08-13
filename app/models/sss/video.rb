@@ -51,8 +51,6 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
     author.id == user.person_id
   end
 
-protected
-
   def set_manifest!(m)
     @manifest = m
   end
