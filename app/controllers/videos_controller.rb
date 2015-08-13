@@ -70,9 +70,11 @@ class VideosController < ApplicationController
 
   def update
     if sss
+      # @Hack: Set old_video as boolean depending if it exists already
+      @old_video = VideoManifest.exists?(uuid: params[:id])
       # Creating videos in SSS with the same UUID results in overwriting the old one.
-      @video = Video.from_manifest(request.body.read, current_user)
-      sss.create_video(@video)
+      @new_video = Video.from_manifest(request.body.read, current_user)
+      sss.create_video(@new_video)
     else
       @old_video = Video.find_by_uuid(params[:id])
       params = video_params(request.body.read)
