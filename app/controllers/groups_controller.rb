@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
           @groups = sss.groups_for(current_user)
           group_json = @groups.map do |group|
             ids = group.videos.map &:uuid
-            group.to_h.slice("name").merge({ videos: ids.as_json })
+            group.to_h.slice(:name).merge({ videos: ids.as_json })
           end
         else
           @groups = current_user.groups
