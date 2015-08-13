@@ -88,6 +88,8 @@ class SocialSemanticServer
       group.videos = circle_hash[:entities]
         .select { |entity| entity[:type] == "video" }
         .map { |video| to_video(video) }
+        .reject(&:nil?)
+        .select(&:hosted?)
 
       group
     end
