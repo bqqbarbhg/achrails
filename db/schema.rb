@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150813080042) do
+ActiveRecord::Schema.define(version: 20150813095823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20150813080042) do
     t.json     "manifest_json", null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.integer  "revision"
   end
 
   add_index "video_manifests", ["uuid"], name: "index_video_manifests_on_uuid", unique: true, using: :btree

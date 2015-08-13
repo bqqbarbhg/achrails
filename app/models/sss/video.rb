@@ -12,6 +12,7 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
     json = JSON.parse(manifest)
     uuid = json["id"]
     video_manifest = VideoManifest.first_or_initialize(uuid: uuid)
+    video_manifest.update_revision!
     video_manifest.manifest_json = json
     video_manifest.save!
 
@@ -24,12 +25,20 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
     VideoManifest.exists?(uuid: uuid)
   end
 
+  def manifest
+    @manifest ||= VideoManifest.where(uuid: uuid).first
+  end
+
   def read_manifest
-    VideoManifest.where(uuid: uuid).first.read_manifest
+    manifest.read_manifest
   end
 
   def last_modified
-    VideoManifest.where(uuid: uuid).first.updated_at
+    manifest.updated_at
+  end
+
+  def revision
+    manifest.revision
   end
 
   def to_param
