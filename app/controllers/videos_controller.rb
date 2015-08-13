@@ -51,7 +51,7 @@ class VideosController < ApplicationController
     respond_to do |format|
       format.html { render }
       format.json do
-        headers['ETag'] = '"' + @video.id.to_s + ':' + @video.revision.to_s + '"'
+        headers['ETag'] = '"' + @video.uuid.to_s + ':' + @video.revision.to_s + '"'
         render json: @video.read_manifest
       end
     end
