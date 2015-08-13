@@ -86,7 +86,7 @@ class VideosController < ApplicationController
       end
     end
 
-    headers['ETag'] = '"' + @new_video.id.to_s + ':' + @new_video.revision.to_s + '"'
+    headers['ETag'] = '"' + @new_video.uuid.to_s + ':' + @new_video.revision.to_s + '"'
     status = @old_video ? :ok : :created
     render nothing: true, status: status
   end
