@@ -24,6 +24,10 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
     VideoManifest.where(uuid: uuid).first.read_manifest
   end
 
+  def last_modified
+    VideoManifest.where(uuid: uuid).first.updated_at
+  end
+
   def to_param
     uuid
   end

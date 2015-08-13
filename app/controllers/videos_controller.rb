@@ -20,13 +20,24 @@ class VideosController < ApplicationController
       end
       format.json do
 
-        own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :updated_at)
-        group_video_columns = current_user.videos.pluck(:id, :uuid, :updated_at)
+        if sss
+          own_videos = sss.videos.select { |video| video.author?(current_user) }
+          group_videos = sss.groups_for(current_user).map { |group| group.videos }.reduce(:+) || []
+          Rails.logger.debug(own_videos.inspect)
+          Rails.logger.debug(group_videos.inspect)
+          videos = (own_videos + group_videos).uniq
+          @all_videos = videos.map do |video|
+            { id: video.uuid, uuid: video.uuid, last_modified: video.last_modified.httpdate }
+          end
+        else
+          own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :updated_at)
+          group_video_columns = current_user.videos.pluck(:id, :uuid, :updated_at)
 
-        all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
-        all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2].httpdate } }
+          all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
+          @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2].httpdate } }
+        end
 
-        render json: { videos: all_videos }
+        render json: { videos: @all_videos }
       end
     end
   end
