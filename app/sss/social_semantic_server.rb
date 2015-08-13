@@ -174,7 +174,10 @@ class SocialSemanticServer
       data = get_json('/videos/videos')
       videos = data[:videos]
 
-      videos.map { |video| to_video(video) }.reject &:nil?
+      videos
+        .map { |video| to_video(video) }
+        .reject(&:nil?)
+        .select(&:hosted?)
     end
   end
 

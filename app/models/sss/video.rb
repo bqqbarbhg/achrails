@@ -20,6 +20,10 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
       uuid: uuid)
   end
 
+  def hosted?
+    VideoManifest.exists?(uuid: uuid)
+  end
+
   def read_manifest
     VideoManifest.where(uuid: uuid).first.read_manifest
   end
