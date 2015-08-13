@@ -23,8 +23,6 @@ class VideosController < ApplicationController
         if sss
           own_videos = sss.videos.select { |video| video.author?(current_user) }
           group_videos = sss.groups_for(current_user).map { |group| group.videos }.reduce(:+) || []
-          Rails.logger.debug(own_videos.inspect)
-          Rails.logger.debug(group_videos.inspect)
           videos = (own_videos + group_videos).uniq
           @all_videos = videos.map do |video|
             { id: video.uuid, uuid: video.uuid, last_modified: video.last_modified.httpdate }
