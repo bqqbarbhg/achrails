@@ -16,9 +16,11 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
     video_manifest.manifest_json = json
     video_manifest.save!
 
-    Video.new(
+    video = Video.new(
       title: json["title"],
       uuid: uuid)
+    video.set_manifest!(video_manifest)
+    video
   end
 
   def hosted?
@@ -48,5 +50,12 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
   def author?(user)
     author.id == user.person_id
   end
+
+protected
+
+  def set_manifest!(m)
+    @manifest = m
+  end
+
 end
 end
