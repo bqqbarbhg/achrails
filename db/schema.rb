@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150811131232) do
+ActiveRecord::Schema.define(version: 20150813080042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,8 +65,10 @@ ActiveRecord::Schema.define(version: 20150811131232) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
   create_table "video_manifests", force: :cascade do |t|
-    t.uuid "uuid",          null: false
-    t.json "manifest_json", null: false
+    t.uuid     "uuid",          null: false
+    t.json     "manifest_json", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "video_manifests", ["uuid"], name: "index_video_manifests_on_uuid", unique: true, using: :btree
