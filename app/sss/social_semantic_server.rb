@@ -15,8 +15,20 @@ class SocialSemanticServer
       })
   end
 
+  def validate_response(response)
+    if response.status >= 400
+      body_json = JSON.parse(response.body)
+      if body_json && body_json["id"] == "authOIDCUserInfoRequestFailed"
+        raise SssConnectError
+      else
+        raise SssInternalError
+      end
+    end
+    response
+  end
+
   def get(path)
-    @conn.get(@root + path)
+    validate_response @conn.get(@root + path)
   end
 
   def get_json(path)
@@ -26,7 +38,7 @@ class SocialSemanticServer
   end
 
   def post(path, content_type, body)
-    @conn.post do |req|
+    validate_response @conn.post do |req|
       req.url @root + path
       req.headers['Content-Type'] = content_type
       req.body = body
@@ -40,7 +52,7 @@ class SocialSemanticServer
   end
 
   def delete(path)
-    @conn.delete(@root + path)
+    validate_response @conn.delete(@root + path)
   end
 
   def delete_json(path, body)

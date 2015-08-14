@@ -17,6 +17,15 @@ class ApplicationController < ActionController::Base
     render nothing: true, status: :forbidden
   end
 
+  def render_sss_error
+    # TODO: Real SSS error
+    render nothing: true, status: :internal_server_error
+  end
+
+  def reauthenticate
+    redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+  end
+
   def sss(user=nil)
     return nil unless SSS
 
@@ -30,4 +39,6 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
+  rescue_from SssConnectError, with: :reauthenticate
+  rescue_from SssInternalError, with: :render_sss_error
 end
