@@ -23,7 +23,14 @@ class ApplicationController < ActionController::Base
   end
 
   def reauthenticate
-    redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+    respond_to do |format|
+      format.json do
+        render nothing: true, status: :unauthorized
+      end
+      format.html do
+        redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+      end
+    end
   end
 
   def sss(user=nil)
