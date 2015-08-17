@@ -1,4 +1,8 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "noreply@example.com"
+  default from: if Rails.env.production?
+                  "noreply@achrails.herokuapp.com"
+                else
+                  "noreply@example.com"
+                end
   layout 'mailer'
 end
