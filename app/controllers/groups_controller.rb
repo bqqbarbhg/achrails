@@ -97,7 +97,7 @@ class GroupsController < ApplicationController
   end
 
   def join
-    # TODO (blocked by LL-1189)
+    # @SSS_Support(list all groups)
     @group = Group.find(params[:id])
     authorize @group
 
@@ -106,7 +106,7 @@ class GroupsController < ApplicationController
   end
 
   def leave
-    # TODO (blocked by LL-1189)
+    # @SSS_Support(list all groups)
     @group = Group.find(params[:id])
     authorize @group
 

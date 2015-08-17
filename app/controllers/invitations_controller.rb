@@ -17,6 +17,7 @@ class InvitationsController < ApplicationController
       return
     end
 
+    # TODO: SSS invitations
     @group.join(current_user)
     @invitation.destroy
     
