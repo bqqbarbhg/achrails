@@ -22,6 +22,11 @@ class ApplicationController < ActionController::Base
     render nothing: true, status: :internal_server_error
   end
 
+  # Try to return back to the page the login originated from
+  def after_sign_in_path_for(resource)
+    request.env['omniauth.origin'] || super
+  end
+
   def reauthenticate
     respond_to do |format|
       format.json do
