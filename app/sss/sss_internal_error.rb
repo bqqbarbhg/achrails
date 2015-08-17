@@ -1,0 +1,4 @@
+
+class SssInternalError < StandardError
+end
+

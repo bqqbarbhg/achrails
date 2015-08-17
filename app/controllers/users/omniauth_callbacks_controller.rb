@@ -1,9 +1,16 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def learning_layers_oidc
     @user = User.from_omniauth(request.env["omniauth.auth"])
+    
     if @user.nil?
       redirect_to oidc_action_error_path(failed_action: "log_in")
       return
+    end
+
+    user_sss = sss(@user)
+    if user_sss
+      @user.person_id = user_sss.auth_person.id
+      @user.save!
     end
 
     if @user.persisted?

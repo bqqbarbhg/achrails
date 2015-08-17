@@ -17,5 +17,40 @@ class ApplicationController < ActionController::Base
     render nothing: true, status: :forbidden
   end
 
+  def render_sss_error
+    # TODO: Real SSS error
+    render nothing: true, status: :internal_server_error
+  end
+
+  # Try to return back to the page the login originated from
+  def after_sign_in_path_for(resource)
+    request.env['omniauth.origin'] || super
+  end
+
+  def reauthenticate
+    respond_to do |format|
+      format.json do
+        render nothing: true, status: :unauthorized
+      end
+      format.html do
+        redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+      end
+    end
+  end
+
+  def sss(user=nil)
+    return nil unless SSS
+
+    user ||= current_user
+
+    @sss ||= begin
+      sss_url = ENV["SSS_URL"]
+      bearer = user.bearer_token
+      SocialSemanticServer.new(sss_url, bearer) if sss_url
+    end
+  end
+
   rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
+  rescue_from SssConnectError, with: :reauthenticate
+  rescue_from SssInternalError, with: :render_sss_error
 end

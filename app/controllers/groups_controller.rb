@@ -7,23 +7,39 @@ class GroupsController < ApplicationController
     respond_to do |format|
       format.json do
         authenticate_user!
-        @groups = current_user.groups
-        group_json = @groups.map do |group|
-          ids = group.videos.pluck(:uuid)
-          group.as_json.merge({ videos: ids.as_json })
+        if sss
+          @groups = sss.groups_for(current_user)
+          group_json = @groups.map do |group|
+            ids = group.videos.map &:uuid
+            group.to_h.slice(:name).merge({ videos: ids.as_json })
+          end
+        else
+          @groups = current_user.groups
+          group_json = @groups.map do |group|
+            ids = group.videos.pluck(:uuid)
+            group.as_json.merge({ videos: ids.as_json })
+          end
         end
         render json: { groups: group_json }
       end
       format.html do
-        @groups = policy_scope(Group)
+        if sss
+          @groups = sss.groups
+        else
+          @groups = policy_scope(Group)
+        end
         render :index
       end
     end
   end
 
   def show
-    @group = Group.find(params[:id])
-    authorize @group
+    if sss
+      @group = sss.group(params[:id])
+    else
+      @group = Group.find(params[:id])
+      authorize @group
+    end
 
     render :show
   end
@@ -36,15 +52,20 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = Group.create!(group_params)
-    authorize @group
+    if sss
+      group_id = sss.create_group(group_params)
+    else
+      @group = Group.create!(group_params)
+      authorize @group
+      @group.join(current_user).update(admin: true)
+      group_id = @group.id
+    end
 
-    @group.join(current_user).update(admin: true)
-
-    redirect_to action: :show, id: @group.id
+    redirect_to action: :show, id: group_id
   end
 
   def update
+    # @SSS_Support(edit circles)
     @group = Group.find(params[:id])
     authorize @group
 
@@ -54,6 +75,7 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    # @SSS_Support(edit circles)
     @group = Group.find(params[:id])
     authorize @group
     
@@ -61,14 +83,21 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    group = Group.find(params[:id])
-    authorize @group
+    if sss
+      group = sss.group(params[:id])
+      authorize group
+      sss.delete_group(group)
+    else
+      group = Group.find(params[:id])
+      authorize group
+      group.destroy
+    end
 
-    group.destroy
     redirect_to action: :index
   end
 
   def join
+    # @SSS_Support(list all groups)
     @group = Group.find(params[:id])
     authorize @group
 
@@ -77,6 +106,7 @@ class GroupsController < ApplicationController
   end
 
   def leave
+    # @SSS_Support(list all groups)
     @group = Group.find(params[:id])
     authorize @group
 
@@ -85,7 +115,11 @@ class GroupsController < ApplicationController
   end
 
   def invite
-    @group = Group.find(params[:id])
+    if sss
+      @group = sss.group(params[:id])
+    else
+      @group = Group.find(params[:id])
+    end
     authorize @group
 
     addresses = params[:address]

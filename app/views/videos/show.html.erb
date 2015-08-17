@@ -1,6 +1,6 @@
 
 <h1><%= @video.title %></h1>
-By: <%= link_to(@video.author.name, @video.author) %>
+By: <%= @video.author.name %>
 
 <% if policy(@video).share? %>
   <%= link_to(t(:share_video), shares_path(@video)) %>

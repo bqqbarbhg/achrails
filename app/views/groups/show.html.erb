@@ -9,7 +9,7 @@
 <% for membership in @group.memberships %>
   <% user = membership.user %>
   <li>
-    <%= link_to(user.name, user) %>
+    <%= user.name %>
     <% if membership.admin? %>
       (admin)
     <% end %>
@@ -33,8 +33,11 @@
 <% if policy(@group).leave? %>
   <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
 <% end %>
+
+<% unless sss # @SSS_Support(edit circles) %>
 <% if policy(@group).edit? %>
   <%= link_to(t(:edit_group), edit_group_path(@group)) %>
+<% end %>
 <% end %>
 
 <% if policy(@group).invite? %>

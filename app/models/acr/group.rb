@@ -1,3 +1,4 @@
+unless SSS
 class Group < ActiveRecord::Base
 
   has_many :memberships
@@ -6,10 +7,6 @@ class Group < ActiveRecord::Base
 
   validates :name, presence: true
   enum visibility: [:invite_only, :unlisted, :listed]
-
-  def public_show?
-    unlisted? || listed?
-  end
 
   def join(user)
     memberships.where(user: user).first_or_create if user
@@ -31,4 +28,12 @@ class Group < ActiveRecord::Base
     membership_for(user).try(:admin?)
   end
 
+  def public_show?
+    unlisted? || listed?
+  end
+
+  def has_video?(video)
+    video.groups.where(id: id).count > 0
+  end
+end
 end
