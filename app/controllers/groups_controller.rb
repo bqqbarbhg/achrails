@@ -115,8 +115,11 @@ class GroupsController < ApplicationController
   end
 
   def invite
-    # TODO (blocked by LL-1189)
-    @group = Group.find(params[:id])
+    if sss
+      @group = sss.group(params[:id])
+    else
+      @group = Group.find(params[:id])
+    end
     authorize @group
 
     addresses = params[:address]
