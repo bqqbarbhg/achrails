@@ -132,7 +132,7 @@ class GroupsController < ApplicationController
       end
       next unless invitation
 
-      InvitationMailer.invite_email(invitation, @group).deliver_later
+      InvitationMailer.invite_email(invitation, @group.name).deliver_later
     end
 
     redirect_to action: :show
