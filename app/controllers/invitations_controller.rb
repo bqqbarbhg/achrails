@@ -17,7 +17,7 @@ class InvitationsController < ApplicationController
     end
 
     unless @invitation.can_join?(current_user)
-      render status: :forbidden
+      render_forbidden
       return
     end
 
