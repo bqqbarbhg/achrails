@@ -5,7 +5,11 @@ class InvitationsController < ApplicationController
     authenticate_user!
 
     @invitation = Invitation.find_by(token: params[:id])
-    @group = @invitation.group
+    if sss
+      @group = sss.group(@invitation.sss_group)
+    else
+      @group = @invitation.group
+    end
 
     if current_user && current_user.email.blank?
       redirect_to oidc_action_error_path(failed_action: "accept_invitation")
