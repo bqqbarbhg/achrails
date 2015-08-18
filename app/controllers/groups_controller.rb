@@ -125,7 +125,11 @@ class GroupsController < ApplicationController
     addresses = params[:address]
     for i, address in addresses
       next unless address.include?('@')
-      invitation = Invitation.create(expect_email: address, group: @group)
+      if sss
+        invitation = Invitation.create(expect_email: address, group_id: @group.id)
+      else
+        invitation = Invitation.create(expect_email: address, group: @group)
+      end
       next unless invitation
 
       InvitationMailer.invite_email(invitation).deliver_later
