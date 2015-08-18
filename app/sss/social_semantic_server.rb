@@ -154,6 +154,10 @@ class SocialSemanticServer
     groups.select { |group| group.member?(user) }
   end
 
+  def join_group(group, user)
+    hash = post_json("/circles/circles/#{group.id}/users/#{user.person_id}", { })
+  end
+
   def people
     @people_cached ||= begin
       data = get_json('/users/users')

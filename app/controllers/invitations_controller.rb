@@ -22,7 +22,11 @@ class InvitationsController < ApplicationController
     end
 
     # TODO: SSS invitations
-    @group.join(current_user)
+    if sss
+      sss.join_group(@group, current_user)
+    else
+      @group.join(current_user)
+    end
     @invitation.destroy
     
     redirect_to @group
