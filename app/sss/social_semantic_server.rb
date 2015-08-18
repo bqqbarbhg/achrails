@@ -38,11 +38,8 @@ class SocialSemanticServer
   end
 
   def post(path, content_type, body)
-    validate_response @conn.post do |req|
-      req.url @root + path
-      req.headers['Content-Type'] = content_type
-      req.body = body
-    end
+    validate_response @conn.post(@root + path, body,
+      'Content-Type' => content_type)
   end
 
   def post_json(path, json)
