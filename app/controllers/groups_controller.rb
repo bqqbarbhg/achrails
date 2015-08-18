@@ -126,7 +126,7 @@ class GroupsController < ApplicationController
     for i, address in addresses
       next unless address.include?('@')
       if sss
-        invitation = Invitation.create(expect_email: address, group_id: @group.id)
+        invitation = Invitation.create(expect_email: address, sss_group: @group.id)
       else
         invitation = Invitation.create(expect_email: address, group: @group)
       end
