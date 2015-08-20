@@ -42,4 +42,5 @@ en:
     email: 'email'
     openid: 'openid'
     profile: 'profile'
+  joined_group: "Joined group %{group}"
 
