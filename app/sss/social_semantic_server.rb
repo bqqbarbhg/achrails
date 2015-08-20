@@ -72,7 +72,8 @@ class SocialSemanticServer
     return nil unless id
     @users[id] ||= Person.new(
       id: id,
-      name: user_hash[:label],
+      email: user_hash[:email],
+      name: nil,
     )
   end
 
@@ -168,12 +169,20 @@ class SocialSemanticServer
       data = get_json('/users/users')
       users = data[:users]
 
-      users.map { |user| to_person(user) }.reject &:nil?
+      people_arr = users.map { |user| to_person(user) }.reject &:nil?
+      people_map = people_arr.map { |person| [person.id, person] }.to_h
+      emails = people_arr.map &:email
+      users = User.where(email: emails)
+      users.each do |user|
+        people_map[user.person_id].name = user.name
+      end
+
+      people_map.select { |k,v| v.name }
     end
   end
 
   def person(id)
-    people.select { |person| person.id == id }.first
+    people[id]
   end
 
   def full_person(partial_user_hash)
