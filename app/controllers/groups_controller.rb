@@ -123,6 +123,11 @@ class GroupsController < ApplicationController
     authorize @group
 
     addresses = params[:address]
+
+    if sss
+      sss.invite_to_group(@group, addresses)
+    end
+
     for i, address in addresses
       next unless address.include?('@')
       if sss

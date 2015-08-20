@@ -158,6 +158,11 @@ class SocialSemanticServer
     hash = post_json("/circles/circles/#{group_id}/users/#{user.person_id}", { })
   end
 
+  def invite_to_group(group, emails)
+    emails_s = emails.join(',')
+    hash = post_json("/circles/circles/#{group.id}/users/invite/#{emails_s}", { })
+  end
+
   def people
     @people_cached ||= begin
       data = get_json('/users/users')
