@@ -124,9 +124,7 @@ class GroupsController < ApplicationController
 
     addresses = params[:address]
 
-    if sss
-      sss.invite_to_group(@group, addresses)
-    end
+    address_list = []
 
     for i, address in addresses
       next unless address.include?('@')
@@ -137,7 +135,13 @@ class GroupsController < ApplicationController
       end
       next unless invitation
 
+      address_list.push(address)
+
       InvitationMailer.invite_email(invitation, @group.name).deliver_later
+    end
+
+    if sss
+      sss.invite_to_group(@group, address_list)
     end
 
     redirect_to action: :show
