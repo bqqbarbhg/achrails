@@ -12,21 +12,16 @@ class ApplicationController < ActionController::Base
   # checks are mostly done now in policies or per route authenticate_user! calls.
   # before_action :authenticate_user!
 
+  def authenticate_and_redirect_back
+    return false if current_user
 
-  after_filter :store_location
-
-  def store_location
-    # store last url - this is needed for post-login redirect to whatever the user last visited.
-    return unless request.get? 
-    if (request.path != "/users/sign_in" &&
-        request.path != "/users/sign_up" &&
-        request.path != "/users/password/new" &&
-        request.path != "/users/password/edit" &&
-        request.path != "/users/confirmation" &&
-        request.path != "/users/sign_out" &&
-        !request.xhr?) # don't store ajax calls
-      session[:previous_url] = request.fullpath 
+    store_location_for(:user, request.fullpath)
+    if Rails.env.production?
+      redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+    else
+      redirect_to user_omniauth_authorize_url(:developer)
     end
+    true
   end
 
   def render_forbidden
@@ -41,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   # Try to return back to the page the login originated from
   def after_sign_in_path_for(resource)
-    session[:previous_url] || request.env['omniauth.origin'] || super
+    stored_location_for(:user) || request.env['omniauth.origin'] || super
   end
 
   def reauthenticate
@@ -50,7 +45,7 @@ class ApplicationController < ActionController::Base
         render nothing: true, status: :unauthorized
       end
       format.html do
-        redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+        authenticate_and_redirect_back
       end
     end
   end

@@ -2,7 +2,7 @@
 class InvitationsController < ApplicationController
 
   def show
-    authenticate_user!
+    return if authenticate_and_redirect_back
 
     @invitation = Invitation.find_by(token: params[:id])
     if current_user && current_user.email.blank?
