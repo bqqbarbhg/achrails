@@ -14,14 +14,17 @@ class ApplicationController < ActionController::Base
 
   def authenticate_and_redirect_back
     return false if current_user
+    force_authenticate_and_redirect_back
+    true
+  end
 
+  def force_authenticate_and_redirect_back
     store_location_for(:user, request.fullpath)
     if Rails.env.production?
       redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
     else
       redirect_to user_omniauth_authorize_url(:developer)
     end
-    true
   end
 
   def render_forbidden
@@ -45,7 +48,7 @@ class ApplicationController < ActionController::Base
         render nothing: true, status: :unauthorized
       end
       format.html do
-        authenticate_and_redirect_back
+        force_authenticate_and_redirect_back
       end
     end
   end
