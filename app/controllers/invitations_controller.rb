@@ -18,6 +18,7 @@ class InvitationsController < ApplicationController
     # TODO: SSS invitations
     if sss
       sss.join_group(@invitation.sss_group, current_user)
+      @group = sss.group(@invitation.sss_group)
     else
       @group = @invitation.group
       @group.join(current_user)
