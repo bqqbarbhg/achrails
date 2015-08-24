@@ -3,28 +3,51 @@
 <head>
   <title>Achrails</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>    
+  <%= stylesheet_link_tag "https://storage.googleapis.com/code.getmdl.io/1.0.4/material.teal-red.min.css" %>
+  <%= stylesheet_link_tag "https://fonts.googleapis.com/icon?family=Material+Icons" %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-<% if current_user %>
-  <span>Logged in as <strong><%= current_user.name %></strong></span>
-<% else %>
-  <% if Rails.env.production? %>
-    <%= link_to "Sign in", user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https') %>
-  <% else %>
-    <%= link_to "Sign in (developer)", user_omniauth_authorize_url(:developer) %>
-  <% end %>
-<% end %>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+      <div class="mdl-layout-icon">
+        <%= link_to groups_path() do %>
+          <i class="material-icons" style="color:white;">group</i>
+        <% end %>                
+      </div>
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title"><%= yield :pagetitle %></span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="mdl-navigation">
+          <% if current_user %>
+            <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
+          <% else %>
+            <% if Rails.env.production? %>
+              <%= link_to "Sign in", user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
+            <% else %>
+              <%= link_to "Sign in (developer)", user_omniauth_authorize_url(:developer), class: "mdl-navigation__link" %>
+            <% end %>
+          <% end %>
+        </nav>
+      </div>
+  </header>
+  <main class="mdl-layout__content">
+    <% flash.each do |name, msg| -%>
+      <script>
+        createToast('<%j=msg %>');
+      </script>
+    <% end -%>
+    <div class="page-content">
+      <%= yield %>
+    </div>
 
-<% flash.each do |name, msg| -%>
-  <%= content_tag :div, msg, class: name %>
-<% end -%>
-
-<hr>
-
-<%= yield %>
-
+  </main>
+</div>
 </body>
 </html>

@@ -1,6 +1,33 @@
-<% for group in @groups %>
-  <%= link_to(group.name, group) %>
+
+<% content_for :pagetitle do %>
+  <%= t(:groups) %>
 <% end %>
+
+<div class="mdl-grid">
+<% for group in @groups %>
+   
+<div class="group-card mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp"> 
+  <div class="mdl-card__actions">
+   <%= link_to(group, class:"mdl-button mdl-button--colored mdl-js-button") do %> 
+      <i class="material-icons">group</i> <%= group.name %> 
+   <% end %>
+  </div>
+  <div class="mdl-card__supporting-text mdl-card--border mdl-card--expand"> 
+    <p>group description</p>
+  </div>
+
+</div>
+
+<% end %>
+</div>
+
 <% if policy(:group).create? %>
-  <%= link_to(t(:create_group), new_group_path()) %>
+<div class="mdl-grid">
+
+<div class="mdl-cell mdl-cell--4-col">
+<p>
+ <a class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" href="<%= new_group_path() %>"><i class="material-icons">group_add</i></a>
+</p>
+</div>
+</div>
 <% end %>

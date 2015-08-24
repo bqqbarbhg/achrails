@@ -1,9 +1,21 @@
-<h1><%= @group.name %></h1>
-<% if policy(@group).destroy? %>
-  <%= link_to(t(:delete_group), @group, method: :delete) %>
+<% content_for :pagetitle do %>
+  <%= @group.name %>
 <% end %>
+<div class="content mdl-grid">
 
-<h2>Members</h2>
+<div class="mdl-cell mdl-cell--8-col">
+<h3>Videos</h3>
+
+<ul>
+<% for video in @group.videos %>
+  <li>
+    <%= link_to(video.title, video) %>
+  </li>
+<% end %>
+</ul>
+</div>
+<div class="mdl-cell mdl-cell--8-col">
+<h3>Members</h3>
 
 <ul>
 <% for membership in @group.memberships %>
@@ -17,46 +29,48 @@
 <% end %>
 </ul>
 
-<h2>Videos</h2>
-
-<ul>
-<% for video in @group.videos %>
-  <li>
-    <%= link_to(video.title, video) %>
-  </li>
-<% end %>
-</ul>
-
 <% if policy(@group).join? %>
   <%= link_to(t(:join_group), join_group_path(@group), method: :post) %>
 <% end %>
 <% if policy(@group).leave? %>
   <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
 <% end %>
-
-<% unless sss # @SSS_Support(edit circles) %>
-<% if policy(@group).edit? %>
-  <%= link_to(t(:edit_group), edit_group_path(@group)) %>
-<% end %>
-<% end %>
+</div>
 
 <% if policy(@group).invite? %>
+
+<div class="mdl-cell mdl-cell--4-col">
 <%= form_tag(invite_group_path(@group)) do %>
     <div id="addresses">
     </div>
     <noscript>
-        <% (0..9).each do |n| %>
-          <%= text_field_tag 'address[#{n.to_s}]', '', placeholder: 'Add address to invite' %>
+        <% (0..9).each do |n| %>        
+          <div class="mdl-textfield mdl-js-textfield">
+          <%= text_field_tag 'address[#{n.to_s}]', '', placeholder: 'Add address to invite', class: "mdl-textfield__input" %>
+          </div>
         <% end %>
     </noscript>
-    <%= submit_tag 'Create' %>
+<div class="mdl-cell mdl-cell--6-col">
+    <%= submit_tag 'Send invites', class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+</div>
 <% end %>
 <% end %>
+</div>
+<div class="mdl-cell mdl-cell--8-col">
+<% unless sss # @SSS_Support(edit circles) %>
+<% if policy(@group).edit? %>
+  <%= link_to(t(:edit_group), edit_group_path(@group), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+<% end %>
+<% end %>
+<% if policy(@group).destroy? %>
+  <%= link_to(t(:delete_group), @group, method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+<% end %>
+</div>
 
 <script>
 
 function makeInput() {
-    var $input = $('<input type="email" placeholder="Add address to invite">');
+    var $input = $('<input type="email" class="mdl-textfield__input" placeholder="Add address to invite">');
 
     $input.on('input', function(e) {
 
