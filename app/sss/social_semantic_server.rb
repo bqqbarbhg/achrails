@@ -83,7 +83,8 @@ class SocialSemanticServer
     @groups[id] ||= begin
       group = Group.new(
         id: id,
-        name: circle_hash[:label]
+        name: circle_hash[:label],
+        description: circle_hash[:description]
       )
 
       author_id = circle_hash[:author][:id]
