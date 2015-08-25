@@ -149,7 +149,7 @@ class GroupsController < ApplicationController
 
 protected
   def group_params
-    params.require(:group).permit(:name, :visibility)
+    params.require(:group).permit(:name, :description, :visibility)
   end
 end
 

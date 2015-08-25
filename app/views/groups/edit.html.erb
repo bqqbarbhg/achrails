@@ -15,6 +15,10 @@
   <%= f.text_field :name, class:"mdl-textfield__input" %>
   <%= f.label :name, class:"mdl-textfield__label" %>
   </div>
+  <div class="mdl-textfield mdl-js-textfield">
+  <%= f.text_area :description, type: "text", class:"mdl-textfield__input" %>
+  <%= f.label :description, class:"mdl-textfield__label" %>
+  </div>
 </div>
   <% unless sss # @SSS_Support(circle visibility) %>
 <div class="mdl-cell mdl-cell--4-col">
