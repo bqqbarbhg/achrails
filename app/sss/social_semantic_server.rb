@@ -175,10 +175,10 @@ class SocialSemanticServer
       emails = people_arr.map &:email
       users = User.where(email: emails)
       users.each do |user|
-        people_map[user.person_id].name = user.name
+        people_map[user.person_id].name = user.name if people_map[user.person_id]
       end
 
-      people_map.select { |k,v| v.name }
+      people_map
     end
   end
 

@@ -8,9 +8,11 @@ class User < ActiveRecord::Base
                         end
 
   def self.from_omniauth(auth)
-    return nil if [auth.info.name, auth.provider, auth.uid].any? &:blank?
+    return nil if [auth.info.name, auth.provider, auth.uid, auth.info.email].any? &:blank?
 
-    user = where(provider: auth.provider, uid: auth.uid).first_or_create
+    user = where(provider: auth.provider, uid: auth.uid).first_or_initialize
+    user.email = auth.info.email
+    user.name = auth.info.name
     user.bearer_token = auth.extra.try(:bearer)
     user.save!
     user

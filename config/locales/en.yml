@@ -36,7 +36,7 @@ en:
       listed: "This group is public and shown to everyone."
   action_fail:
     generic: 'More permissions are required to complete the action.'
-    log_in: 'Ach so needs to access your profile and openid to log in.'
+    log_in: 'Ach so needs to access your profile, email and openid to log in.'
     accept_invitation: 'Ach so requires access to your email to accept invitations.'
   user_info:
     email: 'email'
