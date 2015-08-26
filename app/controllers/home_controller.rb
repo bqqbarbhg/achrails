@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
   def oidc_error
     expected_actions = {
-      "log_in" => ["openid", "profile"],
+      "log_in" => ["openid", "profile", "email"],
       "accept_invitation" => ["email"],
     }
 
