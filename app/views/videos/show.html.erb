@@ -1,12 +1,21 @@
 
-<h1><%= @video.title %></h1>
-By: <%= @video.author.name %>
-
-<% if policy(@video).share? %>
-  <%= link_to(t(:share_video), shares_path(@video)) %>
+<% content_for :pagetitle do %>
+    <%= @video.title %>
 <% end %>
 
-<% if policy(@video).destroy? %>
-  <%= link_to(t(:delete_video), video_path(@video), method: :delete) %>
-<% end %>
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
 
+    <p>By: <%= @video.author.name %></p>
+
+    <p>
+    <% if policy(@video).share? %>
+      <%= link_to(t(:share_video), shares_path(@video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+    <% end %>
+
+    <% if policy(@video).destroy? %>
+      <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+    <% end %>
+    </p>
+  </div>
+</div>

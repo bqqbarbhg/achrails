@@ -3,18 +3,20 @@
 <% end %>
 <div class="content mdl-grid">
 
-<div class="mdl-cell mdl-cell--8-col">
+<div class="mdl-cell mdl-cell--12-col">
 <h3>Videos</h3>
 
 <ul>
-<% for video in @group.videos %>
+<% if @group.videos.each do |video| %>
   <li>
     <%= link_to(video.title, video) %>
   </li>
+<% end.empty? %>
+    No videos shared with this group yet.
 <% end %>
 </ul>
 </div>
-<div class="mdl-cell mdl-cell--8-col">
+<div class="mdl-cell mdl-cell--4-col">
 <h3>Members</h3>
 
 <ul>
@@ -23,23 +25,25 @@
   <li>
     <%= user.name %>
     <% if membership.admin? %>
-      (admin)
+      <span class="admin-badge">admin</span>
     <% end %>
   </li>
 <% end %>
 </ul>
 
 <% if policy(@group).join? %>
-  <%= link_to(t(:join_group), join_group_path(@group), method: :post) %>
+  <%= link_to(t(:join_group), join_group_path(@group), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
 <% end %>
 <% if policy(@group).leave? %>
-  <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
+  <%= link_to(t(:leave_group), leave_group_path(@group), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
 <% end %>
 </div>
 
 <% if policy(@group).invite? %>
 
 <div class="mdl-cell mdl-cell--4-col">
+<h3>Invite new members</h3>
+
 <%= form_tag(invite_group_path(@group)) do %>
     <div id="addresses">
     </div>

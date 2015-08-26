@@ -1,3 +1,9 @@
+
+<% content_for :pagetitle do %>
+    Upload videos
+<% end %>
+
+
 <ul>
 <% for video in @videos %>
   <li><%= link_to(video.title, video_path(video)) %></li>
@@ -7,7 +13,7 @@
 <% if policy(:video).create? %>
   <%= form_tag("/videos/upload", multipart: true) do %>
     <%= file_field_tag 'manifest' %>
-    <%= submit_tag t(:upload_video) %>
+    <%= submit_tag t(:upload_video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
   <% end %>
 <% end %>
 
