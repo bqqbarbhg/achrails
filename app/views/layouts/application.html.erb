@@ -38,11 +38,11 @@
       </div>
   </header>
   <main class="mdl-layout__content">
-    <% flash.each do |name, msg| -%>
-      <script>
-        createToast('<%j=msg %>');
-      </script>
-    <% end -%>
+    <% flash.each do |name, msg| %>
+      <%= javascript_tag do %>
+        createToast('<%= j msg %>');
+      <% end %>
+    <% end %>
     <div class="page-content">
       <%= yield %>
     </div>

@@ -10,6 +10,8 @@ function createToast(message) {
   document.body.appendChild(snackbar);
   // Remove after 10 seconds
   setTimeout(function(){
-    snackbar.remove();
-  }, 10000);
+    $(snackbar).fadeOut("normal", function() {
+        $(this).remove();
+    });
+  }, 3000);
 }
