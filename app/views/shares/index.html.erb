@@ -1,4 +1,10 @@
 
+<% content_for :homelink do %>
+  <%= link_to groups_path() do %>
+    <i class="material-icons" style="color:white;">&#xE7EF;</i>
+  <% end %>                
+<% end %>
+
 <% content_for :pagetitle do %>
   <% if @videos.count==1 %>
     Share a video with group

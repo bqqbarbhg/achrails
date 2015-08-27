@@ -3,7 +3,6 @@
     Upload videos
 <% end %>
 
-
 <ul>
 <% for video in @videos %>
   <li><%= link_to(video.title, video_path(video)) %></li>

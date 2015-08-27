@@ -14,9 +14,13 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <header class="mdl-layout__header">
       <div class="mdl-layout-icon">
-        <%= link_to groups_path() do %>
-          <i class="material-icons" style="color:white;">group</i>
-        <% end %>                
+        <% if content_for?(:homelink) %>
+          <%= yield(:homelink) %>
+        <% else %>
+          <%= link_to groups_path() do %>
+            <i class="material-icons" style="color:white;">&#xE7EF;</i>
+          <% end %>                
+        <% end %>
       </div>
       <div class="mdl-layout__header-row">
         <!-- Title -->

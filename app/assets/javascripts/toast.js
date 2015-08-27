@@ -1,6 +1,10 @@
 // Since we are not providing an action, this is called a toast.
 function createToast(message) {
   'use strict';
+  if (typeof Android != "undefined"){
+    Android.showToast(toast);
+    return;
+  }
   var snackbar = document.createElement('div'),
       text = document.createElement('div');
   snackbar.classList.add('mdl-snackbar');
