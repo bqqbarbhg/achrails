@@ -32,9 +32,9 @@ class ApplicationController < ActionController::Base
     render nothing: true, status: :forbidden
   end
 
-  def render_sss_error
-    # TODO: Real SSS error
-    render nothing: true, status: :internal_server_error
+  def render_sss_error(exception)
+    @sss_error = exception.message
+    render "shared/sss_error"
   end
 
   # Try to return back to the page the login originated from
