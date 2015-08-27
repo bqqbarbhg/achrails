@@ -43,4 +43,5 @@ en:
     openid: 'openid'
     profile: 'profile'
   joined_group: "Joined group %{group}"
+  invite_email_expected: 'Expected to join with email %{email}'
 

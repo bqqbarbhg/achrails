@@ -27,7 +27,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def render_forbidden
+  def render_forbidden(explanation='')
+    @explanation = explanation
     render "shared/forbidden", status: :forbidden
   end
 
