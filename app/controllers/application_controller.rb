@@ -28,8 +28,8 @@ class ApplicationController < ActionController::Base
   end
 
   def render_forbidden
-    # TODO: Real forbidden
-    render nothing: true, status: :forbidden
+    @sss_error = exception.message
+    render "shared/forbidden", status: forbidden
   end
 
   def render_sss_error(exception)
