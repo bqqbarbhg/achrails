@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_forbidden
-    render "shared/forbidden", status: forbidden
+    render "shared/forbidden", status: :forbidden
   end
 
   def render_sss_error(exception)
