@@ -19,3 +19,9 @@ function createToast(message) {
     });
   }, 3000);
 }
+
+function closeActivity() {
+    if (typeof Android != "undefined")
+        Android.closeActivity();
+    }
+}

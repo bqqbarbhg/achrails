@@ -1,8 +1,7 @@
-
 <% content_for :homelink do %>
-  <%= link_to groups_path() do %>
-    <i class="material-icons" style="color:white;">&#xE7EF;</i>
-  <% end %>                
+  <a href="#" onClick="closeActivity()" id="ach_so_link">
+   <img src="../../assets/ic_launcher.png" height="32" width="32" alt="Ach so!"/>
+  </a>
 <% end %>
 
 <% content_for :pagetitle do %>
@@ -34,6 +33,8 @@
         <% end %>
       </span>
     </label>
+    <div class="mld-spacer"></div>
+    <br/>
 <% end %>
 
 </div>
