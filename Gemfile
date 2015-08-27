@@ -38,7 +38,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'material_design_lite-rails'
 
 # Frontend things
-gem 'lodash-rails"
+gem 'lodash-rails'
 
 group :development do
   # View sent emails

@@ -86,6 +86,8 @@ GEM
       letter_opener (~> 1.0)
       railties (>= 3.2)
     libv8 (3.16.14.11)
+    lodash-rails (3.10.1)
+      railties (>= 3.1)
     loofah (2.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -222,6 +224,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   letter_opener_web
+  lodash-rails
   material_design_lite-rails
   omniauth-oauth2
   pg
