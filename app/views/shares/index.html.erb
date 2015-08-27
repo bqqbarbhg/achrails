@@ -44,16 +44,16 @@
 
   var groups = document.querySelectorAll(".mdl-switch__input");
   var pending = { };
-  var state = { };
+  var state = {
+  <% for share_group in @share_groups %>
+    '<%=j share_group.group.id.to_s %>': <%= (share_group.shareclass != :unshared) ? 'true' : 'false' %>,
+  <% end %>
+  };
 
   var token = $('meta[name=csrf-token]').attr('content');;
   var http = new HTTP();
   http.globalHeader("X-CSRF-Token", token);
 
-  var classyGroup = beClassy({
-    state: ['unshared', 'mixed', 'shared'],
-    pending: 'pending'
-  });
   refresh();
 
   for (var i = 0; i < groups.length; i++) {
@@ -61,7 +61,6 @@
     var id = group.id.substring(5);
 
     pending[id] = false;
-    state[id] = classyGroup.state(group);
 
     group.addEventListener("click", (function(id) {
       return function(e) {
@@ -70,25 +69,29 @@
         }
 
         // Mixed does upload with this logic
-        state[id] = state[id] == 2 ? 0 : 2;
+        state[id] = !state[id];
         pending[id] = true;
+        group.disabled = true;
 
-        var success = (function(id) { return function(xhr) {
-          console.log(xhr, id);
+        var success = (function(group, id) { return function(xhr) {
+          <% if Rails.env.development? %>
+            console.log(xhr, id);
+          <% end %>
           pending[id] = false;
+          group.disabled = false;
           // TODO: Figure out a response format for multiple share
           //shared[id] = JSON.parse(xhr.response).indexOf(id) >= 0;
           $('.mixed_warning').remove();
           refresh();
-        }; })(id);
+        }; })(group, id);
 
         var error = function(xhr) {          
-          console.log(xhr);
           <% if Rails.env.development? %>
-          // In development environment flush the page with the error message.
-          document.open();
-          document.write(xhr.response);
-          document.close();
+            console.log(xhr);
+            // In development environment flush the page with the error message.
+            document.open();
+            document.write(xhr.response);
+            document.close();
           <% end %>
           refresh();
         };
@@ -119,11 +122,6 @@
           if (pending[k]) show_spinner = false;
       }
       if (!show_spinner) $('#sharing_spinner').removeClass('is-active');
-
-      classyGroup(group, {
-        state: state[id],
-        pending: pending[id],
-      });
     }
   }
 
