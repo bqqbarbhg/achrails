@@ -64,8 +64,7 @@ class SharesController < ApplicationController
     end
 
     respond_to do |format|
-      # TODO: Figure out a response format
-      format.json { render json: { } }
+      format.json { render json: { shared: true, ids: ids } }
     end
   end
 
@@ -90,8 +89,7 @@ class SharesController < ApplicationController
     end
 
     respond_to do |format|
-      # TODO: Figure out a response format
-      format.json { render json: { } }
+      format.json { render json: { shared: false, ids: ids } }
     end
   end
 
