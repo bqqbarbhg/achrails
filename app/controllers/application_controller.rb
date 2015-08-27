@@ -28,7 +28,6 @@ class ApplicationController < ActionController::Base
   end
 
   def render_forbidden
-    @sss_error = exception.message
     render "shared/forbidden", status: forbidden
   end
 
