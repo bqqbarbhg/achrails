@@ -62,7 +62,7 @@
 
     pending[id] = false;
 
-    group.addEventListener("click", (function(id) {
+    group.addEventListener("click", (function(group, id) {
       return function(e) {
         if (pending[id]) {
           return;
@@ -109,7 +109,7 @@
 
         refresh();
       }
-    })(id));
+    })(group, id));
   }
 
   function refresh() {
