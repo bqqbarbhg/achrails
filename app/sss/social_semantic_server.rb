@@ -21,10 +21,12 @@ class SocialSemanticServer
       if body_json && body_json["id"] == "authOIDCUserInfoRequestFailed"
         raise SssConnectError
       else
-        raise SssInternalError
+        raise SssInternalError, response.body
       end
     end
     response
+  rescue JSON::ParserError
+    raise SssInternalError, response.body
   end
 
   def get(path)
