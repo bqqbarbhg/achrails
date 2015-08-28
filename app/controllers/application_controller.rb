@@ -58,6 +58,8 @@ class ApplicationController < ActionController::Base
 
     user ||= current_user
 
+    raise SssConnectError unless user
+
     @sss ||= begin
       sss_url = ENV["SSS_URL"]
       bearer = user.bearer_token
