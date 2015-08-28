@@ -185,6 +185,11 @@ class SocialSemanticServer
     log "Joined user #{user.person_id} to group #{group_id}"
   end
 
+  def leave_group(group, user)
+    hash = delete_json("/circles/circles/#{group.id}/users/#{user.person_id}", { })
+    log "Removed user #{user.person_id} from group #{group.id}"
+  end
+
   def invite_to_group(group, emails)
     emails_s = emails.join(',')
     hash = post_json("/circles/circles/#{group.id}/users/invite/#{emails_s}", { })
