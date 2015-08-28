@@ -58,10 +58,12 @@ class ApplicationController < ActionController::Base
 
     user ||= current_user
 
+    raise SssConnectError unless user
+
     @sss ||= begin
       sss_url = ENV["SSS_URL"]
       bearer = user.bearer_token
-      SocialSemanticServer.new(sss_url, bearer) if sss_url
+      SocialSemanticServer.new(sss_url, bearer, user.person_id) if sss_url
     end
   end
 

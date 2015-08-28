@@ -106,12 +106,18 @@ class GroupsController < ApplicationController
   end
 
   def leave
-    # @SSS_Support(list all groups)
-    @group = Group.find(params[:id])
-    authorize @group
+    if sss
+      @group = sss.group(params[:id])
+      authorize @group
 
-    @group.leave(current_user)
-    redirect_to action: :show
+      sss.leave_group(@group, current_user)
+    else
+      @group = Group.find(params[:id])
+      authorize @group
+
+      @group.leave(current_user)
+    end
+    redirect_to action: :index
   end
 
   def invite
