@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
     @sss ||= begin
       sss_url = ENV["SSS_URL"]
       bearer = user.bearer_token
-      SocialSemanticServer.new(sss_url, bearer) if sss_url
+      SocialSemanticServer.new(sss_url, bearer, user.person_id) if sss_url
     end
   end
 

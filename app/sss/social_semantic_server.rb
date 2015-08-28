@@ -1,17 +1,18 @@
 class SocialSemanticServer
 
   def log(message)
-    Rails.logger.debug("@SSS: #{message}")
+    Rails.logger.debug("@SSS: as #{@person_id}: #{message}")
   end
 
   def logcall(message)
-    Rails.logger.debug("@SSS-CALL: #{message}")
+    Rails.logger.debug("@SSS-CALL: as #{@person_id}: #{message}")
   end
 
-  def initialize(url, bearer)
+  def initialize(url, bearer, person_id)
     @users = { }
     @videos = { }
     @groups = { }
+    @person_id = person_id
 
     uri = URI(url)
 
