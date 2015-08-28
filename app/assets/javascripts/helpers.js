@@ -21,7 +21,7 @@ function createToast(message) {
 }
 
 function closeActivity() {
-    if (typeof Android != "undefined")
+    if (typeof Android != "undefined") {
         Android.closeActivity();
     }
 }
