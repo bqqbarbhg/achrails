@@ -150,11 +150,13 @@ class SocialSemanticServer
   def group_add_videos(group, videos)
     ids = videos.map(&:uuid).join(',')
     post_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
+    log "Added #{ids} to group #{group.id}"
   end
 
   def group_remove_videos(group, videos)
     ids = videos.map(&:uuid).join(',')
     delete_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
+    log "Removed #{ids} from group #{group.id}"
   end
 
   def create_group(params)
@@ -162,12 +164,16 @@ class SocialSemanticServer
       label: params[:name],
       description: params[:description] || ''
 
-    isolate_id(hash[:circle])
+    id = isolate_id(hash[:circle])
+    log "Created group #{id}"
+
+    id
   end
 
   def delete_group(group)
     id = group.id
     delete("/circles/circles/#{id}")
+    log "Deleted group #{id}"
   end
 
   def groups_for(user)
@@ -176,11 +182,13 @@ class SocialSemanticServer
 
   def join_group(group_id, user)
     hash = post_json("/circles/circles/#{group_id}/users/#{user.person_id}", { })
+    log "Joined user #{user.person_id} to group #{group_id}"
   end
 
   def invite_to_group(group, emails)
     emails_s = emails.join(',')
     hash = post_json("/circles/circles/#{group.id}/users/invite/#{emails_s}", { })
+    log "Invited #{emails_s} to group #{group.id}"
   end
 
   def people
@@ -213,6 +221,7 @@ class SocialSemanticServer
     @auth_person_cached ||= begin
       data = get_json('/auth/auth')
       user_id = isolate_id(data[:user])
+      log "Retrieved user ID: #{user_id}"
       person(user_id)
     end
   end
@@ -238,6 +247,7 @@ class SocialSemanticServer
       uuid: video.uuid,
       link: Rails.application.routes.url_helpers.video_url(video),
       label: video.title
+    log "Uploaded video #{video.uuid}"
   end
 
 end
