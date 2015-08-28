@@ -1,5 +1,13 @@
 class SocialSemanticServer
 
+  def log(message)
+    Rails.logger.debug("@SSS: #{message}")
+  end
+
+  def logcall(message)
+    Rails.logger.debug("@SSS-CALL: #{message}")
+  end
+
   def initialize(url, bearer)
     @users = { }
     @videos = { }
@@ -19,17 +27,21 @@ class SocialSemanticServer
     if response.status >= 400
       body_json = JSON.parse(response.body)
       if body_json && body_json["id"] == "authOIDCUserInfoRequestFailed"
+        log "Authentication failed"
         raise SssConnectError
       else
+        log "Response error with status #{response.status}"
         raise SssInternalError, response.body
       end
     end
     response
   rescue JSON::ParserError
+    log "Response error with status #{response.status}"
     raise SssInternalError, response.body
   end
 
   def get(path)
+    logcall "GET #{path}"
     validate_response @conn.get(@root + path)
   end
 
@@ -40,6 +52,7 @@ class SocialSemanticServer
   end
 
   def post(path, content_type, body)
+    logcall "POST #{path} #{body}"
     validate_response @conn.post(@root + path, body,
       'Content-Type' => content_type)
   end
@@ -51,10 +64,12 @@ class SocialSemanticServer
   end
 
   def delete(path)
+    logcall "DELETE #{path}"
     validate_response @conn.delete(@root + path)
   end
 
   def delete_json(path, body)
+    logcall "DELETE #{path} #{body}"
     response = @conn.run_request(:delete, @root + path, body.to_json,
       'Content-Type' => 'application/json')
     data = JSON.parse(response.body)
