@@ -1,4 +1,4 @@
-.noselect {
+.acp-noselect {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -58,12 +58,12 @@
 	bottom: -100px;
 	transition: bottom 0.2s ease-in, opacity 0.2s ease;
 }
-.acp-annotation-edit.visible {
+.acp-annotation-edit.acp-visible {
 	bottom: 10px;
 	visibility: visible;
 	transition: bottom 0.2s ease-out, opacity 0.2s ease;
 }
-.acp-annotation-edit.transparent {
+.acp-annotation-edit.acp-transparent {
 	opacity: 0.3;
 	pointer-events: none;
 }
@@ -86,7 +86,7 @@
 	text-shadow: 0px 0px 3px #000;
 }
 
-.acp-subtitles.hidden {
+.acp-subtitles.acp-hidden {
 	opacity: 0.0;
 	transition: opacity 0.2s ease-in;
 }
@@ -123,7 +123,7 @@
 	height: 60px;
 }
 
-.acp-seek-catcher.disable {
+.acp-seek-catcher.acp-disable {
 	pointer-events: none;
 }
 
@@ -157,7 +157,7 @@
 	opacity: 0.0;
 }
 
-.acp-seek-bar-filler.waiting {
+.acp-seek-bar-filler.acp-waiting {
 	background-color: #a33;
 }
 
@@ -171,7 +171,7 @@
 	margin-left: -8px;
 }
 
-.acp-seek-annotation.waiting {
+.acp-seek-annotation.acp-waiting {
 	background: radial-gradient(rgba(170,51,51, 0.0) 47%, rgba(170,51,51, 1.0) 60%, rgba(170,51,51, 1.0) 62%, rgba(170,51,51, 0.0) 73%)
 }
 
@@ -188,10 +188,5 @@
 
 .acp-selected-annotation {
 	background: radial-gradient(rgba(255,255,255, 0.0) 37%, rgba(255,255,255, 0.9) 40%, rgba(255,255,255, 0.9) 45%, rgba(68,153,136, 0.8) 47%, rgba(68,153,136, 0.4) 53%, rgba(68,153,136, 0.0) 55%, rgba(68,153,136, 0.0) 56%, rgba(255,255,255, 0.9) 60%, rgba(255,255,255, 0.9) 62%, rgba(255,255,255, 0.0) 66%);
-}
-
-.acp-wait-bar.fadeout {
-	opacity: 0.0;
-	transition: opacity 0.2s ease-out; 
 }
 
