@@ -47,9 +47,12 @@
 
   <div class="mdl-cell mdl-cell--4-col">
 
-    <p>By: <%= @video.author.name %></p>
+    <div id="save_spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner"></div>
 
-    <p>
+    <% if policy(@video).update? %>
+      <%= link_to(t(:save), '#', onclick: 'saveChanges()', class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+    <% end %>
+
     <% if policy(@video).share? %>
       <%= link_to(t(:share_video), shares_path(@video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
@@ -57,12 +60,54 @@
     <% if policy(@video).destroy? %>
       <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
     <% end %>
+
+    <p>By: <%= @video.author.name %></p>
     </p>
   </div>
 </div>
 
 <script>
+
+<% if current_user and policy(@video).update? %>
+  var user = {
+    "name": "<%=j current_user.name %>",
+    "url": "<%=j current_user.person_id %>",
+  };
+<% else %>
+  var user = null;
+<% end %>
+
   var manifest = <%= @video.read_manifest.to_json.html_safe %>;
   var playerElement = document.querySelector("#achso_player");
-  var player = new AchSoPlayer(playerElement, manifest);
+  var player = new AchSoPlayer(playerElement, manifest, user);
+
+  var saveSpinner = document.querySelector("#save_spinner");
+
+  var token = $('meta[name=csrf-token]').attr('content');
+  var http = new HTTP();
+  http.globalHeader("X-CSRF-Token", token);
+
+  function saveBegin() {
+    save_spinner.classList.add("is-active");
+  }
+
+  function saveEnd() {
+    save_spinner.classList.remove("is-active");
+  }
+
+  function saveChanges() {
+    var manifest = player.exportManifest();
+    saveBegin();
+    http.putJson('', manifest, {
+      success: function() {
+        saveEnd();
+        createToast("Saved video");
+      },
+      error: function() {
+        saveEnd();
+        createToast("Failed to upload video");
+      },
+    });
+  }
+
 </script>
