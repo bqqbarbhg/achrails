@@ -93,16 +93,30 @@
 	transition: opacity 0.2s ease-in;
 }
 
-.acp-play-button {
+.acp-control-button {
 	width: 60px;
-	font-size: 48px !important;
+	font-size: 34px !important;
 	color: #fff;
 	text-align: center;
 	cursor: default;
 }
 
+.acp-undo-button {
+	width: 50px;
+	font-size: 30px !important;
+}
+
+.acp-redo-button {
+	width: 50px;
+	font-size: 30px !important;
+}
+
+.acp-control-button.acp-disabled {
+	color: #888;
+}
+
 .acp-end-space {
-	width: 60px;
+	width: 20px;
 }
 
 .acp-seek-bar {
