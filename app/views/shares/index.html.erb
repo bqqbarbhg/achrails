@@ -24,7 +24,7 @@
 <div class="mdl-cell mdl-cell--4-col">
 
 <% for share_group in @share_groups %>
-    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="group<%= share_group.group.id %>"> 
+    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" id="grouplabel<%= share_group.group.id %>" for="group<%= share_group.group.id %>"> 
     <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,class:"mdl-switch__input" %> 
       <span class="mdl-switch__label">
         <%= share_group.group.name %>
@@ -66,10 +66,11 @@
   for (var i = 0; i < groups.length; i++) {
     var group = groups[i];
     var id = group.id.substring(5);
+    var label = document.getElementById("grouplabel" + id);
 
     pending[id] = false;
 
-    group.addEventListener("click", (function(group, id) {
+    group.addEventListener("click", (function(group, label, id) {
       return function(e) {
         if (pending[id]) {
           return;
@@ -80,17 +81,23 @@
         pending[id] = true;
         group.disabled = true;
 
-        var success = (function(group, id) { return function(xhr) {
+        var success = (function(group, label, id) { return function(xhr) {
           <% if Rails.env.development? %>
             console.log(xhr, id);
           <% end %>
           pending[id] = false;
           group.disabled = false;
+
+          // @Workaround(mdl): MDL doesn't remove the is-disabled class
+          // automatically for some reason, even though the documentation
+          // implies that it should.
+          label.classList.remove("is-disabled");
+
           // TODO: Figure out a response format for multiple share
           //shared[id] = JSON.parse(xhr.response).indexOf(id) >= 0;
           $('.mixed_warning').remove();
           refresh();
-        }; })(group, id);
+        }; })(group, label, id);
 
         var error = function(xhr) {          
           <% if Rails.env.development? %>
@@ -116,7 +123,7 @@
 
         refresh();
       }
-    })(group, id));
+    })(group, label, id));
   }
 
   function refresh() {
