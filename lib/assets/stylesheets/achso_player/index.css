@@ -65,6 +65,8 @@
 }
 .acp-annotation-edit.acp-transparent {
 	opacity: 0.3;
+}
+.acp-annotation-edit.acp-noclick {
 	pointer-events: none;
 }
 
