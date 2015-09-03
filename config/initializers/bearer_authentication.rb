@@ -2,7 +2,7 @@
 class LearningLayersUser
   class UserInfo < Struct.new(:email, :name)
   end
-  class Extra < Struct.new(:bearer)
+  class Extra < Struct.new(:bearer, :refresh)
   end
 
   attr_reader :uid
@@ -10,12 +10,12 @@ class LearningLayersUser
   attr_reader :info
   attr_reader :extra
 
-  def initialize(hash, bearer)
+  def initialize(hash, bearer, refresh)
     @uid = hash['sub']
     @provider = 'learning_layers_oidc'
 
     @info = UserInfo.new(hash['email'], hash['name'])
-    @extra = Extra.new(bearer)
+    @extra = Extra.new(bearer, refresh)
   end
 end
 
@@ -26,13 +26,15 @@ Warden::Strategies.add(:bearer_authentication) do
 
   def authenticate!
     client = OAuth2::Client.new(ENV["LL_OIDC_CLIENT_ID"], ENV["LL_OIDC_CLIENT_SECRET"],
-                                site: ENV["LL_OIDC_HOST"])
+                                site: ENV["LL_OIDC_HOST"],
+                                token_url: "/o/oauth2/token")
 
-    token = OAuth2::AccessToken.new(client, bearer)
+    token = OAuth2::AccessToken.new(client, bearer,
+      refresh_token: request.headers['HTTP_X_REFRESH_TOKEN'])
+
     response = token.get('/o/oauth2/userinfo')
-    user_info = LearningLayersUser.new(response.parsed, bearer)
-    # TODO: Better check here
-
+    user_info = LearningLayersUser.new(response.parsed, bearer, token.refresh_token) if response
+    
     if user_info
       user = User.from_omniauth(user_info)
       success!(user)
@@ -40,7 +42,20 @@ Warden::Strategies.add(:bearer_authentication) do
       fail
     end
   rescue OAuth2::Error
-    fail
+    begin
+      token = token.refresh!
+      response = token.get('/o/oauth2/userinfo')
+      user_info = LearningLayersUser.new(response.parsed, bearer, token.refresh_token)
+
+      if user_info
+        user = User.from_omniauth(user_info)
+        success!(user)
+      else
+        fail
+      end
+    rescue OAuth2::Error
+      fail
+    end
   end
 
 protected
