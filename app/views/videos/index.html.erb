@@ -5,7 +5,7 @@
 <% end %>
 
 <% content_for :pagetitle do %>
-    Upload videos
+    Videos
 <% end %>
 
 <ul>
@@ -14,10 +14,14 @@
 <% end %>
 </ul>
 
+<% unless Rails.env.production? %>
+
 <% if policy(:video).create? %>
   <%= form_tag("/videos/upload", multipart: true) do %>
     <%= file_field_tag 'manifest' %>
     <%= submit_tag t(:upload_video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
   <% end %>
+<% end %>
+
 <% end %>
 
