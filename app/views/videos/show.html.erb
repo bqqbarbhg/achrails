@@ -75,7 +75,8 @@
 <% if current_user and policy(@video).update? %>
   var user = {
     "name": "<%=j current_user.name %>",
-    "url": "<%=j current_user.person_id %>",
+    "uri": "",
+    "id": "<%=j current_user.person_id %>",
   };
 <% else %>
   var user = null;
