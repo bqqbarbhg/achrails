@@ -24,6 +24,18 @@ Warden::Strategies.add(:bearer_authentication) do
     bearer
   end
 
+  def try_log_in(token)
+    response = token.get('/o/oauth2/userinfo')
+    user_info = LearningLayersUser.new(response.parsed, bearer, token.refresh_token) if response
+    return false unless user_info
+    user = User.from_omniauth(user_info)
+    return false unless user
+    success!(user)
+    true
+  rescue OAuth2::Error
+    false
+  end
+
   def authenticate!
     client = OAuth2::Client.new(ENV["LL_OIDC_CLIENT_ID"], ENV["LL_OIDC_CLIENT_SECRET"],
                                 site: ENV["LL_OIDC_HOST"],
@@ -32,30 +44,10 @@ Warden::Strategies.add(:bearer_authentication) do
     token = OAuth2::AccessToken.new(client, bearer,
       refresh_token: request.headers['HTTP_X_REFRESH_TOKEN'])
 
-    response = token.get('/o/oauth2/userinfo')
-    user_info = LearningLayersUser.new(response.parsed, bearer, token.refresh_token) if response
-    
-    if user_info
-      user = User.from_omniauth(user_info)
-      success!(user)
-    else
-      fail
-    end
-  rescue OAuth2::Error
-    begin
-      token = token.refresh!
-      response = token.get('/o/oauth2/userinfo')
-      user_info = LearningLayersUser.new(response.parsed, bearer, token.refresh_token)
+    return if try_log_in(token)
+    return if token.refresh_token and try_log_in(token.refresh!)
 
-      if user_info
-        user = User.from_omniauth(user_info)
-        success!(user)
-      else
-        fail
-      end
-    rescue OAuth2::Error
-      fail
-    end
+    fail
   end
 
 protected
