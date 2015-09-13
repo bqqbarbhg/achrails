@@ -17,6 +17,7 @@
 <% end %>
 </ul>
 </div>
+<div class="mdl-layout-spacer"></div>
 <div class="mdl-cell mdl-cell--4-col">
 <h3>Members</h3>
 
@@ -41,6 +42,7 @@
 </div>
 
 <% if policy(@group).invite? %>
+<div class="mdl-layout-spacer"></div>
 
 <div class="mdl-cell mdl-cell--4-col">
 <h3>Invite new members</h3>
@@ -61,6 +63,7 @@
 <% end %>
 <% end %>
 </div>
+<div class="mdl-layout-spacer"></div>
 <div class="mdl-cell mdl-cell--8-col">
 <% unless sss # @SSS_Support(edit circles) %>
 <% if policy(@group).edit? %>

@@ -26,3 +26,6 @@
 # Ignore paperclip uploads
 /public/system
 
+# Ignore docker caches
+/vendor
+
