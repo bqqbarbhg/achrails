@@ -56,6 +56,9 @@
         <% end %>
     </noscript>
 <div class="mdl-cell mdl-cell--6-col">
+    <%= button_tag 'Add contacts', type: "button", id: "add_contacts_button", class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored force-hidden-no-layout" %>
+</div>
+<div class="mdl-cell mdl-cell--6-col">
     <%= submit_tag 'Send invites', class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
 </div>
 <% end %>
@@ -73,6 +76,14 @@
 </div>
 
 <script>
+
+if (typeof Android !== 'undefined') {
+  var $addContactsButton = $('#add_contacts_button');
+  $addContactsButton.removeClass('force-hidden-no-layout');
+  $addContactsButton.on('click', function() {
+    Android.openContactPicker();
+  });
+}
 
 function makeInput() {
     var $input = $('<input type="email" class="mdl-textfield__input" placeholder="Add address to invite">');
