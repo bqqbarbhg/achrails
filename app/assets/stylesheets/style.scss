@@ -15,6 +15,10 @@
     white-space: pre-wrap;
 }
 
+.force-hidden-no-layout {
+    display: none !important;
+}
+
 #achso_player {
     max-height: 90vh;
 }
