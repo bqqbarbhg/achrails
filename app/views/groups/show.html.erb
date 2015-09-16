@@ -85,6 +85,12 @@ if (typeof Android !== 'undefined') {
   });
 }
 
+function addInviteEmail(email) {
+    var $container = $("#addresses");
+    $container.children().last().val(email);
+    updateAddressList();
+}
+
 function makeInput() {
     var $input = $('<input type="email" class="mdl-textfield__input" placeholder="Add address to invite">');
 
