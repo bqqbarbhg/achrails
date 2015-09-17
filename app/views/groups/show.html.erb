@@ -73,9 +73,34 @@
   <%= link_to(t(:edit_group), edit_group_path(@group), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
 <% end %>
 <% end %>
+
 <% if policy(@group).destroy? %>
-  <%= link_to(t(:delete_group), @group, method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+  <noscript>
+    <%= link_to(t(:delete_group), @group, method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+  </noscript>
+  <%= button_tag(t(:delete_group), id: :delete_button, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+
+  <script>
+    var $delete_button = $("#delete_button");
+    $delete_button.removeClass("force-hidden-no-layout")
+    $delete_button.on("click", function() {
+      // TODO: Material design dialog?
+      // MDL didn't offer a solution when this was written
+      if (confirm('<%=j t(:group_delete_confirm, group: @group.name) %>')) {
+        var token = $('meta[name=csrf-token]').attr('content');;
+        var http = new HTTP();
+        http.globalHeader("X-CSRF-Token", token);
+        http.deleteJson('', {
+          success: function() {
+            window.location.href = '<%=j groups_path() %>';
+          }
+        })
+      }
+    });
+  </script>
+
 <% end %>
+
 </div>
 
 <script>

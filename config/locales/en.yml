@@ -47,4 +47,5 @@ en:
   users_invited:
     one: 'Invited %{count} person to %{group}'
     other: 'Invited %{count} people to %{group}'
+  group_delete_confirm: 'Are you sure you want to delete the group %{group}?'
 
