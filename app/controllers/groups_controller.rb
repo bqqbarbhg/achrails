@@ -147,7 +147,7 @@ class GroupsController < ApplicationController
     end
 
     if sss
-      sss.invite_to_group(@group, address_list)
+      sss.invite_to_group(@group, address_list) if address_list.length > 0
     end
 
     redirect_to action: :show
