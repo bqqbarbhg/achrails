@@ -160,6 +160,8 @@ class SocialSemanticServer
   end
 
   def create_group(params)
+    return nil if params[:name].blank?
+
     hash = post_json '/circles/circles/',
       label: params[:name],
       description: params[:description] || ''

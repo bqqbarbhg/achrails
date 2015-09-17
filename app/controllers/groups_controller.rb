@@ -61,7 +61,12 @@ class GroupsController < ApplicationController
       group_id = @group.id
     end
 
-    redirect_to action: :show, id: group_id
+    if group_id.nil?
+      flash[:error] = t(:failed_to_create_group)
+      redirect_to action: :index
+    else
+      redirect_to action: :show, id: group_id
+    end
   end
 
   def update
