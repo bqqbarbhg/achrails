@@ -108,7 +108,10 @@ class VideosController < ApplicationController
 
     @video.destroy
 
-    redirect_to action: :index
+    respond_to do |format|
+      format.html { redirect_to action: :index }
+      format.json { render nothing: true, status: :no_content }
+    end
   end
 
 protected

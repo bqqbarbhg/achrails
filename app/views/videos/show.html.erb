@@ -62,7 +62,30 @@
     <% end %>
 
     <% if policy(@video).destroy? %>
-      <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+      <noscript>
+          <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+      </noscript>
+      <%= button_tag(t(:delete_video), id: :delete_button, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+
+      <script>
+        // @Copy-Paste(confirm delete button)
+        var $delete_button = $("#delete_button");
+        $delete_button.removeClass("force-hidden-no-layout")
+        $delete_button.on("click", function() {
+          // TODO: Material design dialog?
+          // MDL didn't offer a solution when this was written
+          if (confirm('<%=j t(:video_delete_confirm) %>')) {
+            var token = $('meta[name=csrf-token]').attr('content');;
+            var http = new HTTP();
+            http.globalHeader("X-CSRF-Token", token);
+            http.deleteJson('', {
+              success: function() {
+                window.location.href = '<%=j videos_path() %>';
+              }
+            })
+          }
+        });
+      </script>
     <% end %>
 
     <p>By: <%= @video.author.name %></p>

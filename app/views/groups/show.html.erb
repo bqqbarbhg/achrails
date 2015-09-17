@@ -81,6 +81,7 @@
   <%= button_tag(t(:delete_group), id: :delete_button, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
 
   <script>
+    // @Copy-Paste(confirm delete button)
     var $delete_button = $("#delete_button");
     $delete_button.removeClass("force-hidden-no-layout")
     $delete_button.on("click", function() {

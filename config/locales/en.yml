@@ -48,5 +48,6 @@ en:
     one: 'Invited %{count} person to %{group}'
     other: 'Invited %{count} people to %{group}'
   group_delete_confirm: 'Are you sure you want to delete the group %{group}?'
+  video_delete_confirm: 'Are you sure you want to delete this video?'
   failed_to_create_group: 'Failed to create group'
 
