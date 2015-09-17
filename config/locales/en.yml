@@ -44,4 +44,7 @@ en:
     profile: 'profile'
   joined_group: "Joined group %{group}"
   invite_email_expected: 'Expected to join with email %{email}'
+  users_invited:
+    one: 'Invited %{count} person to %{group}'
+    other: 'Invited %{count} people to %{group}'
 
