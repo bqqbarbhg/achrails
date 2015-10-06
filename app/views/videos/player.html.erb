@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+
+<body>
+
+  <div class="acp-player acp-noselect" id="achso_player">
+    <div class="acp-video-background">
+      <div class="acp-video-wrapper">
+        <video class="acp-video">
+        </video>
+      </div>
+      <div class="acp-annotation-edit">
+        <input class="acp-annotation-text-input" type="text" />
+        <button class="acp-annotation-delete-button"><%= t(:delete) %></button>
+        <button class="acp-annotation-save-button"><%= t(:save) %></button>
+      </div>
+      <div class="acp-subtitles">
+      </div>
+    </div>
+    <div class="acp-controls">
+      <i class="material-icons acp-control-button acp-play-button"></i>
+      <div class="acp-seek-bar">
+        <div class="acp-seek-bar-filler">
+          <div class="acp-seek-bar-ball">
+          </div>
+        </div>
+        <div class="acp-seek-catcher">
+        </div>
+      </div>
+      <div class="acp-end-space">
+      </div>
+      <i class="material-icons acp-control-button acp-undo-button">&#xE166;</i>
+      <i class="material-icons acp-control-button acp-redo-button">&#xE15A;</i>
+      <div class="acp-end-space">
+      </div>
+      <div class="acp-wait-bar">
+      </div>
+      <div class="acp-wait-fade">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var manifest = <%= @manifest.to_json.html_safe %>;
+    var playerElement = document.querySelector("#achso_player");
+    var player = new AchSoPlayer(playerElement, manifest, null);
+  </script>
+
+</body>
+</html>

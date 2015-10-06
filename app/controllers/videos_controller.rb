@@ -57,6 +57,17 @@ class VideosController < ApplicationController
     end
   end
 
+  def player
+    # TODO: Create secure token?
+    if sss
+      @manifest = sss.video_manifest_override_auth(params[:id]).read_manifest
+    else
+      @manifest = Video.find_by_uuid(params[:id]).read_manifest
+    end
+
+    render layout: false
+  end
+
   def create
     @video = Video.from_manifest(request.body.read, current_user)
     if sss

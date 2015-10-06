@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     end
     member do
       resources 'shares', only: [:index, :create, :destroy], param: :group
+      get 'player'
     end
   end
 
