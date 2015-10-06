@@ -65,6 +65,9 @@ class VideosController < ApplicationController
       @manifest = Video.find_by_uuid(params[:id]).read_manifest
     end
 
+    # Allow to embed in an iframe
+    response.headers.delete "X-Frame-Options"
+
     render layout: false
   end
 
