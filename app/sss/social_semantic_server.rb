@@ -247,10 +247,6 @@ class SocialSemanticServer
     videos.select { |video| video.uuid == uuid }.first
   end
 
-  def video_manifest_override_auth(uuid)
-    VideoManifest.where(uuid: uuid).first
-  end
-
   def create_video(video)
     post_json '/videos/videos',
       uuid: video.uuid,
