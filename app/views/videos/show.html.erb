@@ -71,6 +71,13 @@
       <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
     <% end %>
 
+    <div>
+      <input type="text" onclick="this.focus();this.select();" readonly
+      value='[iframe src="<%= player_video_url(@video) %>" width="480" height="240" allowfullscreen=""]'>
+      <input type="text" onclick="this.focus();this.select();" readonly
+      value='&lt;iframe src="<%= player_video_url(@video) %>" width="480" height="240" allowfullscreen&gt;'>
+    </div>
+
     <p>By: <%= @video.author.name %></p>
     </p>
   </div>
