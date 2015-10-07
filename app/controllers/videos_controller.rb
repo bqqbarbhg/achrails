@@ -57,6 +57,20 @@ class VideosController < ApplicationController
     end
   end
 
+  def player
+    # TODO: Create secure token?
+    if sss?
+      @manifest = VideoManifest.where(uuid: params[:id]).first.read_manifest
+    else
+      @manifest = Video.find_by_uuid(params[:id]).read_manifest
+    end
+
+    # Allow to embed in an iframe
+    response.headers.delete "X-Frame-Options"
+
+    render layout: false
+  end
+
   def create
     @video = Video.from_manifest(request.body.read, current_user)
     if sss

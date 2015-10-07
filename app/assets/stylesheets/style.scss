@@ -19,7 +19,19 @@
     display: none !important;
 }
 
-#achso_player {
-    max-height: 90vh;
+#achso_player.acp-inline {
+    height: 90vh;
+}
+
+#achso_embed_player.acp-inline {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+.acp-force-hidden-no-layout {
+    display: none !important;
 }
 

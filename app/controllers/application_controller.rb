@@ -93,6 +93,10 @@ class ApplicationController < ActionController::Base
     @sss || make_sss(user)
   end
 
+  def sss?
+    return SSS
+  end
+
   def make_sss(user)
     @sss = begin
       sss_url = ENV["SSS_URL"]

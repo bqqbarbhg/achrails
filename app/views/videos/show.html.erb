@@ -11,7 +11,7 @@
 <div class="mdl-grid">
 
   <div class="mdl-cell mdl-cell--8-col">
-  <div class="acp-player acp-noselect" id="achso_player">
+  <div class="acp-player acp-inline acp-noselect" id="achso_player">
     <div class="acp-video-background">
       <div class="acp-video-wrapper">
         <video class="acp-video">
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="acp-controls">
-      <i class="material-icons acp-control-button acp-play-button"></i>
+      <i class="material-icons acp-control-button acp-play-button acp-disabled">&#xE037;</i>
       <div class="acp-seek-bar">
         <div class="acp-seek-bar-filler">
           <div class="acp-seek-bar-ball">
@@ -37,8 +37,14 @@
       </div>
       <div class="acp-end-space">
       </div>
-      <i class="material-icons acp-control-button acp-undo-button">&#xE166;</i>
-      <i class="material-icons acp-control-button acp-redo-button">&#xE15A;</i>
+      <% if current_user and policy(@video).update? %>
+        <i class="material-icons acp-control-button acp-undo-button acp-disabled">&#xE166;</i>
+        <i class="material-icons acp-control-button acp-redo-button acp-disabled">&#xE15A;</i>
+      <% else %>
+        <i class="material-icons acp-control-button acp-undo-button acp-force-hidden-no-layout">&#xE166;</i>
+        <i class="material-icons acp-control-button acp-redo-button acp-force-hidden-no-layout">&#xE15A;</i>
+      <% end %>
+      <i class="material-icons acp-control-button acp-fullscreen-button acp-disabled">&#xE5D0;</i>
       <div class="acp-end-space">
       </div>
       <div class="acp-wait-bar">
@@ -87,6 +93,13 @@
         });
       </script>
     <% end %>
+
+    <div>
+      <input type="text" onclick="this.focus();this.select();" readonly
+      value='[iframe src="<%= player_video_url(@video) %>" width="480" height="240" allowfullscreen=""]'>
+      <input type="text" onclick="this.focus();this.select();" readonly
+      value='&lt;iframe src="<%= player_video_url(@video) %>" width="480" height="240" allowfullscreen&gt;'>
+    </div>
 
     <p>By: <%= @video.author.name %></p>
     </p>
