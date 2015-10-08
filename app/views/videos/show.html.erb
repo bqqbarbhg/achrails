@@ -95,10 +95,11 @@
     <% end %>
 
     <div>
-      <input type="text" onclick="this.focus();this.select();" readonly
-      value='[iframe src="<%= player_video_url(@video) %>" width="480" height="240" allowfullscreen=""]'>
-      <input type="text" onclick="this.focus();this.select();" readonly
-      value='&lt;iframe src="<%= player_video_url(@video) %>" width="480" height="240" allowfullscreen&gt;'>
+      <input id="share_at_time" type="checkbox">
+      <label id="share_at_time_label" for="share_at_time"></label>
+      <input id="share_link" type="text" onclick="this.focus();this.select();" readonly>
+      <input id="share_wordpress" type="text" onclick="this.focus();this.select();" readonly>
+      <input id="share_html" type="text" onclick="this.focus();this.select();" readonly>
     </div>
 
     <p>By: <%= @video.author.name %></p>
@@ -150,5 +151,58 @@
       },
     });
   }
+
+  var baseUrl = "<%=j player_video_url(@video) %>";
+
+  var prevUrl = null;
+  function updateCopyBoxes(url) {
+    if (prevUrl == url)
+      return;
+    prevUrl = url;
+
+    var templates = {
+      link: '$URL',
+      wordpress: '[iframe src="$URL" width="$WIDTH" height="$HEIGHT" allowfullscreen=""]',
+      html: '<iframe src="$URL" width="$WIDTH" height="$HEIGHT" allowfullscreen></iframe>',
+    };
+
+    for (var type in templates) {
+      var template = templates[type];
+      var inputBox = document.querySelector("#share_" + type);
+
+      inputBox.value = (template
+        .replace("$URL", url)
+        .replace("$WIDTH", "800")
+        .replace("$HEIGHT", "600"));
+    }
+  }
+
+  var shareTimeCheckbox = document.querySelector("#share_at_time");
+  var shareTimeLabel = document.querySelector("#share_at_time_label");
+
+  function updateShareTimer() {
+    var time = player.time || 0.0;
+    var minutes = Math.floor(time / 60.0);
+    var seconds = Math.floor(time % 60.0);
+    var timeText = minutes + ":";
+    if (seconds < 10) {
+      timeText += "0" + seconds;
+    } else {
+      timeText += seconds;
+    }
+
+    shareTimeLabel.innerHTML = '<%=j t(:start_at) %> ' + timeText;
+
+    if (shareTimeCheckbox.checked) {
+      updateCopyBoxes(baseUrl + "#t=" + time.toFixed(2) + "s");
+    } else {
+      updateCopyBoxes(baseUrl);
+    }
+  }
+  updateShareTimer();
+
+  window.setInterval(updateShareTimer, 200);
+
+  updateCopyBoxes(baseUrl);
 
 </script>

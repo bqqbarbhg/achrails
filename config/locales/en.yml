@@ -50,4 +50,5 @@ en:
   group_delete_confirm: 'Are you sure you want to delete the group %{group}?'
   video_delete_confirm: 'Are you sure you want to delete this video?'
   failed_to_create_group: 'Failed to create group'
+  start_at: 'Start at'
 
