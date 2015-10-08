@@ -66,6 +66,13 @@ class VideosController < ApplicationController
     end
 
     # Anonymize the manifest (for now)
+    #
+    # This is done since there is no user visible info about the authors or
+    # location in the player, but the source still contains the manifest, so
+    # users could embed the player with a false sense of privacy while the
+    # source code leaks info.
+    # TODO: If some of this data is made visible then don't remove that piece
+    #       of data here.
     @manifest["author"] = nil
     @manifest["location"] = nil
     for annotation in @manifest["annotations"]
