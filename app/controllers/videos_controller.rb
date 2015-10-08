@@ -65,6 +65,13 @@ class VideosController < ApplicationController
       @manifest = Video.find_by_uuid(params[:id]).read_manifest
     end
 
+    # Anonymize the manifest (for now)
+    @manifest["author"] = nil
+    @manifest["location"] = nil
+    for annotation in @manifest["annotations"]
+      annotation["author"] = nil
+    end
+
     # Allow to embed in an iframe
     response.headers.delete "X-Frame-Options"
 
