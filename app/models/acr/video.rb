@@ -13,7 +13,8 @@ class Video < ActiveRecord::Base
       title: json["title"],
       uuid: json["id"],
       author: user,
-      manifest_json: json)
+      manifest_json: json,
+      video_url: Util.normalize_url(json["videoUri"]))
   end
 
   def read_manifest

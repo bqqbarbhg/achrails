@@ -142,6 +142,23 @@ class VideosController < ApplicationController
     end
   end
 
+  def find
+    # TODO: Authorization?
+    video_url = Util.normalize_url(params[:video])
+
+    if sss?
+      @video = VideoManifest.where(video_url: video_url).first
+    else
+      @video = Video.where(video_url: video_url).first
+    end
+
+    if @video
+      render json: @video.read_manifest
+    else
+      render nothing: true, status: :not_found
+    end
+  end
+
 protected
   def video_params(manifest)
     json = JSON.parse(manifest)
