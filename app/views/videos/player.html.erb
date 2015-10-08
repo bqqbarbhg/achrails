@@ -54,7 +54,17 @@
   <script>
     var manifest = <%= @manifest.to_json.html_safe %>;
     var playerElement = document.querySelector("#achso_embed_player");
-    var player = new AchSoPlayer(playerElement, manifest, null);
+    var startTime = 0.0;
+    if (window.location.hash) {
+      var format = /t=(\d+(.\d+)?)s/;
+      var match = format.exec(window.location.hash);
+      if (match && match[1]) {
+        startTime = parseFloat(match[1]);
+      }
+    }
+    var player = new AchSoPlayer(playerElement, manifest, null, {
+        startTime: startTime,
+    });
   </script>
 
 </body>
