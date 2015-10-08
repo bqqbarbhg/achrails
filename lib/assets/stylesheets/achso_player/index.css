@@ -232,6 +232,23 @@
     transition: opacity 0.2s ease-out;
 }
 
+.acp-overlay a:link {
+    color: #fff;
+    text-decoration: none;
+}
+.acp-overlay a:visited {
+    color: #fff;
+    text-decoration: none;
+}
+.acp-overlay a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+.acp-overlay a:active {
+    color: #fff;
+    text-decoration: none;
+}
+
 .acp-overlay-hidden {
     opacity: 0;
 }
