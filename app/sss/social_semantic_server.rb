@@ -1,9 +1,18 @@
 class SocialSemanticServer
 
-  def initialize(url, bearer)
+  def log(message)
+    Rails.logger.debug("@SSS: as #{@person_id}: #{message}")
+  end
+
+  def logcall(message)
+    Rails.logger.debug("@SSS-CALL: as #{@person_id}: #{message}")
+  end
+
+  def initialize(url, bearer, person_id)
     @users = { }
     @videos = { }
     @groups = { }
+    @person_id = person_id
 
     uri = URI(url)
 
@@ -19,15 +28,21 @@ class SocialSemanticServer
     if response.status >= 400
       body_json = JSON.parse(response.body)
       if body_json && body_json["id"] == "authOIDCUserInfoRequestFailed"
+        log "Authentication failed"
         raise SssConnectError
       else
-        raise SssInternalError
+        log "Response error with status #{response.status}"
+        raise SssInternalError, response.body
       end
     end
     response
+  rescue JSON::ParserError
+    log "Response error with status #{response.status}"
+    raise SssInternalError, response.body
   end
 
   def get(path)
+    logcall "GET #{path}"
     validate_response @conn.get(@root + path)
   end
 
@@ -38,6 +53,7 @@ class SocialSemanticServer
   end
 
   def post(path, content_type, body)
+    logcall "POST #{path} #{body}"
     validate_response @conn.post(@root + path, body,
       'Content-Type' => content_type)
   end
@@ -49,10 +65,12 @@ class SocialSemanticServer
   end
 
   def delete(path)
+    logcall "DELETE #{path}"
     validate_response @conn.delete(@root + path)
   end
 
   def delete_json(path, body)
+    logcall "DELETE #{path} #{body}"
     response = @conn.run_request(:delete, @root + path, body.to_json,
       'Content-Type' => 'application/json')
     data = JSON.parse(response.body)
@@ -83,7 +101,8 @@ class SocialSemanticServer
     @groups[id] ||= begin
       group = Group.new(
         id: id,
-        name: circle_hash[:label]
+        name: circle_hash[:label],
+        description: circle_hash[:description]
       )
 
       author_id = circle_hash[:author][:id]
@@ -131,24 +150,32 @@ class SocialSemanticServer
   def group_add_videos(group, videos)
     ids = videos.map(&:uuid).join(',')
     post_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
+    log "Added #{ids} to group #{group.id}"
   end
 
   def group_remove_videos(group, videos)
     ids = videos.map(&:uuid).join(',')
     delete_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
+    log "Removed #{ids} from group #{group.id}"
   end
 
   def create_group(params)
+    return nil if params[:name].blank?
+
     hash = post_json '/circles/circles/',
       label: params[:name],
       description: params[:description] || ''
 
-    isolate_id(hash[:circle])
+    id = isolate_id(hash[:circle])
+    log "Created group #{id}"
+
+    id
   end
 
   def delete_group(group)
     id = group.id
     delete("/circles/circles/#{id}")
+    log "Deleted group #{id}"
   end
 
   def groups_for(user)
@@ -157,11 +184,18 @@ class SocialSemanticServer
 
   def join_group(group_id, user)
     hash = post_json("/circles/circles/#{group_id}/users/#{user.person_id}", { })
+    log "Joined user #{user.person_id} to group #{group_id}"
+  end
+
+  def leave_group(group, user)
+    hash = delete_json("/circles/circles/#{group.id}/users/#{user.person_id}", { })
+    log "Removed user #{user.person_id} from group #{group.id}"
   end
 
   def invite_to_group(group, emails)
     emails_s = emails.join(',')
     hash = post_json("/circles/circles/#{group.id}/users/invite/#{emails_s}", { })
+    log "Invited #{emails_s} to group #{group.id}"
   end
 
   def people
@@ -174,10 +208,10 @@ class SocialSemanticServer
       emails = people_arr.map &:email
       users = User.where(email: emails)
       users.each do |user|
-        people_map[user.person_id].name = user.name
+        people_map[user.person_id].name = user.name if people_map[user.person_id]
       end
 
-      people_map.select { |k,v| v.name }
+      people_map
     end
   end
 
@@ -194,6 +228,7 @@ class SocialSemanticServer
     @auth_person_cached ||= begin
       data = get_json('/auth/auth')
       user_id = isolate_id(data[:user])
+      log "Retrieved user ID: #{user_id}"
       person(user_id)
     end
   end
@@ -219,6 +254,7 @@ class SocialSemanticServer
       uuid: video.uuid,
       link: Rails.application.routes.url_helpers.video_url(video),
       label: video.title
+    log "Uploaded video #{video.uuid}"
   end
 
 end

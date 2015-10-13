@@ -57,6 +57,34 @@ class VideosController < ApplicationController
     end
   end
 
+  def player
+    # TODO: Create secure token?
+    if sss?
+      @manifest = VideoManifest.where(uuid: params[:id]).first.read_manifest
+    else
+      @manifest = Video.find_by_uuid(params[:id]).read_manifest
+    end
+
+    # Anonymize the manifest (for now)
+    #
+    # This is done since there is no user visible info about the authors or
+    # location in the player, but the source still contains the manifest, so
+    # users could embed the player with a false sense of privacy while the
+    # source code leaks info.
+    # TODO: If some of this data is made visible then don't remove that piece
+    #       of data here.
+    @manifest["author"] = nil
+    @manifest["location"] = nil
+    for annotation in @manifest["annotations"]
+      annotation["author"] = nil
+    end
+
+    # Allow to embed in an iframe
+    response.headers.delete "X-Frame-Options"
+
+    render layout: false
+  end
+
   def create
     @video = Video.from_manifest(request.body.read, current_user)
     if sss
@@ -108,7 +136,10 @@ class VideosController < ApplicationController
 
     @video.destroy
 
-    redirect_to action: :index
+    respond_to do |format|
+      format.html { redirect_to action: :index }
+      format.json { render nothing: true, status: :no_content }
+    end
   end
 
 protected

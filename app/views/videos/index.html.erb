@@ -1,13 +1,27 @@
+<% content_for :homelink do %>
+  <a href="#" onClick="closeActivity()" id="ach_so_link">
+   <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
+  </a>
+<% end %>
+
+<% content_for :pagetitle do %>
+    Videos
+<% end %>
+
 <ul>
 <% for video in @videos %>
   <li><%= link_to(video.title, video_path(video)) %></li>
 <% end %>
 </ul>
 
+<% unless Rails.env.production? %>
+
 <% if policy(:video).create? %>
   <%= form_tag("/videos/upload", multipart: true) do %>
     <%= file_field_tag 'manifest' %>
-    <%= submit_tag t(:upload_video) %>
+    <%= submit_tag t(:upload_video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
   <% end %>
+<% end %>
+
 <% end %>
 

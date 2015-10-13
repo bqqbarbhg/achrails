@@ -1,9 +1,25 @@
-<h1><%= @group.name %></h1>
-<% if policy(@group).destroy? %>
-  <%= link_to(t(:delete_group), @group, method: :delete) %>
-<% end %>
 
-<h2>Members</h2>
+<% content_for :pagetitle do %>
+  <%= @group.name %>
+<% end %>
+<div class="content mdl-grid">
+
+<div class="mdl-cell mdl-cell--12-col">
+<h3>Videos</h3>
+
+<ul>
+<% if @group.videos.each do |video| %>
+  <li>
+    <%= link_to(video.title, video) %>
+  </li>
+<% end.empty? %>
+    No videos shared with this group yet.
+<% end %>
+</ul>
+</div>
+<div class="mdl-layout-spacer"></div>
+<div class="mdl-cell mdl-cell--4-col">
+<h3>Members</h3>
 
 <ul>
 <% for membership in @group.memberships %>
@@ -11,52 +27,101 @@
   <li>
     <%= user.name %>
     <% if membership.admin? %>
-      (admin)
+      <span class="admin-badge">admin</span>
     <% end %>
   </li>
 <% end %>
 </ul>
 
-<h2>Videos</h2>
-
-<ul>
-<% for video in @group.videos %>
-  <li>
-    <%= link_to(video.title, video) %>
-  </li>
-<% end %>
-</ul>
-
 <% if policy(@group).join? %>
-  <%= link_to(t(:join_group), join_group_path(@group), method: :post) %>
+  <%= link_to(t(:join_group), join_group_path(@group), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
 <% end %>
 <% if policy(@group).leave? %>
-  <%= link_to(t(:leave_group), leave_group_path(@group), method: :post) %>
+  <%= link_to(t(:leave_group), leave_group_path(@group), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
 <% end %>
-
-<% unless sss # @SSS_Support(edit circles) %>
-<% if policy(@group).edit? %>
-  <%= link_to(t(:edit_group), edit_group_path(@group)) %>
-<% end %>
-<% end %>
+</div>
 
 <% if policy(@group).invite? %>
+<div class="mdl-layout-spacer"></div>
+
+<div class="mdl-cell mdl-cell--4-col">
+<h3>Invite new members</h3>
+
 <%= form_tag(invite_group_path(@group)) do %>
     <div id="addresses">
     </div>
     <noscript>
-        <% (0..9).each do |n| %>
-          <%= text_field_tag 'address[#{n.to_s}]', '', placeholder: 'Add address to invite' %>
+        <% (0..9).each do |n| %>        
+          <div class="mdl-textfield mdl-js-textfield">
+          <%= text_field_tag 'address[#{n.to_s}]', '', placeholder: 'Add address to invite', class: "mdl-textfield__input" %>
+          </div>
         <% end %>
     </noscript>
-    <%= submit_tag 'Create' %>
+<div class="mdl-cell mdl-cell--6-col">
+    <%= button_tag 'Add contacts', type: "button", id: "add_contacts_button", class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored force-hidden-no-layout" %>
+</div>
+<div class="mdl-cell mdl-cell--6-col">
+    <%= submit_tag 'Send invites', class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+</div>
 <% end %>
 <% end %>
+</div>
+<div class="mdl-layout-spacer"></div>
+<div class="mdl-cell mdl-cell--8-col">
+<% unless sss # @SSS_Support(edit circles) %>
+<% if policy(@group).edit? %>
+  <%= link_to(t(:edit_group), edit_group_path(@group), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+<% end %>
+<% end %>
+
+<% if policy(@group).destroy? %>
+  <noscript>
+    <%= link_to(t(:delete_group), @group, method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+  </noscript>
+  <%= button_tag(t(:delete_group), id: :delete_button, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+
+  <script>
+    // @Copy-Paste(confirm delete button)
+    var $delete_button = $("#delete_button");
+    $delete_button.removeClass("force-hidden-no-layout")
+    $delete_button.on("click", function() {
+      // TODO: Material design dialog?
+      // MDL didn't offer a solution when this was written
+      if (confirm('<%=j t(:group_delete_confirm, group: @group.name) %>')) {
+        var token = $('meta[name=csrf-token]').attr('content');;
+        var http = new HTTP();
+        http.globalHeader("X-CSRF-Token", token);
+        http.deleteJson('', {
+          success: function() {
+            window.location.href = '<%=j groups_path() %>';
+          }
+        })
+      }
+    });
+  </script>
+
+<% end %>
+
+</div>
 
 <script>
 
+if (typeof Android !== 'undefined') {
+  var $addContactsButton = $('#add_contacts_button');
+  $addContactsButton.removeClass('force-hidden-no-layout');
+  $addContactsButton.on('click', function() {
+    Android.openContactPicker();
+  });
+}
+
+function addInviteEmail(email) {
+    var $container = $("#addresses");
+    $container.children().last().val(email);
+    updateAddressList();
+}
+
 function makeInput() {
-    var $input = $('<input type="email" placeholder="Add address to invite">');
+    var $input = $('<input type="email" class="mdl-textfield__input" placeholder="Add address to invite">');
 
     $input.on('input', function(e) {
 

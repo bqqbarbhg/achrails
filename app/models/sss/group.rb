@@ -1,5 +1,5 @@
 if SSS
-class Group < Struct.new(:id, :name, :memberships, :videos)
+class Group < Struct.new(:id, :name, :description, :memberships, :videos)
   include ActiveModel::Model
   def initialize(hash=nil)
     @persisted = !!hash

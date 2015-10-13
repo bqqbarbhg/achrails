@@ -1,93 +1,37 @@
-body {
-    font: 100% sans-serif;
+
+.group-card.mdl-card {
+    height: 96px;
+    min-height: 128px;
 }
 
-.share-button {
-    padding: 20px 10px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: pointer;
-    height: 40px;
-
-    transition: all 0.2s;
+.admin-badge {
+    background: rgb(255,82,82);
+    color: white;
+    padding: 0.2em;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
 }
 
-.share-button.shared {
+.error-dump {
+    white-space: pre-wrap;
 }
 
-.share-button.pending {
-    cursor: default;
+.force-hidden-no-layout {
+    display: none !important;
 }
 
-.share-icon-container {
-    width: 50px;
-    height: 10px;
+#achso_player.acp-inline {
+    height: 90vh;
 }
 
-.share-icon {
+#achso_embed_player.acp-inline {
+    width: 100%;
+    height: 100%;
     position: absolute;
-    opacity: 0.0;
-}
-.shared > .share-icon.fa-check-square-o {
-    opacity: 1.0;
-}
-.unshared > .share-icon.fa-square-o {
-    opacity: 1.0;
-}
-.mixed > .share-icon.fa-square {
-    opacity: 1.0;
-}
-.shared.pending > .share-icon.fa-check-square-o {
-    opacity: 0.0;
-}
-.unshared.pending > .share-icon.fa-square-o {
-    opacity: 0.0;
-}
-.mixed.pending > .share-icon.fa-square {
-    opacity: 0.0;
+    top: 0;
+    bottom: 0;
 }
 
-.share-text {
-    position: relative;
-    left: 40px;
-    top: 6px;
+.acp-force-hidden-no-layout {
+    display: none !important;
 }
 
-@keyframes spinner {
-    to {transform: rotate(360deg);}
-}
- 
-@-webkit-keyframes spinner {
-    to {-webkit-transform: rotate(360deg);}
-}
-
-.pending > .share-spinner {
-    width: 24px;
-    height: 24px;
-    position: absolute; 
-    z-index: 1
-}
-
-.pending > .share-spinner:before {
-    content: 'Loading…';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 16px;
-    height: 16px;
-    margin-top: -10px;
-    margin-left: -10px;
-}
-
-.pending > .share-spinner:not(:required):before {
-    content: '';
-    border-radius: 50%;
-    border: 2px solid rgba(0, 0, 0, 1.0);
-    border-bottom-color: rgba(0, 0, 0, 0.0);
-    animation: spinner 0.4s linear infinite;
-    -webkit-animation: spinner 0.4s linear infinite;
-}

@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
+
+  before_action :get_refresh_token_from_header
   
   # CSRF breaks dev login, but it's not needed in dev environment anyway
   if Rails.env.production?
@@ -12,29 +14,57 @@ class ApplicationController < ActionController::Base
   # checks are mostly done now in policies or per route authenticate_user! calls.
   # before_action :authenticate_user!
 
+  def get_refresh_token_from_header
+    refresh_token = request.headers['HTTP_X_REFRESH_TOKEN']
+    session['ll_oidc_refresh_token'] = refresh_token if refresh_token
+  end
+
   def authenticate_and_redirect_back
     return false if current_user
     force_authenticate_and_redirect_back
-    true
   end
 
   def force_authenticate_and_redirect_back
     store_location_for(:user, request.fullpath)
     if Rails.env.production?
+      if current_user
+        refresh_token = session["ll_oidc_refresh_token"]
+        if refresh_token && !@reauthenticated
+          client = OAuth2::Client.new(ENV["LL_OIDC_CLIENT_ID"], ENV["LL_OIDC_CLIENT_SECRET"],
+                                      site: ENV["LL_OIDC_HOST"],
+                                      token_url: "/o/oauth2/token")
+          token = client.get_token({
+            client_id: client.id,
+            client_secret: client.secret,
+            grant_type: 'refresh_token',
+            refresh_token: refresh_token})
+
+          if token
+            current_user.bearer_token = token.token
+            current_user.save!
+            session["ll_oidc_refresh_token"] = token.refresh_token
+            @reauthenticated = true
+            make_sss(current_user)
+            send(action_name)
+            return true
+          end
+        end
+      end
       redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+      true
     else
-      redirect_to user_omniauth_authorize_url(:developer)
+      false
     end
   end
 
-  def render_forbidden
-    # TODO: Real forbidden
-    render nothing: true, status: :forbidden
+  def render_forbidden(explanation='')
+    @explanation = explanation
+    render "shared/forbidden", status: :forbidden
   end
 
-  def render_sss_error
-    # TODO: Real SSS error
-    render nothing: true, status: :internal_server_error
+  def render_sss_error(exception)
+    @sss_error = exception.message
+    render "shared/sss_error"
   end
 
   # Try to return back to the page the login originated from
@@ -58,10 +88,20 @@ class ApplicationController < ActionController::Base
 
     user ||= current_user
 
-    @sss ||= begin
+    raise SssConnectError unless user
+
+    @sss || make_sss(user)
+  end
+
+  def sss?
+    return SSS
+  end
+
+  def make_sss(user)
+    @sss = begin
       sss_url = ENV["SSS_URL"]
       bearer = user.bearer_token
-      SocialSemanticServer.new(sss_url, bearer) if sss_url
+      SocialSemanticServer.new(sss_url, bearer, user.person_id) if sss_url
     end
   end
 

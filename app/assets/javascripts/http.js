@@ -54,6 +54,9 @@ HTTP.prototype.get = function(url, options) {
 HTTP.prototype.post = function(url, body, options) {
     this.request('POST', url, body, options);
 };
+HTTP.prototype.put = function(url, body, options) {
+    this.request('PUT', url, body, options);
+};
 HTTP.prototype.patch = function(url, body, options) {
     this.request('PATCH', url, body, options);
 };
@@ -75,6 +78,14 @@ HTTP.prototype.postJson = function(url, body, options) {
        "Accept": "application/json",
     });
     this.post(url, JSON.stringify(body), options);
+};
+HTTP.prototype.putJson = function(url, body, options) {
+    options = options || { };
+    options.headers = _.assign(options.headers || { }, {
+       "Content-Type": "application/json",
+       "Accept": "application/json",
+    });
+    this.put(url, JSON.stringify(body), options);
 };
 HTTP.prototype.patchJson = function(url, body, options) {
     options = options || { };

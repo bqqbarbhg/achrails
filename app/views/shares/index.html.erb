@@ -1,83 +1,120 @@
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js">
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js">
-</script>
-
-<h2>Share <%= @videos.count %> videos</h2>
-
-<% for share_group in @share_groups %>
-  <%# TODO: Rename share-button class, it trips up some ad-blockers %>
-  <div id="group<%= share_group.group.id %>" class="share-button <%= share_group.shareclass %>">
-    <i class="fa fa-square-o fa-2x share-icon"></i>
-    <div class="share-spinner"></div>
-    <i class="fa fa-check-square-o fa-2x share-icon"></i>
-    <i class="fa fa-square fa-2x share-icon"></i>
-
-    <div class="share-text"><%= share_group.group.name %></div>
-  </div>
+<% content_for :homelink do %>
+  <a href="#" onClick="closeActivity()" id="ach_so_link">
+   <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
+  </a>
 <% end %>
 
-<script>
-  $(function() {
-    FastClick.attach(document.body);
-  });
+<% content_for :pagetitle do %>
+  <% if @videos.count==1 %>
+    Share a video with group
+  <% else %>
+    Share <%= @videos.count %> videos with group
+  <% end %>
+<% end %>
 
-  var groups = document.querySelectorAll(".share-button");
+<div class="mdl-grid">
+
+<div class="mdl-cell mdl-cell--12-col">
+<p>
+<% for video in @videos %>
+<%= video.title %></br>
+<% end %>
+</p>
+</div>
+<div class="mdl-cell mdl-cell--4-col">
+
+<% for share_group in @share_groups %>
+    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" id="grouplabel<%= share_group.group.id %>" for="group<%= share_group.group.id %>"> 
+    <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,class:"mdl-switch__input" %> 
+      <span class="mdl-switch__label">
+        <%= share_group.group.name %>
+        <% if share_group.shareclass == :mixed %>
+          <i class="mixed_warning">Some of the videos are shared</i>
+        <% end %>
+      </span>
+    </label>
+    <div class="mld-spacer"></div>
+    <br/>
+<% end %>
+
+</div>
+
+<div class="mdl-cell mdl-cell--4-col">
+  <div class="mdl-spinner mdl-js-spinner" id="sharing_spinner"></div>
+</div>
+
+</div>
+<script>
+  //$(function() {
+  //  FastClick.attach(document.body);
+  //});
+
+  var groups = document.querySelectorAll(".mdl-switch__input");
   var pending = { };
-  var state = { };
+  var state = {
+  <% for share_group in @share_groups %>
+    '<%=j share_group.group.id.to_s %>': <%= (share_group.shareclass != :unshared) ? 'true' : 'false' %>,
+  <% end %>
+  };
 
   var token = $('meta[name=csrf-token]').attr('content');;
   var http = new HTTP();
   http.globalHeader("X-CSRF-Token", token);
 
-  var classyGroup = beClassy({
-    state: ['unshared', 'mixed', 'shared'],
-    pending: 'pending'
-  });
+  refresh();
 
   for (var i = 0; i < groups.length; i++) {
     var group = groups[i];
     var id = group.id.substring(5);
+    var label = document.getElementById("grouplabel" + id);
 
     pending[id] = false;
-    state[id] = classyGroup.state(group);
 
-    group.addEventListener("click", (function(id) {
+    group.addEventListener("click", (function(group, label, id) {
       return function(e) {
         if (pending[id]) {
           return;
         }
 
         // Mixed does upload with this logic
-        state[id] = state[id] == 2 ? 0 : 2;
+        state[id] = !state[id];
         pending[id] = true;
+        group.disabled = true;
 
-        var success = (function(id) { return function(xhr) {
-          console.log(xhr, id);
+        var success = (function(group, label, id) { return function(xhr) {
+          <% if Rails.env.development? %>
+            console.log(xhr, id);
+          <% end %>
           pending[id] = false;
+          group.disabled = false;
+
+          // @Workaround(mdl): MDL doesn't remove the is-disabled class
+          // automatically for some reason, even though the documentation
+          // implies that it should.
+          label.classList.remove("is-disabled");
+
           // TODO: Figure out a response format for multiple share
           //shared[id] = JSON.parse(xhr.response).indexOf(id) >= 0;
+          $('.mixed_warning').remove();
           refresh();
-        }; })(id);
+        }; })(group, label, id);
 
-        var error = function(xhr) {
-          console.log(xhr);
+        var error = function(xhr) {          
           <% if Rails.env.development? %>
-          // In development environment flush the page with the error message.
-          document.open();
-          document.write(xhr.response);
-          document.close();
+            console.log(xhr);
+            // In development environment flush the page with the error message.
+            document.open();
+            document.write(xhr.response);
+            document.close();
           <% end %>
+          refresh();
         };
 
         var params = {
           success: success,
           error: error,
         }
-
+        $('#sharing_spinner').addClass('is-active');
         if (state[id]) {
           http.postJson("", { 'group': id }, params);
         } else {
@@ -86,7 +123,7 @@
 
         refresh();
       }
-    })(id));
+    })(group, label, id));
   }
 
   function refresh() {
@@ -94,10 +131,11 @@
       var group = groups[i];
       var id = group.id.substring(5);
 
-      classyGroup(group, {
-        state: state[id],
-        pending: pending[id],
-      });
+      var show_spinner = true;
+      for (var k in pending) {
+          if (pending[k]) show_spinner = false;
+      }
+      if (!show_spinner) $('#sharing_spinner').removeClass('is-active');
     }
   }
 

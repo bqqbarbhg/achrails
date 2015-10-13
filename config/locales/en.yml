@@ -36,11 +36,19 @@ en:
       listed: "This group is public and shown to everyone."
   action_fail:
     generic: 'More permissions are required to complete the action.'
-    log_in: 'Ach so needs to access your profile and openid to log in.'
+    log_in: 'Ach so needs to access your profile, email and openid to log in.'
     accept_invitation: 'Ach so requires access to your email to accept invitations.'
   user_info:
     email: 'email'
     openid: 'openid'
     profile: 'profile'
   joined_group: "Joined group %{group}"
+  invite_email_expected: 'Expected to join with email %{email}'
+  users_invited:
+    one: 'Invited %{count} person to %{group}'
+    other: 'Invited %{count} people to %{group}'
+  group_delete_confirm: 'Are you sure you want to delete the group %{group}?'
+  video_delete_confirm: 'Are you sure you want to delete this video?'
+  failed_to_create_group: 'Failed to create group'
+  start_at: 'Start at'
 

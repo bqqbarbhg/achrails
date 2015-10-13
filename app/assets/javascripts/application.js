@@ -12,4 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require material
+//= require lodash
+//= require achso_player
 //= require_tree .

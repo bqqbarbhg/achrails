@@ -61,7 +61,12 @@ class GroupsController < ApplicationController
       group_id = @group.id
     end
 
-    redirect_to action: :show, id: group_id
+    if group_id.nil?
+      flash[:error] = t(:failed_to_create_group)
+      redirect_to action: :index
+    else
+      redirect_to action: :show, id: group_id
+    end
   end
 
   def update
@@ -93,7 +98,10 @@ class GroupsController < ApplicationController
       group.destroy
     end
 
-    redirect_to action: :index
+    respond_to do |format|
+      format.html { redirect_to action: :index }
+      format.json { render nothing: true, status: :no_content }
+    end
   end
 
   def join
@@ -106,12 +114,18 @@ class GroupsController < ApplicationController
   end
 
   def leave
-    # @SSS_Support(list all groups)
-    @group = Group.find(params[:id])
-    authorize @group
+    if sss
+      @group = sss.group(params[:id])
+      authorize @group
 
-    @group.leave(current_user)
-    redirect_to action: :show
+      sss.leave_group(@group, current_user)
+    else
+      @group = Group.find(params[:id])
+      authorize @group
+
+      @group.leave(current_user)
+    end
+    redirect_to action: :index
   end
 
   def invite
@@ -140,8 +154,10 @@ class GroupsController < ApplicationController
       InvitationMailer.invite_email(invitation, @group.name).deliver_later
     end
 
+    flash[:notice] = t(:users_invited, count: address_list.length, group: @group.name)
+
     if sss
-      sss.invite_to_group(@group, address_list)
+      sss.invite_to_group(@group, address_list) if address_list.length > 0
     end
 
     redirect_to action: :show
@@ -149,7 +165,7 @@ class GroupsController < ApplicationController
 
 protected
   def group_params
-    params.require(:group).permit(:name, :visibility)
+    params.require(:group).permit(:name, :description, :visibility)
   end
 end
 

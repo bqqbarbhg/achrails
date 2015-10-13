@@ -25,7 +25,8 @@ module OmniAuth
 
       extra do
         {
-          'bearer': access_token.token
+          bearer: access_token.token,
+          refresh: access_token.refresh_token,
         }
       end
 

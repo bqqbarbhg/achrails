@@ -1,12 +1,208 @@
-
-<h1><%= @video.title %></h1>
-By: <%= @video.author.name %>
-
-<% if policy(@video).share? %>
-  <%= link_to(t(:share_video), shares_path(@video)) %>
+<% content_for :homelink do %>
+  <a href="#" onClick="closeActivity()" id="ach_so_link">
+   <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
+  </a>
 <% end %>
 
-<% if policy(@video).destroy? %>
-  <%= link_to(t(:delete_video), video_path(@video), method: :delete) %>
+<% content_for :pagetitle do %>
+    <%= @video.title %>
 <% end %>
 
+<div class="mdl-grid">
+
+  <div class="mdl-cell mdl-cell--8-col">
+  <div class="acp-player acp-inline acp-noselect" id="achso_player">
+    <div class="acp-video-background">
+      <div class="acp-video-wrapper">
+        <video class="acp-video">
+        </video>
+      </div>
+      <div class="acp-annotation-edit">
+        <input class="acp-annotation-text-input" type="text" />
+        <button class="acp-annotation-delete-button"><%= t(:delete) %></button>
+        <button class="acp-annotation-save-button"><%= t(:save) %></button>
+      </div>
+      <div class="acp-subtitles">
+      </div>
+    </div>
+    <div class="acp-controls">
+      <i class="material-icons acp-control-button acp-play-button acp-disabled">&#xE037;</i>
+      <div class="acp-seek-bar">
+        <div class="acp-seek-bar-filler">
+          <div class="acp-seek-bar-ball">
+          </div>
+        </div>
+        <div class="acp-seek-catcher">
+        </div>
+      </div>
+      <div class="acp-end-space">
+      </div>
+      <% if current_user and policy(@video).update? %>
+        <i class="material-icons acp-control-button acp-undo-button acp-disabled">&#xE166;</i>
+        <i class="material-icons acp-control-button acp-redo-button acp-disabled">&#xE15A;</i>
+      <% else %>
+        <i class="material-icons acp-control-button acp-undo-button acp-force-hidden-no-layout">&#xE166;</i>
+        <i class="material-icons acp-control-button acp-redo-button acp-force-hidden-no-layout">&#xE15A;</i>
+      <% end %>
+      <i class="material-icons acp-control-button acp-fullscreen-button acp-disabled">&#xE5D0;</i>
+      <div class="acp-end-space">
+      </div>
+      <div class="acp-wait-bar">
+      </div>
+      <div class="acp-wait-fade">
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="mdl-cell mdl-cell--4-col">
+
+    <div id="save_spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner"></div>
+
+    <% if policy(@video).update? %>
+      <%= link_to(t(:save), '#', onclick: 'saveChanges()', class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+    <% end %>
+
+    <% if policy(@video).share? %>
+      <%= link_to(t(:share_video), shares_path(@video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+    <% end %>
+
+    <% if policy(@video).destroy? %>
+      <noscript>
+          <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+      </noscript>
+      <%= button_tag(t(:delete_video), id: :delete_button, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+
+      <script>
+        // @Copy-Paste(confirm delete button)
+        var $delete_button = $("#delete_button");
+        $delete_button.removeClass("force-hidden-no-layout")
+        $delete_button.on("click", function() {
+          // TODO: Material design dialog?
+          // MDL didn't offer a solution when this was written
+          if (confirm('<%=j t(:video_delete_confirm) %>')) {
+            var token = $('meta[name=csrf-token]').attr('content');;
+            var http = new HTTP();
+            http.globalHeader("X-CSRF-Token", token);
+            http.deleteJson('', {
+              success: function() {
+                window.location.href = '<%=j videos_path() %>';
+              }
+            })
+          }
+        });
+      </script>
+    <% end %>
+
+    <div>
+      <input id="share_at_time" type="checkbox">
+      <label id="share_at_time_label" for="share_at_time"></label>
+      <input id="share_link" type="text" onclick="this.focus();this.select();" readonly>
+      <input id="share_wordpress" type="text" onclick="this.focus();this.select();" readonly>
+      <input id="share_html" type="text" onclick="this.focus();this.select();" readonly>
+    </div>
+
+    <p>By: <%= @video.author.name %></p>
+    </p>
+  </div>
+</div>
+
+<script>
+
+<% if current_user and policy(@video).update? %>
+  var user = {
+    "name": "<%=j current_user.name %>",
+    "uri": "",
+    "id": "<%=j current_user.person_id %>",
+  };
+<% else %>
+  var user = null;
+<% end %>
+
+  var manifest = <%= @video.read_manifest.to_json.html_safe %>;
+  var playerElement = document.querySelector("#achso_player");
+  var player = new AchSoPlayer(playerElement, manifest, user);
+
+  var saveSpinner = document.querySelector("#save_spinner");
+
+  var token = $('meta[name=csrf-token]').attr('content');
+  var http = new HTTP();
+  http.globalHeader("X-CSRF-Token", token);
+
+  function saveBegin() {
+    save_spinner.classList.add("is-active");
+  }
+
+  function saveEnd() {
+    save_spinner.classList.remove("is-active");
+  }
+
+  function saveChanges() {
+    var manifest = player.exportManifest();
+    saveBegin();
+    http.putJson('', manifest, {
+      success: function() {
+        saveEnd();
+        createToast("Saved video");
+      },
+      error: function() {
+        saveEnd();
+        createToast("Failed to upload video");
+      },
+    });
+  }
+
+  var baseUrl = "<%=j player_video_url(@video) %>";
+
+  var prevUrl = null;
+  function updateCopyBoxes(url) {
+    if (prevUrl == url)
+      return;
+    prevUrl = url;
+
+    var templates = {
+      link: '$URL',
+      wordpress: '[iframe src="$URL" width="$WIDTH" height="$HEIGHT" allowfullscreen=""]',
+      html: '<iframe src="$URL" width="$WIDTH" height="$HEIGHT" allowfullscreen></iframe>',
+    };
+
+    for (var type in templates) {
+      var template = templates[type];
+      var inputBox = document.querySelector("#share_" + type);
+
+      inputBox.value = (template
+        .replace("$URL", url)
+        .replace("$WIDTH", "800")
+        .replace("$HEIGHT", "600"));
+    }
+  }
+
+  var shareTimeCheckbox = document.querySelector("#share_at_time");
+  var shareTimeLabel = document.querySelector("#share_at_time_label");
+
+  function updateShareTimer() {
+    var time = player.time || 0.0;
+    var minutes = Math.floor(time / 60.0);
+    var seconds = Math.floor(time % 60.0);
+    var timeText = minutes + ":";
+    if (seconds < 10) {
+      timeText += "0" + seconds;
+    } else {
+      timeText += seconds;
+    }
+
+    shareTimeLabel.innerHTML = '<%=j t(:start_at) %> ' + timeText;
+
+    if (shareTimeCheckbox.checked) {
+      updateCopyBoxes(baseUrl + "#t=" + time.toFixed(2) + "s");
+    } else {
+      updateCopyBoxes(baseUrl);
+    }
+  }
+  updateShareTimer();
+
+  window.setInterval(updateShareTimer, 200);
+
+  updateCopyBoxes(baseUrl);
+
+</script>

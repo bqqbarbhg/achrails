@@ -7,7 +7,6 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 SSS = (ENV["SSS_URL"] && !ENV["DISABLE_SSS"])
-
 module Achrails
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -30,5 +29,10 @@ module Achrails
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Serve assets on Heroku
+    config.serve_static_assets = true
+
+    config.sass.load_paths << File.expand_path('lib/assets/stylesheets/')
   end
 end

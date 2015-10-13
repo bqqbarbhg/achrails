@@ -11,7 +11,7 @@ class InvitationsController < ApplicationController
     end
 
     unless @invitation.can_join?(current_user)
-      render_forbidden
+      render_forbidden t(:invite_email_expected, email: @invitation.expect_email)
       return
     end
 

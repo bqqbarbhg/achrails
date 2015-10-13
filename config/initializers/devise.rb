@@ -241,7 +241,7 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   if Rails.env.production?
     config.omniauth :learning_layers_oidc, ENV['LL_OIDC_CLIENT_ID'],
-      ENV['LL_OIDC_CLIENT_SECRET'], scope: 'openid,email,profile'
+      ENV['LL_OIDC_CLIENT_SECRET'], scope: 'openid,email,profile,offline_access'
   else
     config.omniauth :developer
   end
