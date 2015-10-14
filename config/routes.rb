@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   resources :videos do
     collection do
       post 'upload'
+      get 'find'
     end
     member do
       resources 'shares', only: [:index, :create, :destroy], param: :group
