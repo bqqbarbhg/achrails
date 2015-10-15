@@ -106,7 +106,7 @@ function documentLoaded() {
 }
 
 // Complete the page load before starting to load the frames
-window.setTimeout(documentLoaded, 10);
+window.addEventListener('load', documentLoaded);
 
 </script>
 
