@@ -1,0 +1,47 @@
+
+.search-result-container {
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.search-view-container {
+    position: relative;
+    width: 480px;
+    height: 300px;
+    margin-right: 4px;
+    display: inline-block;
+    background-color: #000;
+}
+
+.search-canvas {
+    transition: opacity 0.2s ease-out;
+    position: absolute;
+    background-color: #fff;
+}
+
+.search-subtitles {
+    transition: opacity 0.2s ease-out;
+    color: #fff;
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 1em;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 0.2s ease-out;
+    text-shadow: 0px 0px 3px #000;
+    line-height: 115%;
+}
+
+.search-invisible {
+    opacity: 0.0;
+}
+
+.search-subtitles-marked {
+    color: #65FFBD;
+}
+
