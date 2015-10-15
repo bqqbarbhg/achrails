@@ -6,6 +6,7 @@ function VideoFrameRenderer(options) {
 
     this.video = document.createElement("video");
 
+    this.errorListener = this.onError.bind(this);
     this.metadataListener = this.onMetadata.bind(this);
     this.seekedListener = this.onSeeked.bind(this);
 
@@ -16,14 +17,20 @@ function VideoFrameRenderer(options) {
 
 VideoFrameRenderer.prototype.wakeUp = function(queue) {
     this.queue = queue;
+    this.video.addEventListener("error", this.errorListener);
     this.video.addEventListener("loadedmetadata", this.metadataListener);
     this.video.addEventListener("seeked", this.seekedListener);
 };
 
 VideoFrameRenderer.prototype.sleep = function() {
+    this.video.removeEventListener("error", this.errorListener);
     this.video.removeEventListener("loadedmetadata", this.metadataListener);
     this.video.removeEventListener("seeked", this.seekedListener);
     this.video.src = "";
+};
+
+VideoFrameRenderer.prototype.onError = function(work) {
+    this.queue.findWork(this);
 };
 
 VideoFrameRenderer.prototype.doWork = function(work) {
