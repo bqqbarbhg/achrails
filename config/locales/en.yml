@@ -51,4 +51,5 @@ en:
   video_delete_confirm: 'Are you sure you want to delete this video?'
   failed_to_create_group: 'Failed to create group'
   start_at: 'Start at'
+  unsaved_video_warning: 'There are unsaved changes in the video, which will be lost if you continue.'
 

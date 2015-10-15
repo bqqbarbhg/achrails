@@ -60,7 +60,7 @@
     <div id="save_spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner"></div>
 
     <% if policy(@video).update? %>
-      <%= link_to(t(:save), '#', onclick: 'saveChanges()', class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+      <div onclick='saveChanges()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"><%= t(:save) %></div>
     <% end %>
 
     <% if policy(@video).share? %>
@@ -120,6 +120,8 @@
 <% end %>
 
   var manifest = <%= @video.read_manifest.to_json.html_safe %>;
+  var lastSavedManifest = manifest;
+
   var playerElement = document.querySelector("#achso_player");
   var player = new AchSoPlayer(playerElement, manifest, user);
 
@@ -144,6 +146,7 @@
       success: function() {
         saveEnd();
         createToast("Saved video");
+        lastSavedManifest = manifest;
       },
       error: function() {
         saveEnd();
@@ -204,5 +207,22 @@
   window.setInterval(updateShareTimer, 200);
 
   updateCopyBoxes(baseUrl);
+
+  window.addEventListener("beforeunload", function(e) {
+
+    if (!user) {
+      return undefined;
+    }
+
+    var newManifest = player.exportManifest();
+    if (_.isEqual(newManifest, lastSavedManifest)) {
+      return undefined;
+    }
+
+    var message = '<%=j t(:unsaved_video_warning) %>';
+
+    e.returnValue = message;
+    return message;
+  });
 
 </script>
