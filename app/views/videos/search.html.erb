@@ -51,27 +51,21 @@
 <% for manifest in @manifests %>
     <h4><%= link_to(manifest["title"], videos_path(manifest["id"])) %></h4>
     <div class="search-result-container">
+        <% 3.times do %>
+            <a>
+                <div class="search-view-container"></div>
+            </a>
+        <% end %>
     </div>
 <% end %>
 
 <script>
 
-function createAnnotationGradient(ctx) {
-    var g = ctx.createRadialGradient(25, 25, 0, 25, 25, 25);
+var query = '<%=j @query %>';
+var manifests = [
+<%= @manifests.map(&:to_json).join(",\n").html_safe %>
+];
 
-    g.addColorStop(0.37, 'rgba(255,255,255, 0.0)');
-    g.addColorStop(0.40, 'rgba(255,255,255, 0.9)');
-    g.addColorStop(0.45, 'rgba(255,255,255, 0.9)');
-    g.addColorStop(0.47, 'rgba(68,153,136, 0.8)');
-    g.addColorStop(0.53, 'rgba(68,153,136, 0.4)');
-    g.addColorStop(0.55, 'rgba(68,153,136, 0.0)');
-    g.addColorStop(0.56, 'rgba(68,153,136, 0.0)');
-    g.addColorStop(0.60, 'rgba(85,204,153, 0.9)');
-    g.addColorStop(0.62, 'rgba(85,204,153, 0.9)');
-    g.addColorStop(0.66, 'rgba(85,204,153, 0.0)');
-
-    return g;
-}
 
 function findAnnotationMatches(manifest, query, duration) {
 
@@ -120,48 +114,36 @@ function findAnnotationMatches(manifest, query, duration) {
     return toShow;
 }
 
-var query = '<%=j @query %>';
-var manifests = [
-<%= @manifests.map(&:to_json).join(",\n").html_safe %>
-];
+function documentLoaded() {
 
-var elements = document.querySelectorAll('.search-result-container');
+    var elements = document.querySelectorAll('.search-result-container');
+    var frameRenderQueue = new WorkQueue();
 
-var frameRenderQueue = new WorkQueue();
-
-var workerCount = 4;
-var workerOptions = {
-    width: 480,
-    height: 300,
-};
-for (var i = 0; i < workerCount; i++) {
-    frameRenderQueue.addWorker(new VideoFrameRenderer(workerOptions));
-}
-
-for (var i = 0; i < manifests.length; i++) {
-
-    var element = elements[i];
-    var containers = [];
-
-    for (var j = 0; j < 3; j++) {
-        var link = document.createElement("a");
-
-        var container = document.createElement("div");
-        container.classList.add("search-view-container");
-        containers.push(container);
-
-        link.appendChild(container);
-        element.appendChild(link);
+    var workerCount = 4;
+    var workerOptions = {
+        width: 480,
+        height: 300,
+    };
+    for (var i = 0; i < workerCount; i++) {
+        frameRenderQueue.addWorker(new VideoFrameRenderer(workerOptions));
     }
 
-    frameRenderQueue.addWork({
-        start: 0,
-        count: containers.length,
-        containers: containers,
-        manifest: manifests[i],
-    });
+    for (var i = 0; i < manifests.length; i++) {
+
+        var element = elements[i];
+        var containers = element.querySelectorAll('.search-view-container');
+
+        frameRenderQueue.addWork({
+            start: 0,
+            count: containers.length,
+            containers: containers,
+            manifest: manifests[i],
+        });
+    }
 }
 
+// Complete the page load before starting to load the frames
+window.setTimeout(documentLoaded, 10);
 
 </script>
 

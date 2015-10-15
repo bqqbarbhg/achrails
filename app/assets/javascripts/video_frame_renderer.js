@@ -15,6 +15,24 @@ function VideoFrameRenderer(options) {
     this.frameIndex = 0;
 }
 
+VideoFrameRenderer.prototype.createAnnotationGradient = function(ctx) {
+    var g = ctx.createRadialGradient(25, 25, 0, 25, 25, 25);
+
+    g.addColorStop(0.37, 'rgba(255,255,255, 0.0)');
+    g.addColorStop(0.40, 'rgba(255,255,255, 0.9)');
+    g.addColorStop(0.45, 'rgba(255,255,255, 0.9)');
+    g.addColorStop(0.47, 'rgba(68,153,136, 0.8)');
+    g.addColorStop(0.53, 'rgba(68,153,136, 0.4)');
+    g.addColorStop(0.55, 'rgba(68,153,136, 0.0)');
+    g.addColorStop(0.56, 'rgba(68,153,136, 0.0)');
+    g.addColorStop(0.60, 'rgba(85,204,153, 0.9)');
+    g.addColorStop(0.62, 'rgba(85,204,153, 0.9)');
+    g.addColorStop(0.66, 'rgba(85,204,153, 0.0)');
+
+    return g;
+}
+
+
 VideoFrameRenderer.prototype.wakeUp = function(queue) {
     this.queue = queue;
     this.video.addEventListener("error", this.errorListener);
@@ -99,7 +117,7 @@ VideoFrameRenderer.prototype.onSeeked = function() {
     var manifest = this.work.manifest;
 
     var ctx = canvas.getContext("2d");
-    var annotationGradient = createAnnotationGradient(ctx);
+    var annotationGradient = this.createAnnotationGradient(ctx);
 
     ctx.drawImage(this.video, 0, 0, this.drawWidth, this.drawHeight);
 
