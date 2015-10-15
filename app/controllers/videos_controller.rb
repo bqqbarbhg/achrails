@@ -162,7 +162,7 @@ class VideosController < ApplicationController
   def search
     @query = params[:q]
     if sss
-      @manifests = VideoManifests.search(@query).map(&:read_manifest)
+      @manifests = VideoManifest.search(@query).map(&:read_manifest)
     else
       @manifests = Video.search(@query).map(&:read_manifest)
     end
