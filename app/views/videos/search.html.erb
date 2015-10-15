@@ -49,7 +49,7 @@
 </style>
 
 <% for manifest in @manifests %>
-    <h4><%= link_to(manifest["title"], videos_path(manifest["id"])) %></h4>
+    <h4><%= link_to(manifest["title"], video_path(manifest["id"])) %></h4>
     <div class="search-result-container">
         <% 3.times do %>
             <a>
