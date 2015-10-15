@@ -14,6 +14,7 @@ class Video < Struct.new(:uuid, :title, :author, :groups)
     video_manifest = VideoManifest.where(uuid: uuid).first_or_initialize
     video_manifest.update_revision!
     video_manifest.manifest_json = json
+    video_manifest.searchable = Util.manifest_to_searchable(json)
     video_manifest.video_url = Util.normalize_url(json["videoUri"])
     video_manifest.save!
 

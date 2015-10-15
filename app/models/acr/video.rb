@@ -1,6 +1,10 @@
 unless SSS
 class Video < ActiveRecord::Base
 
+  include PgSearch
+
+  pg_search_scope :search, against: :searchable
+
   belongs_to :author, class_name: "User"
   has_and_belongs_to_many :groups, uniq: true
 
@@ -14,6 +18,7 @@ class Video < ActiveRecord::Base
       uuid: json["id"],
       author: user,
       manifest_json: json,
+      searchable: Util.manifest_to_searchable(json),
       video_url: Util.normalize_url(json["videoUri"]))
   end
 

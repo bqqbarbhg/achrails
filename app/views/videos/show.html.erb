@@ -119,11 +119,22 @@
   var user = null;
 <% end %>
 
+  var startTime = 0;
+  if (window.location.hash) {
+    var format = /t=(\d+(.\d+)?)s/;
+    var match = format.exec(window.location.hash);
+    if (match && match[1]) {
+      startTime = parseFloat(match[1]);
+    }
+  }
+
   var manifest = <%= @video.read_manifest.to_json.html_safe %>;
   var lastSavedManifest = manifest;
 
   var playerElement = document.querySelector("#achso_player");
-  var player = new AchSoPlayer(playerElement, manifest, user);
+  var player = new AchSoPlayer(playerElement, manifest, user, {
+    startTime: startTime
+  });
 
   var saveSpinner = document.querySelector("#save_spinner");
 

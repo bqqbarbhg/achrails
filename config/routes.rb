@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     collection do
       post 'upload'
       get 'find'
+      get 'search'
     end
     member do
       resources 'shares', only: [:index, :create, :destroy], param: :group

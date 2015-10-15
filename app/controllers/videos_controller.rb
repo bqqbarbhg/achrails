@@ -159,13 +159,26 @@ class VideosController < ApplicationController
     end
   end
 
+  def search
+    @query = params[:q]
+    if sss
+      @manifests = VideoManifests.search(@query).map(&:read_manifest)
+    else
+      @manifests = Video.search(@query).map(&:read_manifest)
+    end
+
+    render
+  end
+
 protected
   def video_params(manifest)
     json = JSON.parse(manifest)
     { title: json["title"],
       uuid: json["id"],
       author: current_user,
-      manifest_json: json }
+      manifest_json: json,
+      searchable: Util.manifest_to_searchable(json),
+      video_url: Util.normalize_url(json["videoUri"]) }
   end
 end
 

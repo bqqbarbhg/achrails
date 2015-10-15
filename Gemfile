@@ -40,6 +40,9 @@ gem 'material_design_lite-rails'
 # Frontend things
 gem 'lodash-rails'
 
+# Full text search
+gem 'pg_search'
+
 group :development do
   # View sent emails
   gem 'letter_opener_web'
