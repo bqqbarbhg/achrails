@@ -18,6 +18,9 @@
         <a class="search-link" href="<%= video_path(manifest["id"]) %>">
             <canvas class="search-canvas search-invisible">
             </canvas>
+            <div class="search-title">
+                <%= manifest["title"] %>
+            </div>
             <div class="search-subtitles search-invisible">
             </div>
         </a>
@@ -140,6 +143,13 @@ function showElements(work, frame) {
     window.setInterval(doLayout, 500);
 }
 
+
+var titles = document.querySelectorAll('.search-title');
+for (var i = 0; i < titles.length; i++) {
+    var title = titles[i];
+    title.innerHTML = highlightMatches(title.innerHTML);
+}
+
 function documentLoaded() {
     var elements = document.querySelectorAll('.search-view-container');
     var frameRenderQueue = new WorkQueue();
@@ -163,6 +173,7 @@ function documentLoaded() {
         });
     }
 }
+
 
 // Complete the page load before starting to load the frames
 window.addEventListener('load', documentLoaded);
