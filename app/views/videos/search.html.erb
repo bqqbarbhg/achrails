@@ -11,96 +11,155 @@
     </form>
 <% end %>
 
+<div class="mdl-grid">
+
 <% for manifest in @manifests %>
-    <h4><%= link_to(manifest["title"], video_path(manifest["id"])) %></h4>
-    <div class="search-result-container">
-        <% 3.times do %>
-            <a>
-                <div class="search-view-container"></div>
-            </a>
-        <% end %>
+    <div class="search-view-container mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp">
+        <a class="search-link" href="<%= video_path(manifest["id"]) %>">
+            <canvas class="search-canvas search-invisible">
+            </canvas>
+            <div class="search-subtitles search-invisible">
+            </div>
+        </a>
     </div>
 <% end %>
 
+</div>
+
 <script>
 
+function searchRegex(pattern) {
+    var wordRe = pattern
+        .replace(/\W+/g, '|')
+        .replace(/^\|?/g, '(')
+        .replace(/\|?$/g, ')');
+
+    var patternRe = wordRe + '(\\W*' + wordRe + ')*';
+    return new RegExp(patternRe, 'ig');
+}
+
 var query = '<%=j @query %>';
+var queryRegex = searchRegex(query);
+
 var manifests = [
 <%= @manifests.map(&:to_json).join(",\n").html_safe %>
 ];
 
+function getTimes(work, duration) {
+    var manifest = work.extra.manifest;
 
-function findAnnotationMatches(manifest, query, duration) {
-
-    var times = [];
-    var hits = [];
+    var bestScore = 0;
+    var bestFrame = {
+        time: duration / 2.0,
+        extra: {
+            focus: { x: 0.5, y: 0.5 },
+        }
+    };
 
     for (var i = 0; i < manifest.annotations.length; i++) {
-      var annotation = manifest.annotations[i];
-      var time = annotation.time / 1000.0;
+        var annotation = manifest.annotations[i];
 
-      times.push(time);
-
-      if (annotation.text.toLowerCase().indexOf(query.toLowerCase()) < 0)
-        continue;
-
-      hits.push(time);
-    }
-
-    var filler = [];
-    var fillerCount = 6;
-
-    for (var i = 0; i < fillerCount; i++) {
-        filler.push(duration * ((i + 0.5) / fillerCount));
-    }
-
-    var allTimes = hits.concat(times).concat(filler);
-    var toShow = [];
-
-    for (var i = 0; i < allTimes.length; i++) {
-        var time = allTimes[i];
-
-        var includedAlready = false;
-        for (var j = 0; j < toShow.length; j++) {
-            if (Math.abs(toShow[j] - time) < 0.1) {
-                includedAlready = true;
-                break;
-            }
-        }
-
-        if (includedAlready)
+        if (!annotation.text.match(queryRegex))
             continue;
 
-        toShow.push(time);
+        var replaced = annotation.text.replace(queryRegex, '');
+        var score = annotation.text.length - replaced.length;
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestFrame = {
+                time: annotation.time / 1000.0,
+                annotations: [annotation],
+                extra: {
+                    focus: annotation.position,
+                    text: annotation.text,
+                },
+            };
+        }
     }
 
-    return toShow;
+    return [bestFrame];
+}
+
+function containInParent(element, focus, state) {
+
+    var parentElement = element.parentElement;
+    var parentWidth = parentElement.clientWidth;
+    var parentHeight = parentElement.clientHeight;
+
+    if (state) {
+        if (state.oldWidth == parentWidth && state.oldHeight == parentHeight)
+            return;
+        state.oldWidth = parentWidth;
+        state.oldHeight = parentHeight;
+    }
+
+    var aspect = element.clientWidth / element.clientHeight;
+    var parentAspect = parentWidth / parentHeight;
+
+    var resultWidth, resultHeight;
+    if (parentAspect > aspect) {
+        resultWidth = parentWidth;
+        resultHeight = parentWidth / aspect;
+    } else {
+        resultHeight = parentHeight;
+        resultWidth = parentHeight * aspect;
+    }
+
+    focus = focus || { x: 0.5, y: 0.5 };
+    var offsetX = (resultWidth - parentWidth) * focus.x;
+    var offsetY = (resultHeight - parentHeight) * focus.y;
+
+    element.style.width = resultWidth + "px";
+    element.style.height = resultHeight + "px";
+    element.style.left = -offsetX + "px";
+    element.style.top = -offsetY + "px";
+}
+
+function highlightMatches(text) {
+    return text.replace(queryRegex, '<span class="search-subtitles-marked">$&</span>');
+}
+
+function showElements(work, frame) {
+    frame.canvas.classList.remove('search-invisible');
+
+    var doLayout = containInParent.bind(
+            window, frame.canvas, frame.extra.focus, { });
+
+    if (frame.annotations) {
+        frame.canvas.parentElement.href += "#t=" + frame.time.toFixed(2) + "s";
+    }
+
+    if (frame.extra.text) {
+        var text = highlightMatches(frame.extra.text);
+        work.extra.subtitles.innerHTML = text;
+        work.extra.subtitles.classList.remove('search-invisible');
+    }
+
+    doLayout();
+    window.setInterval(doLayout, 500);
 }
 
 function documentLoaded() {
-
-    var elements = document.querySelectorAll('.search-result-container');
+    var elements = document.querySelectorAll('.search-view-container');
     var frameRenderQueue = new WorkQueue();
 
     var workerCount = 4;
-    var workerOptions = {
-        width: 480,
-        height: 300,
-    };
     for (var i = 0; i < workerCount; i++) {
-        frameRenderQueue.addWorker(new VideoFrameRenderer(workerOptions));
+        frameRenderQueue.addWorker(new VideoFrameRenderer());
     }
 
     for (var i = 0; i < manifests.length; i++) {
-
-        var element = elements[i];
-        var containers = element.querySelectorAll('.search-view-container');
-
         frameRenderQueue.addWork({
-            start: 0,
-            count: containers.length,
-            containers: containers,
-            manifest: manifests[i],
+            canvas: elements[i].querySelector('.search-canvas'),
+            video: manifests[i].videoUri,
+            resolution: 600,
+            timesCallback: getTimes,
+            doneCallback: showElements,
+            extra: {
+                manifest: manifests[i],
+                subtitles: elements[i].querySelector('.search-subtitles'),
+            }
         });
     }
 }

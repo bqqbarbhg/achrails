@@ -1,9 +1,6 @@
 
 function VideoFrameRenderer(options) {
-    this.viewWidth = options.width;
-    this.viewHeight = options.height;
-    this.viewAspect = this.viewWidth / this.viewHeight;
-
+    this.options = options || { };
     this.video = document.createElement("video");
 
     this.errorListener = this.onError.bind(this);
@@ -11,27 +8,9 @@ function VideoFrameRenderer(options) {
     this.seekedListener = this.onSeeked.bind(this);
 
     this.work = null;
-    this.times = [];
+    this.frames = [];
     this.frameIndex = 0;
 }
-
-VideoFrameRenderer.prototype.createAnnotationGradient = function(ctx) {
-    var g = ctx.createRadialGradient(25, 25, 0, 25, 25, 25);
-
-    g.addColorStop(0.37, 'rgba(255,255,255, 0.0)');
-    g.addColorStop(0.40, 'rgba(255,255,255, 0.9)');
-    g.addColorStop(0.45, 'rgba(255,255,255, 0.9)');
-    g.addColorStop(0.47, 'rgba(68,153,136, 0.8)');
-    g.addColorStop(0.53, 'rgba(68,153,136, 0.4)');
-    g.addColorStop(0.55, 'rgba(68,153,136, 0.0)');
-    g.addColorStop(0.56, 'rgba(68,153,136, 0.0)');
-    g.addColorStop(0.60, 'rgba(85,204,153, 0.9)');
-    g.addColorStop(0.62, 'rgba(85,204,153, 0.9)');
-    g.addColorStop(0.66, 'rgba(85,204,153, 0.0)');
-
-    return g;
-}
-
 
 VideoFrameRenderer.prototype.wakeUp = function(queue) {
     this.queue = queue;
@@ -54,125 +33,94 @@ VideoFrameRenderer.prototype.onError = function(work) {
 VideoFrameRenderer.prototype.doWork = function(work) {
     this.work = work;
     this.frameIndex = 0;
-    this.video.src = this.work.manifest.videoUri;
+    this.video.src = this.work.video;
+    this.canvases = this.work.canvases || [this.work.canvas];
 };
 
 VideoFrameRenderer.prototype.onMetadata = function() {
-    var videoWidth = this.video.videoWidth;
-    var videoHeight = this.video.videoHeight;
-    var videoAspect = videoWidth / videoHeight;
-
-    if (videoAspect > this.viewAspect) {
-        this.drawWidth = this.viewWidth;
-        this.drawHeight = this.viewWidth / videoAspect;
-    } else {
-        this.drawHeight = this.viewHeight;
-        this.drawWidth = this.viewHeight * videoAspect;
-    }
-
     var duration = this.video.duration;
 
-    this.times = findAnnotationMatches(this.work.manifest, query, duration);
-    this.index = 0;
+    this.frames = this.work.timesCallback(this.work, duration);
+    this.frameIndex = 0;
 
     this.renderNextFrame();
 };
 
 VideoFrameRenderer.prototype.renderNextFrame = function() {
-    if (this.frameIndex >= this.work.count) {
+    if (this.frameIndex >= this.frames.length) {
         this.queue.findWork(this);
         return;
     }
 
-    this.time = this.times[this.work.start + this.frameIndex];
-    this.container = this.work.containers[this.frameIndex];
+    this.frame = this.frames[this.frameIndex];
+    this.canvas = this.canvases[this.frameIndex];
+
+    this.frame.canvas = this.canvas;
+    this.frame.index = this.frameIndex;
+
     this.frameIndex++;
 
-    var seekTime = this.time;
+    this.resolution = this.frame.resolution || this.work.resolution || this.options.resolution || 1280;
+
+    var seekTime = this.frame.time;
     if (seekTime < 0.01)
         seekTime = 0.01;
 
     this.video.currentTime = seekTime;
 };
 
+VideoFrameRenderer.prototype.createAnnotationGradient = function(ctx, size) {
+    var half = size / 2.0;
+    var g = ctx.createRadialGradient(half, half, 0, half, half, half);
+
+    g.addColorStop(0.37, 'rgba(255,255,255, 0.0)');
+    g.addColorStop(0.40, 'rgba(255,255,255, 0.9)');
+    g.addColorStop(0.45, 'rgba(255,255,255, 0.9)');
+    g.addColorStop(0.47, 'rgba(68,153,136, 0.8)');
+    g.addColorStop(0.53, 'rgba(68,153,136, 0.4)');
+    g.addColorStop(0.55, 'rgba(68,153,136, 0.0)');
+    g.addColorStop(0.56, 'rgba(68,153,136, 0.0)');
+    g.addColorStop(0.60, 'rgba(85,204,153, 0.9)');
+    g.addColorStop(0.62, 'rgba(85,204,153, 0.9)');
+    g.addColorStop(0.66, 'rgba(85,204,153, 0.0)');
+
+    return g;
+};
+
 VideoFrameRenderer.prototype.onSeeked = function() {
 
-    var container = this.container;
+    var maxSize = Math.max(this.video.videoWidth, this.video.videoHeight);
+    var scale = Math.min(1.0, this.resolution / maxSize);
 
-    var posX = this.viewWidth * 0.5 - this.drawWidth * 0.5;
-    var posY = this.viewHeight * 0.5 - this.drawHeight * 0.5;
-
-    var canvas = document.createElement("canvas");
-    canvas.width = this.drawWidth;
-    canvas.height = this.drawHeight;
-    canvas.style.left = Math.round(posX) + "px";
-    canvas.style.top = Math.round(posY) + "px";
-    canvas.classList.add("search-canvas");
-    canvas.classList.add("search-invisible");
-
-    var subtitles = document.createElement('div');
-    subtitles.classList.add('search-subtitles');
-    subtitles.classList.add("search-invisible");
-
-    var manifest = this.work.manifest;
+    var canvas = this.canvas;
+    canvas.width = Math.round(this.video.videoWidth * scale);
+    canvas.height = Math.round(this.video.videoHeight * scale);
 
     var ctx = canvas.getContext("2d");
-    var annotationGradient = this.createAnnotationGradient(ctx);
 
-    ctx.drawImage(this.video, 0, 0, this.drawWidth, this.drawHeight);
+    ctx.drawImage(this.video, 0, 0, canvas.width, canvas.height);
 
-    var subtitleList = [];
+    var annotations = this.frame.annotations;
 
-    for (var i = 0; i < manifest.annotations.length; i++) {
-        var annotation = manifest.annotations[i];
-        var time = annotation.time / 1000.0;
+    if (annotations) {
+        var annotationSize = Math.min(canvas.width, canvas.height) * 0.2;
+        var annotationGradient = this.createAnnotationGradient(ctx, annotationSize);
 
-        if (Math.abs(time - this.time) > 0.1)
-            continue;
+        for (var i = 0; i < annotations.length; i++) {
+            var annotation = annotations[i];
 
-        var ax = annotation.position.x;
-        var ay = annotation.position.y;
+            var x = annotation.position.x * canvas.width;
+            var y = annotation.position.y * canvas.height;
 
-        var x = ax * this.drawWidth;
-        var y = ay * this.drawHeight;
-
-        ctx.save();
-        ctx.translate(x - 25, y - 25);
-        ctx.fillStyle = annotationGradient;
-        ctx.fillRect(0, 0, 50, 50);
-        ctx.restore();
-
-        var text = annotation.text;
-
-        var content = '';
-        var startIndex = annotation.text.toLowerCase().indexOf(query.toLowerCase());
-
-        if (startIndex >= 0) {
-            var endIndex = startIndex + query.length;
-            content += text.substring(0, startIndex);
-            content += '<span class="search-subtitles-marked">';
-            content += text.substring(startIndex, endIndex);
-            content += '</span>';
-            content += text.substring(endIndex);
-        } else {
-            content = text;
+            ctx.save();
+            ctx.translate(x - annotationSize / 2.0, y - annotationSize / 2.0);
+            ctx.fillStyle = annotationGradient;
+            ctx.fillRect(0, 0, annotationSize, annotationSize);
+            ctx.restore();
         }
-
-        subtitleList.push(content);
     }
 
-    subtitles.innerHTML = subtitleList.join('<br>');
-
-    container.appendChild(canvas);
-    container.appendChild(subtitles);
-    container.parentElement.href = ('/videos/' + this.work.manifest.id
-        + '#t=' + this.time.toFixed(2) + 's');
-
-    window.setTimeout(function() {
-        canvas.classList.remove("search-invisible");
-        subtitles.classList.remove("search-invisible");
-    }, 10);
-
+    this.work.doneCallback(this.work, this.frame);
     this.renderNextFrame();
 };
 
