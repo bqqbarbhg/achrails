@@ -159,9 +159,17 @@
         createToast("<%=j t(:saved_video) %>");
         lastSavedManifest = manifest;
       },
-      error: function() {
+      error: function(xhr) {
         saveEnd();
-        createToast("<%=j t(:failed_to_save_video) %>");
+        <% if Rails.env.development? %>
+          console.log(xhr);
+          // In development environment flush the page with the error message.
+          document.open();
+          document.write(xhr.response);
+          document.close();
+        <% else %>
+          createToast("<%=j t(:failed_to_save_video) %>");
+        <% end %>
       },
     });
   }
