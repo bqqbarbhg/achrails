@@ -44,7 +44,7 @@ gem 'lodash-rails'
 gem 'pg_search'
 
 # Better server
-get 'puma'
+gem 'puma'
 
 group :development do
   # View sent emails
