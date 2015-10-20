@@ -43,6 +43,9 @@ gem 'lodash-rails'
 # Full text search
 gem 'pg_search'
 
+# Better server
+get 'puma'
+
 group :development do
   # View sent emails
   gem 'letter_opener_web'
