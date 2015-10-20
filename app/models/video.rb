@@ -26,11 +26,18 @@ class Video < ActiveRecord::Base
   end
 
   def history
-    JSON.parse(Zlib.inflate(compressed_history)) || []
+    if compressed_history
+      JSON.parse(Zlib.inflate(compressed_history))
+    else
+      []
+    end
+  rescue JSON::ParseError
+    []
   end
 
   def history=(value)
-    compressed_history = Zlib.deflate(value.to_json)
+    self.compressed_history = Zlib.deflate(value.to_json)
+    value
   end
 
   def read_manifest

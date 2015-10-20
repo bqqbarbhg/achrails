@@ -91,6 +91,7 @@ class VideosController < ApplicationController
     sss.create_video(@new_video) if sss
 
     @new_video.history = @new_video.history.unshift(params[:manifest_json])
+    @new_video.save!
 
     status = @old_video ? :ok : :created
     render nothing: true, status: status
