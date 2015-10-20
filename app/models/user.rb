@@ -20,8 +20,6 @@ class User < ActiveRecord::Base
     user.name = auth.info.name
     user.bearer_token = auth.extra.try(:bearer)
 
-    user.sss_id = sss(user).current_user_sss_id if sss?
-
     user.save!
     user
   end
