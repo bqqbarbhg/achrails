@@ -25,6 +25,7 @@ class SocialSemanticServer
   end
 
   def validate_response(response)
+    log "@SSS-CALL: #{response.status} #{response.body.truncate(60)}"
     if response.status >= 400
       body_json = JSON.parse(response.body)
       if body_json && body_json["id"] == "authOIDCUserInfoRequestFailed"
