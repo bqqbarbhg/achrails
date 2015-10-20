@@ -25,6 +25,14 @@ class Video < ActiveRecord::Base
       video_url: Util.normalize_url(json["videoUri"]))
   end
 
+  def history
+    JSON.parse(Zlib.inflate(compressed_history)) || []
+  end
+
+  def history=(value)
+    compressed_history = Zlib.deflate(value.to_json)
+  end
+
   def read_manifest
     manifest_json
   end
