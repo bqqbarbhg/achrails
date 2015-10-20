@@ -13,7 +13,7 @@
     <%= link_to(video.title, video) %>
   </li>
 <% end.empty? %>
-    No videos shared with this group yet.
+<%= t(:no_videos_shared) %>
 <% end %>
 </ul>
 </div>
@@ -94,8 +94,19 @@
         http.deleteJson('', {
           success: function() {
             window.location.href = '<%=j groups_path() %>';
+          },
+          error: function(xhr) {
+          <% if Rails.env.development? %>
+            console.log(xhr);
+            // In development environment flush the page with the error message.
+            document.open();
+            document.write(xhr.response);
+            document.close();
+          <% else %>
+            createToast('<%j= t(:failed_to_delete_group) %>');
+          <% end %>
           }
-        })
+        });
       }
     });
   </script>

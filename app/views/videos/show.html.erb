@@ -113,7 +113,7 @@
   var user = {
     "name": "<%=j current_user.name %>",
     "uri": "",
-    "id": "<%=j current_user.person_id %>",
+    "id": "<%=j current_user.sss_id %>",
   };
 <% else %>
   var user = null;
@@ -156,12 +156,12 @@
     http.putJson('', manifest, {
       success: function() {
         saveEnd();
-        createToast("Saved video");
+        createToast("<%=j t(:saved_video) %>");
         lastSavedManifest = manifest;
       },
       error: function() {
         saveEnd();
-        createToast("Failed to upload video");
+        createToast("<%=j t(:failed_to_save_video) %>");
       },
     });
   }

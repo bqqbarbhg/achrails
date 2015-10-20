@@ -63,6 +63,73 @@
 
   refresh();
 
+  function createGroupClickCallback(group, label, id) {
+    return function(e) {
+      if (pending[id]) {
+        return;
+      }
+
+      // Mixed does upload with this logic
+      state[id] = !state[id];
+      pending[id] = true;
+      group.disabled = true;
+
+      var success = function(xhr) {
+        <% if Rails.env.development? %>
+          console.log(xhr, id);
+        <% end %>
+        pending[id] = false;
+        group.disabled = false;
+
+        // @Workaround(mdl): MDL doesn't remove the is-disabled class
+        // automatically for some reason, even though the documentation
+        // implies that it should.
+        label.classList.remove("is-disabled");
+
+        // TODO: Figure out a response format for multiple share
+        //shared[id] = JSON.parse(xhr.response).indexOf(id) >= 0;
+        $('.mixed_warning').remove();
+        refresh();
+      };
+
+      var error = function(xhr) {          
+        <% if Rails.env.development? %>
+          console.log(xhr);
+          // In development environment flush the page with the error message.
+          document.open();
+          document.write(xhr.response);
+          document.close();
+        <% end %>
+
+        console.log(group);
+
+        state[id] = !state[id];
+        pending[id] = false;
+        group.disabled = false;
+        group.checked = state[id];
+        group.dispatchEvent(new Event('change', { 'bubbles': true }));
+        label.classList.remove("is-disabled");
+
+        createToast("<%=j t(:failed_to_update_share) %>");
+
+        refresh();
+      };
+
+      var params = {
+        success: success,
+        error: error,
+      }
+      $('#sharing_spinner').addClass('is-active');
+      if (state[id]) {
+        http.postJson("", { 'group': id }, params);
+      } else {
+        http.deleteJson("shares/" + id, params);
+      }
+
+      refresh();
+    };
+  }
+
   for (var i = 0; i < groups.length; i++) {
     var group = groups[i];
     var id = group.id.substring(5);
@@ -70,60 +137,7 @@
 
     pending[id] = false;
 
-    group.addEventListener("click", (function(group, label, id) {
-      return function(e) {
-        if (pending[id]) {
-          return;
-        }
-
-        // Mixed does upload with this logic
-        state[id] = !state[id];
-        pending[id] = true;
-        group.disabled = true;
-
-        var success = (function(group, label, id) { return function(xhr) {
-          <% if Rails.env.development? %>
-            console.log(xhr, id);
-          <% end %>
-          pending[id] = false;
-          group.disabled = false;
-
-          // @Workaround(mdl): MDL doesn't remove the is-disabled class
-          // automatically for some reason, even though the documentation
-          // implies that it should.
-          label.classList.remove("is-disabled");
-
-          // TODO: Figure out a response format for multiple share
-          //shared[id] = JSON.parse(xhr.response).indexOf(id) >= 0;
-          $('.mixed_warning').remove();
-          refresh();
-        }; })(group, label, id);
-
-        var error = function(xhr) {          
-          <% if Rails.env.development? %>
-            console.log(xhr);
-            // In development environment flush the page with the error message.
-            document.open();
-            document.write(xhr.response);
-            document.close();
-          <% end %>
-          refresh();
-        };
-
-        var params = {
-          success: success,
-          error: error,
-        }
-        $('#sharing_spinner').addClass('is-active');
-        if (state[id]) {
-          http.postJson("", { 'group': id }, params);
-        } else {
-          http.deleteJson("shares/" + id, params);
-        }
-
-        refresh();
-      }
-    })(group, label, id));
+    group.addEventListener("click", createGroupClickCallback(group, label, id));
   }
 
   function refresh() {

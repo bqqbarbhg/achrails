@@ -1,4 +1,3 @@
-unless SSS
 class Invitation < ActiveRecord::Base
 
   before_validation :generate_token
@@ -22,5 +21,4 @@ protected
       break random_token unless Invitation.exists?(token: random_token)
     end
   end
-end
 end

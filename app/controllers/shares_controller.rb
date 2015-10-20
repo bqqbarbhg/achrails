@@ -3,21 +3,13 @@ ShareGroup = Struct.new(:group, :shared, :shareclass)
 class SharesController < ApplicationController
   def index
     ids = params[:id].split(',')
-    if sss
-      @videos = sss.videos.select { |video| ids.include?(video.uuid) }
-    else
-      @videos = Video.where(uuid: ids)
-    end
+    @videos = Video.where(uuid: ids)
 
     @videos.each do |video|
       authorize video, :share?
     end
 
-    if sss
-      @groups = sss.groups
-    else
-      @groups = current_user.groups
-    end
+    @groups = current_user.groups
 
     @share_groups = @groups.map do |group|
       shared = @videos.map do |video|
@@ -41,26 +33,20 @@ class SharesController < ApplicationController
   def create
     ids = params[:id].split(',')
 
-    if sss
-      @videos = sss.videos.select { |video| ids.include?(video.uuid) }
-      group = sss.group(params[:group])
-      authorize group, :share?
-      @videos.each do |video|
-        authorize video, :share?
-      end
+    @videos = Video.where(uuid: ids)
+    group = Group.find(params[:group])
+    authorize group, :share?
 
-      sss.group_add_videos(group, @videos)
-    else
-      @videos = Video.where(uuid: ids)
-      group = Group.find(params[:group])
-      authorize group, :share?
+    @videos.each do |video|
+      authorize video, :share?
+    end
 
-      # NOTE: This might be slow, but it doesn't seem that there's really any obvious
-      # better way to do it.
-      @videos.each do |video|
-        authorize video, :share?
-        video.groups << group unless video.groups.exists?(group)
-      end
+    sss.group_add_videos(group, @videos) if sss
+
+    # NOTE: This might be slow, but it doesn't seem that there's really any obvious
+    # better way to do it.
+    @videos.each do |video|
+      video.groups << group unless video.groups.exists?(group)
     end
 
     respond_to do |format|
@@ -71,21 +57,14 @@ class SharesController < ApplicationController
   def destroy
     ids = params[:id].split(',')
 
-    if sss
-      @videos = sss.videos.select { |video| ids.include?(video.uuid) }
-      group = sss.group(params[:group])
-      authorize group, :share?
-      @videos.each do |video|
-        authorize video, :share?
-      end
+    @videos = Video.where(uuid: ids)
+    group = Group.find(params[:group]) 
 
-      sss.group_remove_videos(group, @videos)
-    else
-      @videos = Video.where(uuid: ids)
-      @videos.each do |video|
-        authorize video, :share?
-        video.groups.destroy(Group.find(params[:group]))
-      end
+    sss.group_remove_videos(group, @videos) if sss
+
+    @videos.each do |video|
+      authorize video, :share?
+      video.groups.destroy(group)
     end
 
     respond_to do |format|

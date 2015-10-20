@@ -7,39 +7,23 @@ class GroupsController < ApplicationController
     respond_to do |format|
       format.json do
         authenticate_user!
-        if sss
-          @groups = sss.groups_for(current_user)
-          group_json = @groups.map do |group|
-            ids = group.videos.map &:uuid
-            group.to_h.slice(:name).merge({ videos: ids.as_json })
-          end
-        else
-          @groups = current_user.groups
-          group_json = @groups.map do |group|
-            ids = group.videos.pluck(:uuid)
-            group.as_json.merge({ videos: ids.as_json })
-          end
+        @groups = current_user.groups
+        group_json = @groups.map do |group|
+          ids = group.videos.pluck(:uuid)
+          group.as_json.merge({ videos: ids.as_json })
         end
         render json: { groups: group_json }
       end
       format.html do
-        if sss
-          @groups = sss.groups
-        else
-          @groups = policy_scope(Group)
-        end
+        @groups = policy_scope(Group)
         render :index
       end
     end
   end
 
   def show
-    if sss
-      @group = sss.group(params[:id])
-    else
-      @group = Group.find(params[:id])
-      authorize @group
-    end
+    @group = Group.find(params[:id])
+    authorize @group
 
     render :show
   end
@@ -52,51 +36,39 @@ class GroupsController < ApplicationController
   end
 
   def create
-    if sss
-      group_id = sss.create_group(group_params)
-    else
-      @group = Group.create!(group_params)
-      authorize @group
-      @group.join(current_user).update(admin: true)
-      group_id = @group.id
-    end
+    @group = Group.new(group_params)
+    sss.create_group(@group) if sss
 
-    if group_id.nil?
-      flash[:error] = t(:failed_to_create_group)
-      redirect_to action: :index
-    else
-      redirect_to action: :show, id: group_id
-    end
+    @group.save!
+    @group.join(current_user).update(admin: true)
+
+    redirect_to action: :show, id: @group
   end
 
   def update
-    # @SSS_Support(edit circles)
     @group = Group.find(params[:id])
     authorize @group
 
+    # @SSS_Support(edit circles)
     @group.update(group_params)
 
-    redirect_to action: :show, id: @group.id
+    redirect_to action: :show, id: @group
   end
 
   def edit
-    # @SSS_Support(edit circles)
     @group = Group.find(params[:id])
     authorize @group
+
+    # @SSS_Support(edit circles)
     
     render :edit
   end
 
   def destroy
-    if sss
-      group = sss.group(params[:id])
-      authorize group
-      sss.delete_group(group)
-    else
-      group = Group.find(params[:id])
-      authorize group
-      group.destroy
-    end
+    group = Group.find(params[:id])
+    authorize group
+    sss.destroy_group(group) if sss
+    group.destroy
 
     respond_to do |format|
       format.html { redirect_to action: :index }
@@ -114,26 +86,17 @@ class GroupsController < ApplicationController
   end
 
   def leave
-    if sss
-      @group = sss.group(params[:id])
-      authorize @group
+    @group = Group.find(params[:id])
+    authorize @group
 
-      sss.leave_group(@group, current_user)
-    else
-      @group = Group.find(params[:id])
-      authorize @group
+    sss.leave_group(@group, current_user) if sss
+    @group.leave(current_user)
 
-      @group.leave(current_user)
-    end
     redirect_to action: :index
   end
 
   def invite
-    if sss
-      @group = sss.group(params[:id])
-    else
-      @group = Group.find(params[:id])
-    end
+    @group = Group.find(params[:id])
     authorize @group
 
     addresses = params[:address]
@@ -142,11 +105,7 @@ class GroupsController < ApplicationController
 
     for i, address in addresses
       next unless address.include?('@')
-      if sss
-        invitation = Invitation.create(expect_email: address, sss_group: @group.id)
-      else
-        invitation = Invitation.create(expect_email: address, group: @group)
-      end
+      invitation = Invitation.create(expect_email: address, group: @group)
       next unless invitation
 
       address_list.push(address)
@@ -156,9 +115,7 @@ class GroupsController < ApplicationController
 
     flash[:notice] = t(:users_invited, count: address_list.length, group: @group.name)
 
-    if sss
-      sss.invite_to_group(@group, address_list) if address_list.length > 0
-    end
+    sss.invite_to_group(@group, address_list) if sss and address_list.length > 0
 
     redirect_to action: :show
   end

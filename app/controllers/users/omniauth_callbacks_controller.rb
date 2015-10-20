@@ -9,7 +9,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     user_sss = sss(@user)
     if user_sss
-      @user.person_id = user_sss.auth_person.id
+      @user.sss_id = user_sss.current_user_sss_id
       @user.save!
     end
 

@@ -1,18 +1,18 @@
 class SocialSemanticServer
 
   def log(message)
-    Rails.logger.debug("@SSS: as #{@person_id}: #{message}")
+    Rails.logger.debug("@SSS: as #{@sss_id}: #{message}")
   end
 
   def logcall(message)
-    Rails.logger.debug("@SSS-CALL: as #{@person_id}: #{message}")
+    Rails.logger.debug("@SSS-CALL: as #{@sss_id}: #{message}")
   end
 
-  def initialize(url, bearer, person_id)
+  def initialize(url, bearer, sss_id)
     @users = { }
     @videos = { }
     @groups = { }
-    @person_id = person_id
+    @sss_id = sss_id
 
     uri = URI(url)
 
@@ -85,168 +85,83 @@ class SocialSemanticServer
     str[/\d+/] if str
   end
 
-  def to_person(user_hash)
-    id = isolate_id(user_hash[:id])
-    return nil unless id
-    @users[id] ||= Person.new(
-      id: id,
-      email: user_hash[:email],
-      name: nil,
-    )
-  end
-
-  def to_group(circle_hash)
-    id = isolate_id(circle_hash[:id])
-    return nil unless id
-    @groups[id] ||= begin
-      group = Group.new(
-        id: id,
-        name: circle_hash[:label],
-        description: circle_hash[:description]
-      )
-
-      author_id = circle_hash[:author][:id]
-      group.memberships = circle_hash[:users].map do |user|
-        Membership.new(
-          group: group,
-          user: full_person(user),
-          admin?: user[:id] == author_id,
-        )
-      end
-
-      group.videos = circle_hash[:entities]
-        .select { |entity| entity[:type] == "video" }
-        .map { |video| to_video(video) }
-        .reject(&:nil?)
-        .select(&:hosted?)
-
-      group
-    end
-  end
-
-  def to_video(video_hash)
-    id = isolate_uuid(video_hash[:id])
-    return nil unless id
-    @videos[id] ||= Video.new(
-      uuid: id,
-      title: video_hash[:label],
-      author: full_person(video_hash[:author]),
-    )
-  end
-
-  def groups
-    @groups_cached ||= begin
-      data = get_json('/circles/circles')
-      circles = data[:circles]
-
-      circles.map { |circle| to_group(circle) }.reject &:nil?
-    end
-  end
-
-  def group(id)
-    groups.select { |group| group.id == id }.first
-  end
-
   def group_add_videos(group, videos)
-    ids = videos.map(&:uuid).join(',')
-    post_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
-    log "Added #{ids} to group #{group.id}"
+    circle_id = group.sss_id
+
+    raise SssInternalError, "Trying to add videos to non-SSS group #{group.id}" unless circle_id
+
+    video_ids = videos.pluck(:uuid).join(',')
+    post_json("/circles/circles/#{circle_id}/entities/#{video_ids}/", { })
+    log "Added #{video_ids} to circle #{circle_id}"
   end
 
   def group_remove_videos(group, videos)
-    ids = videos.map(&:uuid).join(',')
-    delete_json("/circles/circles/#{group.id}/entities/#{ids}/", { })
-    log "Removed #{ids} from group #{group.id}"
+    circle_id = group.sss_id
+
+    log "Trying to remove videos to non-SSS group #{group.id}" and return unless circle_id
+
+    video_ids = videos.pluck(:uuid).join(',')
+    delete_json("/circles/circles/#{circle_id}/entities/#{video_ids}/", { })
+    log "Removed #{video_ids} from circle #{circle_id}"
   end
 
-  def create_group(params)
-    return nil if params[:name].blank?
+  def create_group(group)
 
     hash = post_json '/circles/circles/',
-      label: params[:name],
-      description: params[:description] || ''
+      label: group.name,
+      description: group.description
 
     id = isolate_id(hash[:circle])
-    log "Created group #{id}"
+    log "Created circle #{id} for group #{group.id}"
 
-    id
+    group.sss_id = id
   end
 
-  def delete_group(group)
-    id = group.id
-    delete("/circles/circles/#{id}")
-    log "Deleted group #{id}"
+  def destroy_group(group)
+    circle_id = group.sss_id
+    log "Deleted group that is not in sss #{group.id}" and return unless circle_id
+
+    delete("/circles/circles/#{circle_id}")
+    log "Deleted circle #{circle_id} for group #{group.id}"
   end
 
-  def groups_for(user)
-    groups.select { |group| group.member?(user) }
-  end
+  def join_group(group, user)
+    circle_id = group.sss_id
+    user_id = user.sss_id
 
-  def join_group(group_id, user)
-    hash = post_json("/circles/circles/#{group_id}/users/#{user.person_id}", { })
-    log "Joined user #{user.person_id} to group #{group_id}"
+    raise SssInternalError, "Trying to join non-SSS group #{group.id}" if not circle_id
+    raise SssInternalError, "Trying to join non-SSS user #{user.id}" if not user_id
+
+    hash = post_json("/circles/circles/#{circle_id}/users/#{user_id}", { })
+    log "Joined user #{user_id} to circle #{circle_id}"
   end
 
   def leave_group(group, user)
-    hash = delete_json("/circles/circles/#{group.id}/users/#{user.person_id}", { })
-    log "Removed user #{user.person_id} from group #{group.id}"
+    circle_id = group.sss_id
+    user_id = user.sss_id
+
+    log "Trying to leave non-SSS group #{group.id}" and return unless circle_id
+    log "Trying to leave non-SSS user #{user.id}" and return unless user_id
+
+    hash = delete_json("/circles/circles/#{group.id}/users/#{user.sss_id}", { })
+    log "Removed user #{user.sss_id} from group #{group.id}"
   end
 
   def invite_to_group(group, emails)
+    circle_id = group.sss_id
+
+    raise SssInternalError, "Trying to invite to non-SSS group #{group.id}" if not circle_id
+
     emails_s = emails.join(',')
-    hash = post_json("/circles/circles/#{group.id}/users/invite/#{emails_s}", { })
-    log "Invited #{emails_s} to group #{group.id}"
+    hash = post_json("/circles/circles/#{circle_id}/users/invite/#{emails_s}", { })
+    log "Invited #{emails_s} to circle #{circle_id}"
   end
 
-  def people
-    @people_cached ||= begin
-      data = get_json('/users/users')
-      users = data[:users]
-
-      people_arr = users.map { |user| to_person(user) }.reject &:nil?
-      people_map = people_arr.map { |person| [person.id, person] }.to_h
-      emails = people_arr.map &:email
-      users = User.where(email: emails)
-      users.each do |user|
-        people_map[user.person_id].name = user.name if people_map[user.person_id]
-      end
-
-      people_map
-    end
-  end
-
-  def person(id)
-    people[id]
-  end
-
-  def full_person(partial_user_hash)
-    id = isolate_id(partial_user_hash[:id])
-    person(id)
-  end
-
-  def auth_person
-    @auth_person_cached ||= begin
-      data = get_json('/auth/auth')
-      user_id = isolate_id(data[:user])
-      log "Retrieved user ID: #{user_id}"
-      person(user_id)
-    end
-  end
-
-  def videos
-    @videos_cached ||= begin
-      data = get_json('/videos/videos')
-      videos = data[:videos]
-
-      videos
-        .map { |video| to_video(video) }
-        .reject(&:nil?)
-        .select(&:hosted?)
-    end
-  end
-
-  def video(uuid)
-    videos.select { |video| video.uuid == uuid }.first
+  def current_user_sss_id
+    data = get_json('/auth/auth')
+    user_id = isolate_id(data[:user])
+    log "Retrieved user ID: #{user_id}"
+    user_id
   end
 
   def create_video(video)

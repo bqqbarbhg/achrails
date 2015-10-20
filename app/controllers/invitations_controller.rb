@@ -15,13 +15,9 @@ class InvitationsController < ApplicationController
       return
     end
 
-    if sss
-      sss.join_group(@invitation.sss_group, current_user)
-      @group = sss.group(@invitation.sss_group)
-    else
-      @group = @invitation.group
-      @group.join(current_user)
-    end
+    @group = @invitation.group
+    sss.join_group(@group, current_user) if sss
+    @group.join(current_user)
     @invitation.destroy
 
     redirect_to @group, notice: t(:joined_group, group: @group.name)

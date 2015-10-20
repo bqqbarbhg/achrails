@@ -11,29 +11,16 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       format.html do
-        if sss
-          @videos = sss.videos
-        else
-          @videos = current_user.authored_videos
-        end
+        @videos = current_user.authored_videos
         render
       end
       format.json do
 
-        if sss
-          own_videos = sss.videos.select { |video| video.author?(current_user) }
-          group_videos = sss.groups_for(current_user).map { |group| group.videos }.reduce(:+) || []
-          videos = (own_videos + group_videos).uniq
-          @all_videos = videos.map do |video|
-            { id: video.uuid, uuid: video.uuid, last_modified: video.last_modified.httpdate }
-          end
-        else
-          own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :updated_at)
-          group_video_columns = current_user.videos.pluck(:id, :uuid, :updated_at)
+        own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :updated_at)
+        group_video_columns = current_user.videos.pluck(:id, :uuid, :updated_at)
 
-          all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
-          @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2].httpdate } }
-        end
+        all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
+        @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2].httpdate } }
 
         render json: { videos: @all_videos }
       end
@@ -41,12 +28,8 @@ class VideosController < ApplicationController
   end
 
   def show
-    if sss
-      @video = sss.video(params[:id])
-    else
-      @video = Video.find_by_uuid(params[:id])
-      authorize @video
-    end
+    @video = Video.find_by_uuid(params[:id])
+    authorize @video
 
     respond_to do |format|
       format.html { render }
@@ -59,11 +42,7 @@ class VideosController < ApplicationController
 
   def player
     # TODO: Create secure token?
-    if sss?
-      @manifest = VideoManifest.where(uuid: params[:id]).first.read_manifest
-    else
-      @manifest = Video.find_by_uuid(params[:id]).read_manifest
-    end
+    @manifest = Video.find_by_uuid(params[:id]).read_manifest
 
     # Anonymize the manifest (for now)
     #
@@ -73,6 +52,8 @@ class VideosController < ApplicationController
     # source code leaks info.
     # TODO: If some of this data is made visible then don't remove that piece
     #       of data here.
+    # NOTE: NO NOT SAVE!!!
+    # These are temporary modifications only
     @manifest["author"] = nil
     @manifest["location"] = nil
     for annotation in @manifest["annotations"]
@@ -87,9 +68,7 @@ class VideosController < ApplicationController
 
   def create
     @video = Video.from_manifest(request.body.read, current_user)
-    if sss
-      sss.create_video(@video)
-    end
+    sss.create_video(@video) if sss
     respond_to do |format|
       format.html { redirect_to action: :show, id: @video.uuid }
       format.json { render json: { url: video_url(@video) } }
@@ -97,43 +76,35 @@ class VideosController < ApplicationController
   end
 
   def update
-    if sss
-      # @Hack: Set old_video as boolean depending if it exists already
-      @old_video = VideoManifest.exists?(uuid: params[:id])
-      # Creating videos in SSS with the same UUID results in overwriting the old one.
-      @new_video = Video.from_manifest(request.body.read, current_user)
-      sss.create_video(@new_video)
+    # TODO: Merging
+
+    @old_video = Video.find_by_uuid(params[:id])
+    params = video_params(request.body.read)
+
+    if @old_video
+      authorize @old_video
+      @old_video.update(params)
+      @new_video = @old_video
     else
-      @old_video = Video.find_by_uuid(params[:id])
-      params = video_params(request.body.read)
-
-      if @old_video
-        params[:revision] = @old_video.revision + 1
-        @old_video.update(params)
-        @new_video = @old_video
-      else
-        @new_video = Video.create(params)
-      end
+      @new_video = Video.create!(params)
     end
+    sss.create_video(@new_video) if sss
 
-    headers['ETag'] = '"' + @new_video.uuid.to_s + ':' + @new_video.revision.to_s + '"'
     status = @old_video ? :ok : :created
     render nothing: true, status: status
   end
 
   def upload
     @video = Video.from_manifest(params[:manifest].read, current_user)
-    if sss
-      sss.create_video(@video)
-    end
+    sss.create_video(@video) if sss
     redirect_to action: :show, id: @video.uuid
   end
 
   def destroy
-    # SSS_Support(delete video)
     @video = Video.find_by_uuid(params[:id])
     authorize @video
 
+    # SSS_Support(delete video)
     @video.destroy
 
     respond_to do |format|
@@ -146,11 +117,7 @@ class VideosController < ApplicationController
     # TODO: Authorization?
     video_url = Util.normalize_url(params[:video])
 
-    if sss?
-      @video = VideoManifest.where(video_url: video_url).first
-    else
-      @video = Video.where(video_url: video_url).first
-    end
+    @video = Video.where(video_url: video_url).first
 
     if @video
       render json: @video.read_manifest
@@ -161,17 +128,14 @@ class VideosController < ApplicationController
 
   def search
     @query = params[:q]
-    if sss?
-      @manifests = VideoManifest.search(@query).map(&:read_manifest)
-    else
-      @manifests = Video.search(@query).map(&:read_manifest)
-    end
+    @manifests = Video.search(@query).map(&:read_manifest)
 
     render
   end
 
 protected
   def video_params(manifest)
+    # @CutPaste video params
     json = JSON.parse(manifest)
     { title: json["title"],
       uuid: json["id"],

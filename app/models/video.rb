@@ -1,4 +1,3 @@
-unless SSS
 class Video < ActiveRecord::Base
 
   include PgSearch
@@ -11,7 +10,11 @@ class Video < ActiveRecord::Base
   validates :title, presence: true
   validates :uuid, presence: true
 
+  def self.params_from_manifest(manifest)
+  end
+
   def self.from_manifest(manifest, user)
+    # @CutPaste video params
     json = JSON.parse(manifest)
     Video.create!(
       title: json["title"],
@@ -33,5 +36,4 @@ class Video < ActiveRecord::Base
   def author?(user)
     author == user
   end
-end
 end

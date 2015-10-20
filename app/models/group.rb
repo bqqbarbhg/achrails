@@ -1,4 +1,3 @@
-unless SSS
 class Group < ActiveRecord::Base
 
   has_many :memberships
@@ -9,15 +8,15 @@ class Group < ActiveRecord::Base
   enum visibility: [:invite_only, :unlisted, :listed]
 
   def join(user)
-    memberships.where(user: user).first_or_create if user
+    memberships.where(user: user).first_or_create
   end
 
   def leave(user)
-    memberships.where(user: user).destroy_all if user
+    memberships.where(user: user).destroy_all
   end
 
   def membership_for(user)
-    memberships.find_by(user: user) if user
+    memberships.find_by(user: user)
   end
 
   def member?(user)
@@ -35,5 +34,4 @@ class Group < ActiveRecord::Base
   def has_video?(video)
     video.groups.where(id: id).count > 0
   end
-end
 end

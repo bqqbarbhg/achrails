@@ -1,8 +1,3 @@
-if SSS
-  require 'sss/user'
-else
-  require 'acr/user'
-end
 
 Rails.application.routes.draw do
   devise_for :users, controllers: {

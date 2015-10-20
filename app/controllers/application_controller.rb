@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
 
   def render_sss_error(exception)
     @sss_error = exception.message
-    render "shared/sss_error"
+    render "shared/sss_error", status: :internal_server_error
   end
 
   # Try to return back to the page the login originated from
@@ -99,9 +99,9 @@ class ApplicationController < ActionController::Base
 
   def make_sss(user)
     @sss = begin
-      sss_url = ENV["SSS_URL"]
-      bearer = user.bearer_token
-      SocialSemanticServer.new(sss_url, bearer, user.person_id) if sss_url
+      sss_url = FORCE_SSS_URL || ENV["SSS_URL"]
+      bearer = FORCE_BEARER || user.bearer_token
+      SocialSemanticServer.new(sss_url, bearer, user.sss_id) if sss_url
     end
   end
 

@@ -53,4 +53,9 @@ en:
   start_at: 'Start at'
   unsaved_video_warning: 'There are unsaved changes in the video, which will be lost if you continue.'
   video_search_placeholder: 'Search...'
+  failed_to_update_share: 'Failed to update share status'
+  failed_to_delete_group: 'Failed to delete group'
+  failed_to_save_video: 'Failed to save video'
+  saved_video: 'Saved video'
+  no_videos_shared: 'No videos shared with this group yet.'
 

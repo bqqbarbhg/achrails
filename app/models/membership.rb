@@ -1,4 +1,3 @@
-unless SSS
 class Membership < ActiveRecord::Base
   has_many :memberships
   has_many :groups, through: :memberships, source: :group
@@ -9,5 +8,4 @@ class Membership < ActiveRecord::Base
   belongs_to :user
   belongs_to :group
 
-end
 end
