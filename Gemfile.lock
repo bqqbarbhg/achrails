@@ -130,6 +130,7 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    puma (2.14.0)
     pundit (1.0.1)
       activesupport (>= 3.0.0)
     rack (1.6.4)
@@ -236,6 +237,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
+  puma
   pundit
   rails (= 4.2.3)
   rails_12factor
