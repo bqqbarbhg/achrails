@@ -23,8 +23,8 @@ class ApplicationController < ActionController::Base
   def set_sss_id_for_user
     if current_user && current_user.sss_id.nil?
       if sss
-        @user.sss_id = sss.current_user_sss_id
-        @user.save!
+        current_user.sss_id = sss.current_user_sss_id
+        current_user.save!
       end
     end
   end
