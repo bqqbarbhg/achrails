@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   before_action :get_refresh_token_from_header
-  
+  before_action :set_sss_id_for_user
+
   # CSRF breaks dev login, but it's not needed in dev environment anyway
   if Rails.env.production?
     # Prevent CSRF attacks by raising an exception.
@@ -17,6 +18,15 @@ class ApplicationController < ActionController::Base
   def get_refresh_token_from_header
     refresh_token = request.headers['HTTP_X_REFRESH_TOKEN']
     session['ll_oidc_refresh_token'] = refresh_token if refresh_token
+  end
+
+  def set_sss_id_for_user
+    if current_user && current_user.sss_id.nil?
+      if sss
+        @user.sss_id = sss.current_user_sss_id
+        @user.save!
+      end
+    end
   end
 
   def authenticate_and_redirect_back
