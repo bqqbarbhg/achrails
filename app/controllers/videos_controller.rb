@@ -72,7 +72,6 @@ class VideosController < ApplicationController
   end
 
   def update
-    # TODO: Merging
 
     manifest = JSON.parse(request.body.read)
 
@@ -84,6 +83,15 @@ class VideosController < ApplicationController
         render json: @video.read_manifest, status: :ok
         return
       end
+
+      parent_rev = manifest["revision"]
+      if parent_rev != @video.revision_num
+        parent_manifest = @video.manifest_revision(parent_rev)
+        merge = Util.merge_manifests(manifest, @video.manifest_json, parent_manifest)
+        manifest = merge[:manifest]
+        lost_data = merge[:lost_data]
+      end
+
     else
       # TODO: Authorization
       @video = Video.new(revision_num: 0, author: current_user)
@@ -96,6 +104,7 @@ class VideosController < ApplicationController
     sss.create_video(@video) if sss
 
     status = @video.revision_num > 1 ? :ok : :created
+
     render json: @video.manifest_json, status: status
   end
 
