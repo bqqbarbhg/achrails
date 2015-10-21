@@ -6,38 +6,49 @@ class Video < ActiveRecord::Base
 
   belongs_to :author, class_name: "User"
   has_and_belongs_to_many :groups, uniq: true
+  has_many :video_revision_blocks
 
   validates :title, presence: true
   validates :uuid, presence: true
 
-  def self.params_from_manifest(manifest)
+  def revisions_in(range)
+    video_revision_blocks
+      .where('first_num <= ? and last_num >= ?', range.end, range.begin)
+      .order('last_num desc')
+      .all.map(&:revisions)
+      .flatten(1)
+      .select { |v| range.cover?(v["revision"]) }
   end
 
-  def self.from_manifest(manifest, user)
-    # @CutPaste video params
-    json = JSON.parse(manifest)
-    Video.create!(
-      title: json["title"],
-      uuid: json["id"],
-      author: user,
-      manifest_json: json,
-      searchable: Util.manifest_to_searchable(json),
-      video_url: Util.normalize_url(json["videoUri"]))
+  def all_revisions
+    revisions_in(1..revision_num)
   end
 
-  def history
-    if compressed_history
-      JSON.parse(Zlib.inflate(compressed_history))
+  def update_manifest(manifest)
+    new_revision_num = revision_num + 1
+    manifest["revision"] = new_revision_num
+
+    rev_block = video_revision_blocks.where(last_num: revision_num).first
+    if rev_block.nil? or rev_block.revision_count > 20
+      rev_block = video_revision_blocks.new(first_num: new_revision_num,
+                                            last_num: new_revision_num)
+      rev_block.revisions = [manifest]
     else
-      []
+      rev_block.revisions = rev_block.revisions.unshift(manifest)
+      rev_block.last_num = new_revision_num
     end
-  rescue JSON::ParseError
-    []
-  end
 
-  def history=(value)
-    self.compressed_history = Zlib.deflate(value.to_json)
-    value
+    self.revision_num = new_revision_num
+    self.manifest_json = manifest
+    self.title = manifest["title"]
+    self.uuid = manifest["id"]
+    self.searchable = Util.manifest_to_searchable(manifest),
+    self.video_url = Util.normalize_url(manifest["videoUri"])
+
+    transaction do
+      self.save!
+      rev_block.save!
+    end
   end
 
   def read_manifest

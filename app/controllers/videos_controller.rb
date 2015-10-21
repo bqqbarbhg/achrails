@@ -1,4 +1,3 @@
-
 class VideosController < ApplicationController
 
   def index
@@ -33,10 +32,7 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       format.html { render }
-      format.json do
-        headers['ETag'] = '"' + @video.uuid.to_s + ':' + @video.revision.to_s + '"'
-        render json: @video.read_manifest
-      end
+      format.json { render json: @video.read_manifest }
     end
   end
 
@@ -78,28 +74,36 @@ class VideosController < ApplicationController
   def update
     # TODO: Merging
 
-    @old_video = Video.find_by_uuid(params[:id])
-    params = video_params(request.body.read)
+    manifest = JSON.parse(request.body.read)
 
-    if @old_video
-      authorize @old_video
-      @old_video.update(params)
-      @new_video = @old_video
+    @video = Video.find_by_uuid(params[:id])
+    if @video
+      authorize @video
+      ignore = ["revision", "lastModified"]
+      if @video.read_manifest.except(*ignore) == manifest.except(*ignore)
+        render json: @video.read_manifest, status: :ok
+        return
+      end
     else
-      @new_video = Video.create!(params)
+      # TODO: Authorization
+      Video.new(revision_num: 0, author: current_user)
     end
-    sss.create_video(@new_video) if sss
 
-    @new_video.history = @new_video.history.unshift(params[:manifest_json])
-    @new_video.save!
+    @video.update_manifest(manifest)
 
-    status = @old_video ? :ok : :created
-    render nothing: true, status: status
+    sss.create_video(@video) if sss
+
+    status = @video.revision_num > 1 ? :ok : :created
+    render json: @video.manifest_json, status: status
   end
 
   def upload
-    @video = Video.from_manifest(params[:manifest].read, current_user)
+    @video = Video.new(revision_num: 0, author: current_user)
+
+    manifest = JSON.parse(params[:manifest].read)
+    @video.update_manifest(manifest)
     sss.create_video(@video) if sss
+
     redirect_to action: :show, id: @video.uuid
   end
 
@@ -136,16 +140,5 @@ class VideosController < ApplicationController
     render
   end
 
-protected
-  def video_params(manifest)
-    # @CutPaste video params
-    json = JSON.parse(manifest)
-    { title: json["title"],
-      uuid: json["id"],
-      author: current_user,
-      manifest_json: json,
-      searchable: Util.manifest_to_searchable(json),
-      video_url: Util.normalize_url(json["videoUri"]) }
-  end
 end
 
