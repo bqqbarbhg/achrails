@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
 
   def render_exception_forbidden(exception)
     logger.error exception.message
-    logger.error exception.backtrace.join "\n"
+    logger.error exception.backtrace[0...10].join "\n"
     render_forbidden
   end
 
