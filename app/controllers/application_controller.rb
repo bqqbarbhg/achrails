@@ -65,12 +65,20 @@ class ApplicationController < ActionController::Base
 
   def render_forbidden(explanation='')
     @explanation = explanation
-    render "shared/forbidden", status: :forbidden
+
+    respond_to do |format|
+      format.json { render json: { "error": @explanation } }
+      format.html { render "shared/forbidden", status: :forbidden }
+    end
   end
 
   def render_sss_error(exception)
     @sss_error = exception.message
-    render "shared/sss_error", status: :internal_server_error
+
+    respond_to do |format|
+      format.json { render json: { "error": @sss_error } }
+      format.html { render "shared/sss_error", status: :internal_server_error }
+    end
   end
 
   # Try to return back to the page the login originated from
