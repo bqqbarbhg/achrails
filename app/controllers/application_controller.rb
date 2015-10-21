@@ -57,6 +57,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def render_exception_forbidden(exception)
+    logger.error exception.message
+    logger.error exception.backtrace.join "\n"
+    render_forbidden
+  end
+
   def render_forbidden(explanation='')
     @explanation = explanation
     render "shared/forbidden", status: :forbidden
@@ -105,7 +111,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
+  rescue_from Pundit::NotAuthorizedError, with: :render_exception_forbidden
   rescue_from SssConnectError, with: :reauthenticate
   rescue_from SssInternalError, with: :render_sss_error
 end
