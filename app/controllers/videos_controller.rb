@@ -86,7 +86,7 @@ class VideosController < ApplicationController
       end
     else
       # TODO: Authorization
-      Video.new(revision_num: 0, author: current_user)
+      @video = Video.new(revision_num: 0, author: current_user)
     end
 
     manifest["uploadedAt"] = Time.now.utc.iso8601
