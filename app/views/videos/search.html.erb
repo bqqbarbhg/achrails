@@ -84,41 +84,6 @@ function getTimes(work, duration) {
     return [bestFrame];
 }
 
-function containInParent(element, focus, state) {
-
-    var parentElement = element.parentElement;
-    var parentWidth = parentElement.clientWidth;
-    var parentHeight = parentElement.clientHeight;
-
-    if (state) {
-        if (state.oldWidth == parentWidth && state.oldHeight == parentHeight)
-            return;
-        state.oldWidth = parentWidth;
-        state.oldHeight = parentHeight;
-    }
-
-    var aspect = element.clientWidth / element.clientHeight;
-    var parentAspect = parentWidth / parentHeight;
-
-    var resultWidth, resultHeight;
-    if (parentAspect > aspect) {
-        resultWidth = parentWidth;
-        resultHeight = parentWidth / aspect;
-    } else {
-        resultHeight = parentHeight;
-        resultWidth = parentHeight * aspect;
-    }
-
-    focus = focus || { x: 0.5, y: 0.5 };
-    var offsetX = (resultWidth - parentWidth) * focus.x;
-    var offsetY = (resultHeight - parentHeight) * focus.y;
-
-    element.style.width = resultWidth + "px";
-    element.style.height = resultHeight + "px";
-    element.style.left = -offsetX + "px";
-    element.style.top = -offsetY + "px";
-}
-
 function highlightMatches(text) {
     return text.replace(queryRegex, '<span class="search-subtitles-marked">$&</span>');
 }
@@ -126,8 +91,6 @@ function highlightMatches(text) {
 function showElements(work, frame) {
     frame.canvas.classList.remove('search-invisible');
 
-    var doLayout = containInParent.bind(
-            window, frame.canvas, frame.extra.focus, { });
 
     if (frame.annotations) {
         frame.canvas.parentElement.href += "#t=" + frame.time.toFixed(2) + "s";
@@ -139,6 +102,7 @@ function showElements(work, frame) {
         work.extra.subtitles.classList.remove('search-invisible');
     }
 
+    var doLayout = fillParent.bind(window, frame.canvas, frame.extra.focus, { });
     doLayout();
     window.setInterval(doLayout, 500);
 }

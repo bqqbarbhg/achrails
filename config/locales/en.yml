@@ -58,4 +58,9 @@ en:
   failed_to_save_video: 'Failed to save video'
   saved_video: 'Saved video'
   no_videos_shared: 'No videos shared with this group yet.'
+  revision_title: 'Revision %{num} (uploaded %{time} ago)'
+  video_property:
+    title: "Title: "
+    genre: "Genre: "
+  revert_to_this: "Revert to this version"
 

@@ -1,0 +1,204 @@
+<% now = Time.now %>
+
+<% render_list = [] %>
+
+<% (@revisions + [{ }]).each_cons(2) do |new, old| %>
+  <%
+    time_ago = distance_of_time_in_words(Time.parse(new["uploadedAt"]), now)
+  %>
+  <h4><%= t(:revision_title, num: new["revision"], time: time_ago) %></h4>
+
+  <% if policy(@video).revert? and new["revision"] != @video.revision_num %>
+    <%= link_to(t(:revert_to_this), revert_video_path(@video, revision: new["revision"]), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+  <% end %>
+
+  <div>
+    <ul>
+    <% ["title", "genre"].each do |prop| %>
+      <% if new[prop] != old[prop] %>
+        <li>
+          <%= t("video_property.#{prop}") %>
+          <span class="rev-diff-old rev-diff-prop"><%= old[prop] %></span>
+          <span class="rev-diff-new rev-diff-prop"><%= new[prop] %></span>
+        </li>
+      <% end %>
+    <% end %>
+    </ul>
+  </div>
+
+  <div class="mdl-grid">
+  <% Util.manifest_diff(old, new)
+      .group_by { |diff| diff[:time] }
+      .each do |time, diffs| %>
+
+    <% canvas_id = "canvas#{render_list.count}" %>
+    <% subtitles_id = "subtitle#{render_list.count}" %>
+
+      <div class="rev-diff-container mdl-card mdl-cell mdl-cell--3-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+        <canvas id="<%= canvas_id %>" class="rev-diff-canvas rev-invisible">
+        </canvas>
+        <div id="<%= subtitles_id %>" class="rev-subtitles rev-invisible">
+          <% diffs.each do |diff| %>
+            <% if diff[:op] == :new %>
+              <span class="rev-diff-new"><%= diff[:dst]["text"] %></span><br>
+            <% elsif diff[:op] == :delete %>
+              <span class="rev-diff-old"><%= diff[:src]["text"] %></span><br>
+            <% elsif diff[:op] == :text %>
+              <span class="rev-diff-old"><%= diff[:src]["text"] %></span><br>
+              <span class="rev-diff-new"><%= diff[:dst]["text"] %></span><br>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% render_list << { element: canvas_id, subtitles: subtitles_id, time: time, diffs: diffs } %>
+  <% end %>
+  </div>
+
+<% end %>
+
+<script>
+  var renderList = [
+<%= render_list.map(&:to_json).join(",\n").html_safe %>
+  ];
+
+function getTimes(work, duration) {
+
+    var diffs = renderList[work.extra.index].diffs;
+
+    var frame = {
+        time: renderList[work.extra.index].time,
+        extra: {
+            diffs: diffs,
+        },
+    };
+
+    return [frame];
+}
+
+function canvasMinusPath(ctx, size, x, y) {
+
+    ctx.beginPath();
+    ctx.moveTo(x - size, y);
+    ctx.lineTo(x + size, y);
+}
+
+function canvasPlusPath(ctx, size, x, y) {
+
+    ctx.beginPath();
+    ctx.moveTo(x - size, y);
+    ctx.lineTo(x + size, y);
+    ctx.moveTo(x, y - size);
+    ctx.lineTo(x, y + size);
+}
+
+function canvasArrowPath(ctx, size, ax, ay, bx, by) {
+    var dir = Math.atan2(by - ay, bx - ax);
+    var angle = Math.PI / 6.0;
+
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.lineTo(bx - size*Math.cos(dir - angle), by - size*Math.sin(dir - angle));
+    ctx.moveTo(bx, by);
+    ctx.lineTo(bx - size*Math.cos(dir + angle), by - size*Math.sin(dir + angle));
+}
+
+function drawDiffAnnotation(canvas, ctx, annotation, style) {
+      var x = annotation.position.x * canvas.width;
+      var y = annotation.position.y * canvas.height;
+
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.translate(x - 40 / 2.0, y - 40 / 2.0);
+      ctx.fillStyle = style;
+      ctx.fillRect(0, 0, 40, 40);
+      ctx.restore();
+}
+
+function drawDiff(work, frame) {
+
+  var canvas = frame.canvas;
+  var ctx = canvas.getContext("2d");
+  var diffs = frame.extra.diffs;
+
+  var annotationSize = Math.min(canvas.width, canvas.height) * 0.2;
+  var gradient = createAnnotationGradient(ctx, 40);
+
+  for (var i = 0; i < diffs.length; i++) {
+      switch (diffs[i].op) {
+
+      case "new":
+        drawDiffAnnotation(canvas, ctx, diffs[i].dst, gradient);
+
+        canvasPlusPath(ctx, 10,
+            diffs[i].dst.position.x * canvas.width, diffs[i].dst.position.y * canvas.height);
+        ctx.strokeStyle = "#0f0";
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        break;
+
+      case "delete":
+        drawDiffAnnotation(canvas, ctx, diffs[i].src, gradient);
+
+        canvasMinusPath(ctx, 10,
+            diffs[i].src.position.x * canvas.width, diffs[i].src.position.y * canvas.height);
+        ctx.strokeStyle = "#f00";
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        break;
+
+      case "text":
+        drawDiffAnnotation(canvas, ctx, diffs[i].src, gradient);
+        break;
+
+      case "move":
+        drawDiffAnnotation(canvas, ctx, diffs[i].src, gradient);
+        drawDiffAnnotation(canvas, ctx, diffs[i].dst, gradient);
+
+        canvasArrowPath(ctx, 10,
+            diffs[i].src.position.x * canvas.width, diffs[i].src.position.y * canvas.height,
+            diffs[i].dst.position.x * canvas.width, diffs[i].dst.position.y * canvas.height);
+        ctx.strokeStyle = "#ff0";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        break;
+
+      }
+  }
+  var doLayout = containInParentWithAspect.bind(window, canvas,
+      canvas.width / canvas.height, null, { });
+  doLayout();
+  window.setInterval(doLayout, 500);
+
+  canvas.classList.remove("rev-invisible");
+  work.extra.subtitles.classList.remove("rev-invisible");
+}
+
+function documentLoaded() {
+    var frameRenderQueue = new WorkQueue();
+
+    var workerCount = 2;
+    for (var i = 0; i < workerCount; i++) {
+        frameRenderQueue.addWorker(new VideoFrameRenderer());
+    }
+
+    for (var i = 0; i < renderList.length; i++) {
+        frameRenderQueue.addWork({
+            canvas: document.getElementById(renderList[i].element),
+            video: '<%=j @revisions.first["videoUri"] %>',
+            resolution: 300,
+            timesCallback: getTimes,
+            doneCallback: drawDiff,
+            extra: {
+                index: i,
+                subtitles: document.getElementById(renderList[i].subtitles),
+            }
+        });
+    }
+}
+
+// Complete the page load before starting to load the frames
+window.addEventListener('load', documentLoaded);
+
+</script>
+

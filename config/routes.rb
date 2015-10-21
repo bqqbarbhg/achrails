@@ -32,6 +32,8 @@ Rails.application.routes.draw do
     member do
       resources 'shares', only: [:index, :create, :destroy], param: :group
       get 'player'
+      get 'revisions'
+      post 'revert/:revision', to: 'videos#revert', as: 'revert'
     end
   end
 

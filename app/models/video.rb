@@ -20,6 +20,10 @@ class Video < ActiveRecord::Base
       .select { |v| range.cover?(v["revision"]) }
   end
 
+  def manifest_revision(num)
+    revisions_in(num..num).first
+  end
+
   def all_revisions
     revisions_in(1..revision_num)
   end

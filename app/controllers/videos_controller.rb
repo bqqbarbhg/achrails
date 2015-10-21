@@ -79,7 +79,7 @@ class VideosController < ApplicationController
     @video = Video.find_by_uuid(params[:id])
     if @video
       authorize @video
-      ignore = ["revision", "lastModified"]
+      ignore = ["revision", "uploadedAt", "lastModified"]
       if @video.read_manifest.except(*ignore) == manifest.except(*ignore)
         render json: @video.read_manifest, status: :ok
         return
@@ -88,6 +88,8 @@ class VideosController < ApplicationController
       # TODO: Authorization
       Video.new(revision_num: 0, author: current_user)
     end
+
+    manifest["uploadedAt"] = Time.now.utc.iso8601
 
     @video.update_manifest(manifest)
 
@@ -101,6 +103,8 @@ class VideosController < ApplicationController
     @video = Video.new(revision_num: 0, author: current_user)
 
     manifest = JSON.parse(params[:manifest].read)
+    manifest["uploadedAt"] = Time.now.utc.iso8601
+
     @video.update_manifest(manifest)
     sss.create_video(@video) if sss
 
@@ -138,6 +142,39 @@ class VideosController < ApplicationController
     @manifests = Video.search(@query).map(&:read_manifest)
 
     render
+  end
+
+  def revisions
+    @video = Video.find_by_uuid(params[:id])
+    authorize @video
+
+    @revisions = @video.all_revisions
+
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @revisions }
+    end
+  end
+
+  def revert
+    revision = params[:revision].to_i
+
+    @video = Video.find_by_uuid(params[:id])
+
+    if @video
+      authorize @video
+    else
+      # TODO: Authorization
+      Video.new(revision_num: 0, author: current_user)
+    end
+
+    manifest = @video.manifest_revision(revision)
+    manifest["uploadedAt"] = Time.now.utc.iso8601
+    @video.update_manifest(manifest)
+
+    sss.create_video(@video) if sss
+
+    redirect_to action: :show, id: @video.uuid
   end
 
 end

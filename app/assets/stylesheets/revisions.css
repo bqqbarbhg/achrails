@@ -1,0 +1,44 @@
+.rev-diff-container {
+	height: 300px;
+	position: relative;
+	background-color: #000 !important;
+}
+
+.rev-subtitles {
+    transition: opacity 0.2s ease-out;
+    position: absolute;
+	color: white;
+    bottom: 5px;
+    left: 0px;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 1.1em;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 0.2s ease-out;
+    text-shadow: 0px 0px 3px #000;
+    line-height: 115%;
+}
+
+.rev-invisible {
+    opacity: 0.0;
+}
+
+.rev-diff-canvas {
+    transition: opacity 0.2s ease-out;
+	position: absolute;
+}
+
+.rev-diff-old {
+	color: #f44;
+	text-decoration: line-through;
+}
+
+.rev-diff-new {
+	color: #4f4;
+}
+
+.rev-diff-prop {
+	font-size: 1.1em;
+}
+

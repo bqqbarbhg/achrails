@@ -47,5 +47,13 @@ class VideoPolicy < Struct.new(:user, :video)
     update?
   end
 
+  def revert?
+    update?
+  end
+
+  def revisions?
+    revert?
+  end
+
 end
 

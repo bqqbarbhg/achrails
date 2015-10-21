@@ -67,6 +67,10 @@
       <%= link_to(t(:share_video), shares_path(@video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
+    <% if policy(@video).revisions? %>
+      <%= link_to(t(:revisions), revisions_video_path(@video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+    <% end %>
+
     <% if policy(@video).destroy? %>
       <noscript>
           <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
