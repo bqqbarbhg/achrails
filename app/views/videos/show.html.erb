@@ -146,25 +146,37 @@
   var http = new HTTP();
   http.globalHeader("X-CSRF-Token", token);
 
+  var isSaving = false;
+
   function saveBegin() {
+    if (isSaving)
+      return false;
+    isSaving = true;
     save_spinner.classList.add("is-active");
+    return true;
   }
 
   function saveEnd() {
     save_spinner.classList.remove("is-active");
+    isSaving = false;
   }
 
   function saveChanges() {
     var manifest = player.exportManifest();
-    saveBegin();
+    if (!saveBegin()) {
+      return;
+    }
+
     http.putJson('', manifest, {
-      success: function() {
-        saveEnd();
+      success: function(xhr) {
         createToast("<%=j t(:saved_video) %>");
-        lastSavedManifest = manifest;
-      },
-      error: function(xhr) {
+        var newManifest = JSON.parse(xhr.responseText);
+        player.reset(newManifest);
+        lastSavedManifest = newManifest;
         saveEnd();
+      },
+
+      error: function(xhr) {
         <% if Rails.env.development? %>
           console.log(xhr);
           // In development environment flush the page with the error message.
@@ -174,6 +186,7 @@
         <% else %>
           createToast("<%=j t(:failed_to_save_video) %>");
         <% end %>
+        saveEnd();
       },
     });
   }
