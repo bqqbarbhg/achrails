@@ -17,6 +17,12 @@ module Util
       [a["time"], a["position"]["x"], a["position"]["y"], a["text"],
        a["author"]["id"], a["author"]["uri"], a["author"]["name"]]
     end
+
+    manifest["annotations"].each do |annotation|
+      pos = annotation["position"]
+      pos["x"] = pos["x"].round(5)
+      pos["y"] = pos["y"].round(5)
+    end
   end
 
   def self.manifest_diff(old, new)
