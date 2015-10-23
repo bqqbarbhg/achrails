@@ -12,10 +12,10 @@ module Util
     ([title] + annotation_texts).join(' ')
   end
 
-  def normalize_manifest!(manifest)
+  def self.normalize_manifest!(manifest)
     manifest["annotations"].sort_by! do |a|
       [a["time"], a["position"]["x"], a["position"]["y"], a["text"],
-       a["user"]["id"], a["user"]["uri"], a["user"]["name"]]
+       a["author"]["id"], a["author"]["uri"], a["author"]["name"]]
     end
   end
 
