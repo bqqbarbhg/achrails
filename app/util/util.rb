@@ -12,6 +12,13 @@ module Util
     ([title] + annotation_texts).join(' ')
   end
 
+  def normalize_manifest!(manifest)
+    manifest["annotations"].sort_by! do |a|
+      [a["time"], a["position"]["x"], a["position"]["y"], a["text"],
+       a["user"]["id"], a["user"]["uri"], a["user"]["name"]]
+    end
+  end
+
   def self.manifest_diff(old, new)
     old_as = (old["annotations"] || []).sort_by { |a| a["time"] }
     new_as = (new["annotations"] || []).sort_by { |a| a["time"] }

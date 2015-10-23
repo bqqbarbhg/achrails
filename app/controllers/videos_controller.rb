@@ -80,6 +80,7 @@ class VideosController < ApplicationController
   def update
 
     manifest = JSON.parse(request.body.read)
+    Util.normalize_manifest!(manifest)
 
     @video = Video.find_by_uuid(params[:id])
     if @video
@@ -118,6 +119,8 @@ class VideosController < ApplicationController
     @video = Video.new(revision_num: 0, author: current_user)
 
     manifest = JSON.parse(params[:manifest].read)
+    Util.normalize_manifest!(manifest)
+
     manifest["uploadedAt"] = Time.now.utc.iso8601
 
     @video.update_manifest(manifest)
