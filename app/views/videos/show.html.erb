@@ -133,6 +133,8 @@
   }
 
   var manifest = <%= @video.read_manifest.to_json.html_safe %>;
+  normalizeManifest(manifest);
+
   var lastSavedManifest = manifest;
 
   var playerElement = document.querySelector("#achso_player");
