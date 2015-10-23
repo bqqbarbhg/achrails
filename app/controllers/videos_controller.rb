@@ -15,11 +15,11 @@ class VideosController < ApplicationController
       end
       format.json do
 
-        own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :updated_at)
-        group_video_columns = current_user.videos.pluck(:id, :uuid, :updated_at)
+        own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :revision_num)
+        group_video_columns = current_user.videos.pluck(:id, :uuid, :revision_num)
 
         all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
-        @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], last_modified: c[2].httpdate } }
+        @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], revision: c[2] } }
 
         render json: { videos: @all_videos }
       end
