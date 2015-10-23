@@ -30,9 +30,15 @@ class VideosController < ApplicationController
     @video = Video.find_by_uuid(params[:id])
     authorize @video
 
+    @manifest = if params[:rev].present?
+      @video.manifest_revision(params[:rev].to_i)
+    else
+      @video.read_manifest
+    end
+
     respond_to do |format|
       format.html { render }
-      format.json { render json: @video.read_manifest }
+      format.json { render json: @manifest }
     end
   end
 
