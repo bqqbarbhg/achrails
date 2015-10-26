@@ -81,6 +81,8 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     authorize @group
 
+    sss.join_group(@group, current_user) if sss
+
     @group.join(current_user)
     redirect_to action: :show, id: @group.id
   end
