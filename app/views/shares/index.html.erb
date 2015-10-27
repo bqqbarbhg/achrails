@@ -5,36 +5,40 @@
 <% end %>
 
 <% content_for :pagetitle do %>
-  <% if @videos.count==1 %>
-    Share a video with group
-  <% else %>
-    Share <%= @videos.count %> videos with group
-  <% end %>
+  <%= t('.pagetitle', count: @videos.count) %>
 <% end %>
 
 <div class="mdl-grid">
 
 <div class="mdl-cell mdl-cell--12-col">
-<p>
-<% for video in @videos %>
-<%= video.title %></br>
-<% end %>
-</p>
+  <p>
+    <% for video in @videos %>
+    <%= video.title %></br>
+    <% end %>
+  </p>
 </div>
+
 <div class="mdl-cell mdl-cell--4-col">
 
 <% for share_group in @share_groups %>
-    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" id="grouplabel<%= share_group.group.id %>" for="group<%= share_group.group.id %>"> 
-    <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,class:"mdl-switch__input" %> 
-      <span class="mdl-switch__label">
-        <%= share_group.group.name %>
-        <% if share_group.shareclass == :mixed %>
-          <i class="mixed_warning">Some of the videos are shared</i>
-        <% end %>
-      </span>
-    </label>
-    <div class="mld-spacer"></div>
-    <br/>
+  <label id="grouplabel<%= share_group.group.id %>"
+      for="group<%= share_group.group.id %>"
+      class="mdl-switch mdl-js-switch mdl-js-ripple-effect"> 
+
+    <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,
+          class:"mdl-switch__input" %> 
+
+    <span class="mdl-switch__label">
+      <%= share_group.group.name %>
+      <% if share_group.shareclass == :mixed %>
+        <i class="mixed_warning"><%= t('.mixed_share_warning') %></i>
+      <% end %>
+    </span>
+
+  </label>
+
+  <div class="mld-spacer"></div>
+  <br/>
 <% end %>
 
 </div>
@@ -45,9 +49,6 @@
 
 </div>
 <script>
-  //$(function() {
-  //  FastClick.attach(document.body);
-  //});
 
   var groups = document.querySelectorAll(".mdl-switch__input");
   var pending = { };
@@ -57,10 +58,7 @@
   <% end %>
   };
 
-  var token = $('meta[name=csrf-token]').attr('content');;
-  var http = new HTTP();
-  http.globalHeader("X-CSRF-Token", token);
-
+  var http = getHTTP();
   refresh();
 
   function createGroupClickCallback(group, label, id) {
@@ -94,14 +92,8 @@
 
       var error = function(xhr) {          
         <% if Rails.env.development? %>
-          console.log(xhr);
-          // In development environment flush the page with the error message.
-          document.open();
-          document.write(xhr.response);
-          document.close();
+            replaceContentWithXHR(xhr);
         <% end %>
-
-        console.log(group);
 
         state[id] = !state[id];
         pending[id] = false;
@@ -110,7 +102,11 @@
         group.dispatchEvent(new Event('change', { 'bubbles': true }));
         label.classList.remove("is-disabled");
 
-        createToast("<%=j t(:failed_to_update_share) %>");
+        if (state[id]) {
+          createToast("<%=j t('.share_error.unshare') %>");
+        } else {
+          createToast("<%=j t('.share_error.share') %>");
+        }
 
         refresh();
       };
@@ -119,6 +115,7 @@
         success: success,
         error: error,
       }
+
       $('#sharing_spinner').addClass('is-active');
       if (state[id]) {
         http.postJson("", { 'group': id }, params);

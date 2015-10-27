@@ -1,9 +1,9 @@
 
 <% content_for :pagetitle do %>
   <% if @group.persisted? %>
-   <%= t(:edit_group) %>
+   <%= t('.pagetitle.edit') %>
   <% else %>
-   <%= t(:create_group) %>
+   <%= t('.pagetitle.create') %>
   <% end %>
 <% end %>
 
@@ -28,8 +28,8 @@
       <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
         <div>
           <%= f.radio_button :visibility, key, class:"mdl-radio__button" %>
-          <span class:"mdl-radio__label"><%= t(key.to_sym) %></span>
-          <%= content_tag(:p, t('description.visibility.' + key)) %>
+          <span class:"mdl-radio__label"><%= t("group.visibility.#{key}.title") %></span>
+          <%= content_tag(:p, t("group.visibility.#{key}.description")) %>
         </div>
       </label>
     <div class="mld-spacer"></div>

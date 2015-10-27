@@ -14,10 +14,10 @@ class HomeController < ApplicationController
     failed_action = params["failed_action"]
     infos = expected_actions[failed_action]
     if infos.present?
-      @failed_action = "action_fail." + failed_action
-      @infos = infos.map { |info| "user_info." + info }
+      @failed_action = failed_action
+      @infos = infos
     else
-      @failed_action = "action_fail.generic"
+      @failed_action = 'generic'
       @infos = nil
     end
 

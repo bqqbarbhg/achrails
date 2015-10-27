@@ -113,7 +113,8 @@ class GroupsController < ApplicationController
       InvitationMailer.invite_email(invitation, @group.name).deliver_later
     end
 
-    flash[:notice] = t(:users_invited, count: address_list.length, group: @group.name)
+    flash[:notice] = t('groups.invite.users_invited_message',
+                       count: address_list.length, group: @group.name)
 
     sss.invite_to_group(@group, address_list) if sss and address_list.length > 0
 

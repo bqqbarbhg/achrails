@@ -11,7 +11,8 @@ class InvitationsController < ApplicationController
     end
 
     unless @invitation.can_join?(current_user)
-      render_forbidden t(:invite_email_expected, email: @invitation.expect_email)
+      render_forbidden t('invitations.error_expected_email',
+                         email: @invitation.expect_email)
       return
     end
 
@@ -20,7 +21,8 @@ class InvitationsController < ApplicationController
     @group.join(current_user)
     @invitation.destroy
 
-    redirect_to @group, notice: t(:joined_group, group: @group.name)
+    redirect_to @group, notice: t('invitations.joined_message',
+                                  group: @group.name)
   end
 
 protected

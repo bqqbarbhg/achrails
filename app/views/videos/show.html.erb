@@ -19,8 +19,8 @@
       </div>
       <div class="acp-annotation-edit">
         <input class="acp-annotation-text-input" type="text" />
-        <button class="acp-annotation-delete-button"><%= t(:delete) %></button>
-        <button class="acp-annotation-save-button"><%= t(:save) %></button>
+        <button class="acp-annotation-delete-button"><%= t('player.annotation_edit.delete') %></button>
+        <button class="acp-annotation-save-button"><%= t('player.annotation_edit.save') %></button>
       </div>
       <div class="acp-subtitles">
       </div>
@@ -60,22 +60,29 @@
     <div id="save_spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner"></div>
 
     <% if policy(@video).update? %>
-      <div onclick='saveChanges()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"><%= t(:save) %></div>
+      <div onclick='saveChanges()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+        <%= t('.save.button') %>
+      </div>
     <% end %>
 
     <% if policy(@video).share? %>
-      <%= link_to(t(:share_video), shares_path(@video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+      <%= link_to(t('.share_button'), shares_path(@video),
+            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
     <% if policy(@video).revisions? %>
-      <%= link_to(t(:revisions), revisions_video_path(@video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+      <%= link_to(t('.revisions_button'), revisions_video_path(@video),
+            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
     <% if policy(@video).destroy? %>
       <noscript>
-          <%= link_to(t(:delete_video), video_path(@video), method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+        <%= link_to(t('.delete.button'), video_path(@video), method: :delete,
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
       </noscript>
-      <%= button_tag(t(:delete_video), id: :delete_button, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+
+      <%= button_tag(t('.delete.button'), id: :delete_button,
+            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
 
       <script>
         // @Copy-Paste(confirm delete button)
@@ -84,13 +91,13 @@
         $delete_button.on("click", function() {
           // TODO: Material design dialog?
           // MDL didn't offer a solution when this was written
-          if (confirm('<%=j t(:video_delete_confirm) %>')) {
-            var token = $('meta[name=csrf-token]').attr('content');;
-            var http = new HTTP();
-            http.globalHeader("X-CSRF-Token", token);
-            http.deleteJson('', {
+          if (confirm("<%=j t('.delete.confirm') %>")) {
+            getHTTP().deleteJson('', {
               success: function() {
                 window.location.href = '<%=j videos_path() %>';
+              },
+              error: function() {
+                createToast("<%j= t('.delete.error') %>");
               }
             })
           }
@@ -171,7 +178,7 @@
 
     http.putJson('', manifest, {
       success: function(xhr) {
-        createToast("<%=j t(:saved_video) %>");
+        createToast("<%=j t('.save.success') %>");
         var newManifest = JSON.parse(xhr.responseText);
         player.reset(newManifest);
         lastSavedManifest = newManifest;
@@ -180,13 +187,9 @@
 
       error: function(xhr) {
         <% if Rails.env.development? %>
-          console.log(xhr);
-          // In development environment flush the page with the error message.
-          document.open();
-          document.write(xhr.response);
-          document.close();
+          replaceContentWithXHR(xhr);
         <% else %>
-          createToast("<%=j t(:failed_to_save_video) %>");
+          createToast("<%=j t('.save.error') %>");
         <% end %>
         saveEnd();
       },
@@ -232,7 +235,7 @@
       timeText += seconds;
     }
 
-    shareTimeLabel.innerHTML = '<%=j t(:start_at) %> ' + timeText;
+    shareTimeLabel.innerHTML = "<%=j t('.start_at_label') %> " + timeText;
 
     if (shareTimeCheckbox.checked) {
       updateCopyBoxes(baseUrl + "#t=" + time.toFixed(2) + "s");
@@ -257,7 +260,7 @@
       return undefined;
     }
 
-    var message = '<%=j t(:unsaved_video_warning) %>';
+    var message = "<%=j t('.unsaved_video_warning') %>";
 
     e.returnValue = message;
     return message;

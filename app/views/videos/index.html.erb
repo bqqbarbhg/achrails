@@ -5,9 +5,10 @@
 <% end %>
 
 <% content_for :pagetitle do %>
-    Videos
+  <%= t('.pagetitle') %>
 <% end %>
 
+<%# Temporary!!! %>
 <ul>
 <% for video in @videos %>
   <li><%= link_to(video.title, video_path(video)) %></li>
@@ -16,12 +17,13 @@
 
 <% unless Rails.env.production? %>
 
-<% if policy(:video).create? %>
-  <%= form_tag("/videos/upload", multipart: true) do %>
-    <%= file_field_tag 'manifest' %>
-    <%= submit_tag t(:upload_video), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+  <% if policy(:video).create? %>
+    <%= form_tag("/videos/upload", multipart: true) do %>
+      <%= file_field_tag 'manifest' %>
+      <%= submit_tag t('.upload_button'),
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+    <% end %>
   <% end %>
-<% end %>
 
 <% end %>
 

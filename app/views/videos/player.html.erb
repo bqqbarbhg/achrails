@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Achrails Player</title>
+  <title><%= t('.title', video: @manifest["title"]) %></title>
   <%= stylesheet_link_tag 'application', media: 'all' %>    
   <%= stylesheet_link_tag "https://fonts.googleapis.com/icon?family=Material+Icons" %>
   <%= javascript_include_tag 'application' %>
@@ -18,8 +18,8 @@
       </div>
       <div class="acp-annotation-edit">
         <input class="acp-annotation-text-input" type="text" />
-        <button class="acp-annotation-delete-button"><%= t(:delete) %></button>
-        <button class="acp-annotation-save-button"><%= t(:save) %></button>
+        <button class="acp-annotation-delete-button"><%= t('player.annotation_edit.delete') %></button>
+        <button class="acp-annotation-save-button"><%= t('player.annotation_edit.save') %></button>
       </div>
       <div class="acp-subtitles">
       </div>

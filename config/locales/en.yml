@@ -20,47 +20,130 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  sign_out: "Sign out"
-  delete_group: "Delete group"
-  join_group: "Join group"
-  leave_group: "Leave group"
-  upload_video: "Upload video"
-  share_video: "Share video"
-  invite_only: "Invite only"
-  unlisted: "Unlisted"
-  listed: "Public listed"
-  description:
+
+  activerecord:
+    models:
+      group: 'Group'
+    attributes:
+      group:
+        name: 'Name'
+        description: 'Description'
+  
+  sign_in:
+    learning_layers: "Sign in"
+    developer: "Sign in (developer)"
+
+  player:
+    annotation_edit:
+      save: 'Save'
+      delete: 'Delete'
+
+  group:
     visibility:
-      invite_only: "Only users with email invitation can see or join this group."
-      unlisted: "Users with a link to this group may join this group."
-      listed: "This group is public and shown to everyone."
-  action_fail:
-    generic: 'More permissions are required to complete the action.'
-    log_in: 'Ach so needs to access your profile, email and openid to log in.'
-    accept_invitation: 'Ach so requires access to your email to accept invitations.'
-  user_info:
-    email: 'email'
-    openid: 'openid'
-    profile: 'profile'
-  joined_group: "Joined group %{group}"
-  invite_email_expected: 'Expected to join with email %{email}'
-  users_invited:
-    one: 'Invited %{count} person to %{group}'
-    other: 'Invited %{count} people to %{group}'
-  group_delete_confirm: 'Are you sure you want to delete the group %{group}?'
-  video_delete_confirm: 'Are you sure you want to delete this video?'
-  failed_to_create_group: 'Failed to create group'
-  start_at: 'Start at'
-  unsaved_video_warning: 'There are unsaved changes in the video, which will be lost if you continue.'
-  video_search_placeholder: 'Search...'
-  failed_to_update_share: 'Failed to update share status'
-  failed_to_delete_group: 'Failed to delete group'
-  failed_to_save_video: 'Failed to save video'
-  saved_video: 'Saved video'
-  no_videos_shared: 'No videos shared with this group yet.'
-  revision_title: 'Revision %{num} (uploaded %{time} ago)'
-  video_property:
-    title: "Title: "
-    genre: "Genre: "
-  revert_to_this: "Revert to this version"
+      invite_only:
+        title: 'Invite only'
+        description: 'Only users with email invitation can see or join this group.'
+      unlisted:
+        title: 'Unlisted'
+        description: 'Users with a link to this group may join this group.'
+      listed:
+        title: 'Public listed'
+        description: 'This group is public and shown to everyone.'
+
+  groups:
+    edit:
+      pagetitle:
+        create: 'Create group'
+        edit: 'Edit group'
+    index:
+      pagetitle: 'Groups'
+    show:
+      videos:
+        heading: 'Videos'
+        empty_filler: 'There are no videos shared with this group yet.'
+      members:
+        heading: 'Members'
+        admin_tag: 'admin'
+      invite:
+        heading: 'Invite new members'
+        email_placeholder: 'Add address to invite'
+        add_contacts: 'Add contacts'
+        submit: 'Send invites'
+      delete:
+        button: 'Delete group'
+        confirm: 'Are you sure you want to delete the group %{group}?'
+        error: 'Failed to delete group'
+      edit_button: 'Edit group'
+      join_button: 'Join group'
+      leave_button: 'Leave group'
+    invite:
+      users_invited_message: 
+        one: 'Invited %{count} person to %{group}'
+        other: 'Invited %{count} people to %{group}'
+
+  home:
+    oidc_error:
+      required_information: 'Required information:'
+      failed_action: 
+        generic: 'More permissions are required to complete the action.'
+        log_in: 'Ach so needs to access your profile, email and openid to log in.'
+        accept_invitation: 'Ach so requires access to your email to accept invitations.'
+      user_info:
+        email: 'email'
+        openid: 'openid'
+        profile: 'profile'
+
+  invitation_mailer:
+    invite_email:
+      body_text: 'You have been invited to %{url}'
+      body_text_html: 'You have been invited to <a href="%{url}">%{url}</a>'
+
+  invitations:
+    error_expected_email: 'Expected to join with email %{email}'
+    joined_message: 'Joined group %{group}'
+
+  shared:
+    forbidden:
+      heading: 'Forbidden'
+      return: 'Return back'
+    sss_error:
+      heading: 'SocialSemanticServer error'
+
+  shares:
+    index:
+      pagetitle:
+        one: 'Share a video with groups'
+        other: 'Share %{count} videos with groups'
+      mixed_share_warning: 'Some of the videos are shared' 
+      share_error:
+        share: 'Failed to share video'
+        unshare: 'Failed to unshare video'
+  
+  videos:
+    index:
+      pagetitle: 'Videos'
+      upload_button: 'Upload video'
+    player:
+      title: '%{video} - Ach so!'
+    revisions:
+      revision_title: 'Revision %{num} (uploaded %{time} ago)'
+      revert_button: 'Revert to this version'
+      video_property: 
+        title: "Title: "
+        genre: "Genre: "
+    search:
+      search_placeholder: 'Search...'
+    show:
+      share_button: 'Share to groups'
+      revisions_button: 'Revisions'
+      save:
+        button: 'Save'
+        success: 'Video saved'
+        error: 'Failed to save video'
+      delete:
+        button: 'Delete'
+        confirm: 'Are you sure you want to delete this video?'
+        error: 'Failed to delete video'
+      start_at_label: 'Start at'
+      unsaved_video_warning: 'There are unsaved changes in the video, which will be lost if you continue.'
 

@@ -6,10 +6,11 @@
   <%
     time_ago = distance_of_time_in_words(Time.parse(new["uploadedAt"]), now)
   %>
-  <h4><%= t(:revision_title, num: new["revision"], time: time_ago) %></h4>
+  <h4><%= t('.revision_title', num: new["revision"], time: time_ago) %></h4>
 
   <% if policy(@video).revert? and new["revision"] != @video.revision_num %>
-    <%= link_to(t(:revert_to_this), revert_video_path(@video, revision: new["revision"]), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+    <%= link_to(t('.revert_button'), revert_video_path(@video, revision: new["revision"]), method: :post,
+          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
   <% end %>
 
   <div>
@@ -17,7 +18,7 @@
     <% ["title", "genre"].each do |prop| %>
       <% if new[prop] != old[prop] %>
         <li>
-          <%= t("video_property.#{prop}") %>
+          <%= t(".video_property.#{prop}") %>
           <span class="rev-diff-old rev-diff-prop"><%= old[prop] %></span>
           <span class="rev-diff-new rev-diff-prop"><%= new[prop] %></span>
         </li>

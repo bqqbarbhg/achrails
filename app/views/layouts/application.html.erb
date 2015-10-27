@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <%# TODO: Changing title? %>
   <title>Achrails</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>    
   <%= stylesheet_link_tag "https://storage.googleapis.com/code.getmdl.io/1.0.4/material.teal-red.min.css" %>
@@ -12,6 +13,7 @@
 <body>
 
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
   <header class="mdl-layout__header">
       <div class="mdl-layout-icon">
         <% if content_for?(:homelink) %>
@@ -22,6 +24,7 @@
           <% end %>                
         <% end %>
       </div>
+
       <div class="mdl-layout__header-row">
         <!-- Title -->
         <span class="mdl-layout-title"><%= yield :pagetitle %></span>
@@ -33,20 +36,22 @@
             <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
           <% else %>
             <% if Rails.env.production? %>
-              <%= link_to "Sign in", user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
+              <%= link_to t('sign_in.learning_layers'), user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
             <% else %>
-              <%= link_to "Sign in (developer)", user_omniauth_authorize_url(:developer), class: "mdl-navigation__link" %>
+              <%= link_to t('sign_in.developer'), user_omniauth_authorize_url(:developer), class: "mdl-navigation__link" %>
             <% end %>
           <% end %>
         </nav>
       </div>
   </header>
+
   <main class="mdl-layout__content">
     <% flash.each do |name, msg| %>
       <%= javascript_tag do %>
         createToast('<%= j msg %>');
       <% end %>
     <% end %>
+
     <div class="page-content">
       <%= yield %>
     </div>

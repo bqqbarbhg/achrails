@@ -2,108 +2,131 @@
 <% content_for :pagetitle do %>
   <%= @group.name %>
 <% end %>
+
 <div class="content mdl-grid">
 
-<div class="mdl-cell mdl-cell--12-col">
-<h3>Videos</h3>
+<%# --- Temporary, replace with video view --- %>
 
-<ul>
-<% if @group.videos.each do |video| %>
-  <li>
-    <%= link_to(video.title, video) %>
-  </li>
-<% end.empty? %>
-<%= t(:no_videos_shared) %>
-<% end %>
-</ul>
-</div>
+  <div class="mdl-cell mdl-cell--12-col">
+
+  <h3><%= t('.videos.heading') %></h3>
+
+  <% unless @group.videos.empty? %>
+    <ul>
+      <% @group.videos.each do |video| %>
+        <li><%= link_to(video.title, video) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <%= t('.videos.empty_filler') %>
+  <% end %>
+
+  </div>
+
+<%# --- Temporary end --- %>
+
+
 <div class="mdl-layout-spacer"></div>
+
 <div class="mdl-cell mdl-cell--4-col">
-<h3>Members</h3>
+  <h3><%= t('.members.heading') %></h3>
 
-<ul>
-<% for membership in @group.memberships %>
-  <% user = membership.user %>
-  <li>
-    <%= user.name %>
-    <% if membership.admin? %>
-      <span class="admin-badge">admin</span>
-    <% end %>
-  </li>
-<% end %>
-</ul>
+  <ul>
+  <% for membership in @group.memberships %>
+    <% user = membership.user %>
+    <li>
+      <%= user.name %>
+      <% if membership.admin? %>
+        <span class="admin-badge"><%= t('.members.admin_tag') %></span>
+      <% end %>
+    </li>
+  <% end %>
+  </ul>
 
-<% if policy(@group).join? %>
-  <%= link_to(t(:join_group), join_group_path(@group), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-<% end %>
-<% if policy(@group).leave? %>
-  <%= link_to(t(:leave_group), leave_group_path(@group), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-<% end %>
+  <% if policy(@group).join? %>
+    <%= link_to(t('.join_button'), join_group_path(@group), method: :post,
+          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+  <% end %>
+
+  <% if policy(@group).leave? %>
+    <%= link_to(t('.leave_button'), leave_group_path(@group), method: :post,
+          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+  <% end %>
+
 </div>
 
 <% if policy(@group).invite? %>
-<div class="mdl-layout-spacer"></div>
+  <div class="mdl-layout-spacer"></div>
+  <div class="mdl-cell mdl-cell--4-col">
 
-<div class="mdl-cell mdl-cell--4-col">
-<h3>Invite new members</h3>
+    <h3><%= t('.invite.heading') %></h3>
 
-<%= form_tag(invite_group_path(@group)) do %>
-    <div id="addresses">
-    </div>
-    <noscript>
+    <%= form_tag(invite_group_path(@group)) do %>
+      <div id="addresses">
+        <%# Here goes the dynamic email inputs (see bottom of the file) %>
+      </div>
+
+      <noscript>
         <% (0..9).each do |n| %>        
           <div class="mdl-textfield mdl-js-textfield">
-          <%= text_field_tag 'address[#{n.to_s}]', '', placeholder: 'Add address to invite', class: "mdl-textfield__input" %>
+            <%= text_field_tag 'address[#{n.to_s}]', '',
+              placeholder: t('.invite.email_placeholder'),
+              class: "mdl-textfield__input" %>
           </div>
         <% end %>
-    </noscript>
-<div class="mdl-cell mdl-cell--6-col">
-    <%= button_tag 'Add contacts', type: "button", id: "add_contacts_button", class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored force-hidden-no-layout" %>
-</div>
-<div class="mdl-cell mdl-cell--6-col">
-    <%= submit_tag 'Send invites', class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
-</div>
-<% end %>
-<% end %>
-</div>
+      </noscript>
+
+      <div class="mdl-cell mdl-cell--6-col">
+        <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored force-hidden-no-layout" %>
+      </div>
+
+      <div class="mdl-cell mdl-cell--6-col">
+        <%= submit_tag t('.invite.submit'),
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+      </div>
+
+    <% end # form_tag %>
+
+  </div>
+<% end # if policy(@group).invite? %>
+
 <div class="mdl-layout-spacer"></div>
 <div class="mdl-cell mdl-cell--8-col">
-<% unless sss # @SSS_Support(edit circles) %>
-<% if policy(@group).edit? %>
-  <%= link_to(t(:edit_group), edit_group_path(@group), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-<% end %>
-<% end %>
+
+  <% unless sss # @SSS_Support(edit circles) %>
+  <% if policy(@group).edit? %>
+    <%= link_to(t('.edit_button'), edit_group_path(@group), class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+  <% end %>
+  <% end %>
 
 <% if policy(@group).destroy? %>
   <noscript>
-    <%= link_to(t(:delete_group), @group, method: :delete, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+    <%= link_to(t('.delete.button'), @group, method: :delete,
+          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
   </noscript>
-  <%= button_tag(t(:delete_group), id: :delete_button, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+
+  <%= button_tag(t('.delete.button'), id: :delete_button,
+          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
 
   <script>
+
     // @Copy-Paste(confirm delete button)
     var $delete_button = $("#delete_button");
     $delete_button.removeClass("force-hidden-no-layout")
     $delete_button.on("click", function() {
       // TODO: Material design dialog?
       // MDL didn't offer a solution when this was written
-      if (confirm('<%=j t(:group_delete_confirm, group: @group.name) %>')) {
-        var token = $('meta[name=csrf-token]').attr('content');;
-        var http = new HTTP();
-        http.globalHeader("X-CSRF-Token", token);
-        http.deleteJson('', {
+      if (confirm("<%=j t('.delete.confirm', group: @group.name) %>")) {
+        getHTTP().deleteJson('', {
           success: function() {
             window.location.href = '<%=j groups_path() %>';
           },
           error: function(xhr) {
           <% if Rails.env.development? %>
-            console.log(xhr);
-            // In development environment flush the page with the error message.
-            document.open();
-            document.write(xhr.response);
-            document.close();
+            replaceContentWithXHR(xhr);
           <% else %>
-            createToast('<%j= t(:failed_to_delete_group) %>');
+            createToast("<%j= t('.delete.error') %>");
           <% end %>
           }
         });
