@@ -1,0 +1,147 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+fi:
+  activerecord:
+    models:
+      group: 'Ryhmä'
+    attributes:
+      group:
+        name: 'Nimi'
+        description: 'Kuvaus'
+  
+  sign_in:
+    learning_layers: "Kirjaudu"
+    developer: "Kirjaudu (kehittäjä)"
+
+  player:
+    annotation_edit:
+      save: 'Tallenna'
+      delete: 'Poista'
+
+  group:
+    visibility:
+      invite_only:
+        title: 'Vain kutsutuille'
+        description: 'Vain kutsutut käyttäjät voivat nähdä ryhmän tai liittyä tähän ryhmään.'
+      unlisted:
+        title: 'Listaamaton'
+        description: 'Ryhmä ei näy ryhmien listassa, mutta jos käyttäjällä on linkki ryhmään, hän voi liittyä siihen itse.'
+      listed:
+        title: 'Listattu ryhmä'
+        description: 'Ryhmä on julkinen ja siihen voi liittyä kuka tahansa (tällä palvelimella).'
+
+  groups:
+    edit:
+      pagetitle:
+        create: 'Luo ryhmä'
+        edit: 'Muokkaa ryhmää'
+    index:
+      pagetitle: 'Ryhmät'
+    show:
+      videos:
+        heading: 'Videot'
+        empty_filler: 'Ryhmällä ei ole jaettuja videoita.'
+      members:
+        heading: 'Jäsenet'
+        admin_tag: 'hallitsija'
+      invite:
+        heading: 'Kutsu uusia jäseniä'
+        email_placeholder: 'Lisää kutsuttava osoite'
+        add_contacts: 'Lisää kontakteja'
+        submit: 'Lähetä kutsut'
+      delete:
+        button: 'Poista ryhmä'
+        confirm: 'Oletko varma että haluat poistaa ryhmän %{group}?'
+        error: 'Ryhmän poistaminen epäonnistui'
+      edit_button: 'Muokkaa ryhmää'
+      join_button: 'Liity ryhmään'
+      leave_button: 'Lähde ryhmästä'
+    invite:
+      users_invited_message: 
+        one: 'Kutsuttu %{count} henkilö ryhmään %{group}'
+        other: 'Kutsuttu %{count} henkilöä ryhmään %{group}'
+
+  home:
+    oidc_error:
+      required_information: 'Tarvittavat tiedot:'
+      failed_action: 
+        generic: 'Sinulla ei ole riittäviä oikeuksia toimenpiteeseen.'
+        log_in: 'Ach so!:n täytyy voida lukea profiili, sähköpostiosoite ja openid-tunnus voidakseen kirjautua.'
+        accept_invitation: 'Ach so! tarvitsee pääsyn sähköpostiin voidakseen hyväksyä kutsuja ryhmiin.'
+      user_info:
+        email: 'sähköposti'
+        openid: 'openid-tunnus'
+        profile: 'profiili'
+
+  invitation_mailer:
+    invite_email:
+      body_text: 'Sinut on kutsuttu %{url}'
+      body_text_html: 'Sinut on kutsuttu <a href="%{url}">%{url}</a>'
+
+  invitations:
+    error_expected_email: 'Kutsuttu sähköpostiosoitteella %{email}'
+    joined_message: 'Olet liittynyt ryhmään %{group}'
+
+  shared:
+    forbidden:
+      heading: 'Toiminto kielletty'
+      return: 'Palaa'
+    sss_error:
+      heading: 'SocialSemanticServer error'
+
+  shares:
+    index:
+      pagetitle:
+        one: 'Jaa video ryhmälle'
+        other: 'Jaa %{count} videota ryhmälle'
+      mixed_share_warning: 'Vain osa videoista on jaettu' 
+      share_error:
+        share: 'Jakaminen epäonnistui'
+        unshare: 'Jaon poisto epäonnistui'
+  
+  videos:
+    index:
+      pagetitle: 'Videot'
+      upload_button: 'Lähetä video'
+    player:
+      title: '%{video} - Ach so!'
+    revisions:
+      revision_title: 'Versio %{num} (lähetetty %{time} sitten)'
+      revert_button: 'Palauta tähän versioon'
+      video_property: 
+        title: "Nimi: "
+        genre: "Lajityyppi: "
+    search:
+      search_placeholder: 'Hae...'
+    show:
+      share_button: 'Jaa ryhmälle'
+      revisions_button: 'Versiot'
+      save:
+        button: 'Tallenna'
+        success: 'Video tallennettu'
+        error: 'Videon tallentaminen epäonnistui'
+      delete:
+        button: 'Poista'
+        confirm: 'Oletko varma että haluat poistaa tämän videon?'
+        error: 'Videon poistaminen epäonnistui'
+      start_at_label: 'Aloita kohdasta'
+      unsaved_video_warning: 'Video sisältää tallentamattomia muutoksia. Jos jatkat, muutokset häviävät.'
