@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   before_action :get_refresh_token_from_header
+  before_action :get_locale_from_params
   before_action :set_sss_id_for_user
 
   # CSRF breaks dev login, but it's not needed in dev environment anyway
@@ -20,6 +21,11 @@ class ApplicationController < ActionController::Base
     session['ll_oidc_refresh_token'] = refresh_token if refresh_token
   end
 
+  def get_locale_from_params
+    locale = params[:locale]
+    I18n.locale = locale if locale
+  end
+
   def set_sss_id_for_user
     if current_user && current_user.sss_id.nil?
       if sss
@@ -27,6 +33,10 @@ class ApplicationController < ActionController::Base
         current_user.save!
       end
     end
+  end
+
+  def default_url_options(options={})
+    { locale: I18n.locale }.merge options
   end
 
   def authenticate_and_redirect_back

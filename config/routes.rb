@@ -9,32 +9,36 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-  root 'home#index'
-  get '/oidc_error', to: 'home#oidc_error'
-  get '/oidc_error/:failed_action', to: 'home#oidc_error', as: 'oidc_action_error'
+  scope '(:locale)', locale: /en|fi|de|et/ do
 
-  resources :groups do
-    member do
-      post 'join'
-      post 'leave'
-      post 'invite'
-    end
-  end
+    root 'home#index'
+    get '/oidc_error', to: 'home#oidc_error'
+    get '/oidc_error/:failed_action', to: 'home#oidc_error', as: 'oidc_action_error'
 
-  resources :users
-  resources :invitations
-  resources :videos do
-    collection do
-      post 'upload'
-      get 'find'
-      get 'search'
+    resources :groups do
+      member do
+        post 'join'
+        post 'leave'
+        post 'invite'
+      end
     end
-    member do
-      resources 'shares', only: [:index, :create, :destroy], param: :group
-      get 'player'
-      get 'revisions'
-      post 'revert/:revision', to: 'videos#revert', as: 'revert'
+
+    resources :users
+    resources :invitations
+    resources :videos do
+      collection do
+        post 'upload'
+        get 'find'
+        get 'search'
+      end
+      member do
+        resources 'shares', only: [:index, :create, :destroy], param: :group
+        get 'player'
+        get 'revisions'
+        post 'revert/:revision', to: 'videos#revert', as: 'revert'
+      end
     end
+
   end
 
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?

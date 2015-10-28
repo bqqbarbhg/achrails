@@ -46,6 +46,9 @@ gem 'pg_search'
 # Better server
 gem 'puma'
 
+# Internationalization
+gem 'rails-i18n', '~> 4.0.0'
+
 group :development do
   # View sent emails
   gem 'letter_opener_web'
