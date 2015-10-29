@@ -38,6 +38,12 @@ en:
       save: 'Save'
       delete: 'Delete'
 
+  genre:
+    good_work: 'Good work'
+    problem: 'Problem'
+    site_overview: 'Site overview'
+    trick_of_trade: 'Trick of trade'
+
   group:
     visibility:
       invite_only:

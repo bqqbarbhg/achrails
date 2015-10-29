@@ -13,19 +13,33 @@
           class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
   <% end %>
 
-  <div>
-    <ul>
-    <% ["title", "genre"].each do |prop| %>
-      <% if new[prop] != old[prop] %>
-        <li>
-          <%= t(".video_property.#{prop}") %>
-          <span class="rev-diff-old rev-diff-prop"><%= old[prop] %></span>
-          <span class="rev-diff-new rev-diff-prop"><%= new[prop] %></span>
-        </li>
-      <% end %>
-    <% end %>
-    </ul>
-  </div>
+  <% if new["title"] != old["title"] || new["genre"] != old["genre"] %>
+    <div>
+      <ul>
+
+        <% if new["title"] != old["title"] %>
+          <li>
+            <%= t(".video_property.title") %>
+            <span class="rev-diff-old rev-diff-prop"><%= old["title"] %></span>
+            <span class="rev-diff-new rev-diff-prop"><%= new["title"] %></span>
+          </li>
+        <% end %>
+
+        <% if new["genre"] != old["genre"] %>
+          <li>
+            <%= t(".video_property.genre") %>
+            <% if old["genre"].present? %>
+              <span class="rev-diff-old rev-diff-prop"><%= t("genre.#{old["genre"]}", default: old["genre"]) %></span>
+            <% end %>
+            <% if new["genre"].present? %>
+              <span class="rev-diff-new rev-diff-prop"><%= t("genre.#{new["genre"]}", default: new["genre"]) %></span>
+            <% end %>
+          </li>
+        <% end %>
+
+      </ul>
+    </div>
+  <% end %>
 
   <div class="mdl-grid">
   <% Util.manifest_diff(old, new)

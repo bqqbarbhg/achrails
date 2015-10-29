@@ -37,6 +37,12 @@ fi:
       save: 'Tallenna'
       delete: 'Poista'
 
+  genre:
+    good_work: 'Hyvää työtä'
+    problem: 'Ongelma'
+    site_overview: 'Yleiskatsaus'
+    trick_of_trade: 'Ammattilaisen niksi'
+
   group:
     visibility:
       invite_only:
