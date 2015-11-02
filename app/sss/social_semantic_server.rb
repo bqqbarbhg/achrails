@@ -166,6 +166,10 @@ class SocialSemanticServer
     user_id
   end
 
+  def force_authenticate
+    current_user_sss_id.present?
+  end
+
   def create_video(video)
     post_json '/videos/videos',
       uuid: video.uuid,

@@ -27,6 +27,11 @@ class SharesController < ApplicationController
       ShareGroup.new(group, shared, shareclass)
     end
 
+    # HACK: Updating the sharing of a video does not refresh the token, so
+    # force authentication to make sure we can do SSS requests later in
+    # client Javascript
+    sss.force_authenticate() if sss
+
     render
   end
 
