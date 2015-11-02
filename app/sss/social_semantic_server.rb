@@ -72,8 +72,9 @@ class SocialSemanticServer
 
   def delete_json(path, body)
     logcall "DELETE #{path} #{body}"
-    response = @conn.run_request(:delete, @root + path, body.to_json,
+    response = validate_response @conn.run_request(:delete, @root + path, body.to_json,
       'Content-Type' => 'application/json')
+
     data = JSON.parse(response.body)
     data.deep_symbolize_keys! if data
   end
