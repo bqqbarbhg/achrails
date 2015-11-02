@@ -1,7 +1,7 @@
 
 <% content_for :homelink do %>
   <a href="#" onClick="closeActivity()" id="ach_so_link">
-   <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
+    <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
   </a>
 <% end %>
 
@@ -10,33 +10,37 @@
 <% end %>
 
 <div class="mdl-grid">
-<% for group in @groups %>
-   
-<div class="group-card mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp"> 
-  <div class="mdl-card__actions">
-   <%= link_to(group, class:"mdl-button mdl-button--colored mdl-js-button") do %> 
-      <%# icon &#xE7EF;=group %><i class="material-icons">&#xE7EF;</i> <%= group.name %> 
-   <% end %>
-  </div>
-  <div class="mdl-card__supporting-text mdl-card--border mdl-card--expand"> 
-    <p><%= group.description %></p>
-  </div>
+  <% for group in @groups %>
+     
+    <div class="group-card mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp"> 
 
-</div>
+      <div class="mdl-card__actions">
+        <%= link_to(group, class: "mdl-button mdl-button--colored mdl-js-button") do %> 
+          <%# Group icon and name %>
+          <i class="material-icons">&#xE7EF;</i> <%= group.name %> 
+        <% end %>
+      </div>
 
-<% end %>
+      <div class="mdl-card__supporting-text mdl-card--border mdl-card--expand"> 
+        <p><%= group.description %></p>
+      </div>
+
+    </div>
+
+  <% end %>
 </div>
 
 <% if policy(:group).create? %>
-<div class="mdl-grid">
+  <div class="mdl-grid">
 
-<div class="mdl-cell mdl-cell--4-col">
-<p>
- <a class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" href="<%= new_group_path() %>">
-    <%# icon &#xE7F0;=group_add %>
-    <i class="material-icons">&#xE7F0;</i>
- </a>
-</p>
-</div>
-</div>
+    <%# Group add button %>
+    <div class="mdl-cell mdl-cell--4-col">
+      <p>
+        <%= link_to(new_group_path, class: "mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored") do %>
+          <i class="material-icons">&#xE7F0;</i>
+        <% end %>
+      </p>
+    </div>
+
+  </div>
 <% end %>

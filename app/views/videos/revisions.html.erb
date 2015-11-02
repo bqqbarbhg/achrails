@@ -1,18 +1,24 @@
+
+<%# View-Cleanup: There is _way_ too much logic here %>
+
 <% now = Time.now %>
 
 <% render_list = [] %>
 
 <% (@revisions + [{ }]).each_cons(2) do |new, old| %>
-  <%
-    time_ago = distance_of_time_in_words(Time.parse(new["uploadedAt"]), now)
-  %>
+
+  <%# Revision title %>
+  <% time_ago = distance_of_time_in_words(Time.parse(new["uploadedAt"]), now) %>
   <h4><%= t('.revision_title', num: new["revision"], time: time_ago) %></h4>
 
+  <%# Revert button %>
   <% if policy(@video).revert? and new["revision"] != @video.revision_num %>
     <%= link_to(t('.revert_button'), revert_video_path(@video, revision: new["revision"]), method: :post,
           class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
   <% end %>
 
+  <%# Property diffs, now hardcoded separately since genres need to be localized, if
+      more properties are added to be diffed think of some cleaner solution %>
   <% if new["title"] != old["title"] || new["genre"] != old["genre"] %>
     <div>
       <ul>
@@ -42,31 +48,39 @@
   <% end %>
 
   <div class="mdl-grid">
-  <% Util.manifest_diff(old, new)
-      .group_by { |diff| diff[:time] }
-      .each do |time, diffs| %>
+    <% Util.manifest_diff(old, new)
+        .group_by { |diff| diff[:time] }
+        .each do |time, diffs| %>
 
-    <% canvas_id = "canvas#{render_list.count}" %>
-    <% subtitles_id = "subtitle#{render_list.count}" %>
+      <% canvas_id = "canvas#{render_list.count}" %>
+      <% subtitles_id = "subtitle#{render_list.count}" %>
 
-      <div class="rev-diff-container mdl-card mdl-cell mdl-cell--3-col mdl-cell--8-col-tablet mdl-shadow--2dp">
-        <canvas id="<%= canvas_id %>" class="rev-diff-canvas rev-invisible">
-        </canvas>
-        <div id="<%= subtitles_id %>" class="rev-subtitles rev-invisible">
-          <% diffs.each do |diff| %>
-            <% if diff[:op] == :new %>
-              <span class="rev-diff-new"><%= diff[:dst]["text"] %></span><br>
-            <% elsif diff[:op] == :delete %>
-              <span class="rev-diff-old"><%= diff[:src]["text"] %></span><br>
-            <% elsif diff[:op] == :text %>
-              <span class="rev-diff-old"><%= diff[:src]["text"] %></span><br>
-              <span class="rev-diff-new"><%= diff[:dst]["text"] %></span><br>
+        <div class="rev-diff-container mdl-card mdl-cell mdl-cell--3-col mdl-cell--8-col-tablet mdl-shadow--2dp">
+
+          <canvas id="<%= canvas_id %>" class="rev-diff-canvas rev-invisible">
+          </canvas>
+
+          <div id="<%= subtitles_id %>" class="rev-subtitles rev-invisible">
+            <% diffs.each do |diff| %>
+
+              <% if diff[:op] == :new %>
+                <span class="rev-diff-new"><%= diff[:dst]["text"] %></span><br>
+
+              <% elsif diff[:op] == :delete %>
+                <span class="rev-diff-old"><%= diff[:src]["text"] %></span><br>
+
+              <% elsif diff[:op] == :text %>
+                <span class="rev-diff-old"><%= diff[:src]["text"] %></span><br>
+                <span class="rev-diff-new"><%= diff[:dst]["text"] %></span><br>
+
+              <% end %>
+
             <% end %>
-          <% end %>
+          </div>
+
         </div>
-      </div>
-    <% render_list << { element: canvas_id, subtitles: subtitles_id, time: time, diffs: diffs } %>
-  <% end %>
+      <% render_list << { element: canvas_id, subtitles: subtitles_id, time: time, diffs: diffs } %>
+    <% end %>
   </div>
 
 <% end %>

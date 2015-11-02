@@ -10,72 +10,79 @@
 
 <div class="mdl-grid">
 
+  <%# Video player %>
   <div class="mdl-cell mdl-cell--8-col">
-  <div class="acp-player acp-inline acp-noselect" id="achso_player">
-    <div class="acp-video-background">
-      <div class="acp-video-wrapper">
-        <video class="acp-video">
-        </video>
+    <div class="acp-player acp-inline acp-noselect" id="achso_player">
+      <div class="acp-video-background">
+        <div class="acp-video-wrapper">
+          <video class="acp-video">
+          </video>
+        </div>
+        <div class="acp-annotation-edit">
+          <input class="acp-annotation-text-input" type="text" />
+          <button class="acp-annotation-delete-button"><%= t('player.annotation_edit.delete') %></button>
+          <button class="acp-annotation-save-button"><%= t('player.annotation_edit.save') %></button>
+        </div>
+        <div class="acp-subtitles">
+        </div>
       </div>
-      <div class="acp-annotation-edit">
-        <input class="acp-annotation-text-input" type="text" />
-        <button class="acp-annotation-delete-button"><%= t('player.annotation_edit.delete') %></button>
-        <button class="acp-annotation-save-button"><%= t('player.annotation_edit.save') %></button>
-      </div>
-      <div class="acp-subtitles">
-      </div>
-    </div>
-    <div class="acp-controls">
-      <i class="material-icons acp-control-button acp-play-button acp-disabled">&#xE037;</i>
-      <div class="acp-seek-bar">
-        <div class="acp-seek-bar-filler">
-          <div class="acp-seek-bar-ball">
+      <div class="acp-controls">
+        <i class="material-icons acp-control-button acp-play-button acp-disabled">&#xE037;</i>
+        <div class="acp-seek-bar">
+          <div class="acp-seek-bar-filler">
+            <div class="acp-seek-bar-ball">
+            </div>
+          </div>
+          <div class="acp-seek-catcher">
           </div>
         </div>
-        <div class="acp-seek-catcher">
+        <div class="acp-end-space">
+        </div>
+        <% if current_user and policy(@video).update? %>
+          <i class="material-icons acp-control-button acp-undo-button acp-disabled">&#xE166;</i>
+          <i class="material-icons acp-control-button acp-redo-button acp-disabled">&#xE15A;</i>
+        <% else %>
+          <i class="material-icons acp-control-button acp-undo-button acp-force-hidden-no-layout">&#xE166;</i>
+          <i class="material-icons acp-control-button acp-redo-button acp-force-hidden-no-layout">&#xE15A;</i>
+        <% end %>
+        <i class="material-icons acp-control-button acp-fullscreen-button acp-disabled">&#xE5D0;</i>
+        <div class="acp-end-space">
+        </div>
+        <div class="acp-wait-bar">
+        </div>
+        <div class="acp-wait-fade">
         </div>
       </div>
-      <div class="acp-end-space">
-      </div>
-      <% if current_user and policy(@video).update? %>
-        <i class="material-icons acp-control-button acp-undo-button acp-disabled">&#xE166;</i>
-        <i class="material-icons acp-control-button acp-redo-button acp-disabled">&#xE15A;</i>
-      <% else %>
-        <i class="material-icons acp-control-button acp-undo-button acp-force-hidden-no-layout">&#xE166;</i>
-        <i class="material-icons acp-control-button acp-redo-button acp-force-hidden-no-layout">&#xE15A;</i>
-      <% end %>
-      <i class="material-icons acp-control-button acp-fullscreen-button acp-disabled">&#xE5D0;</i>
-      <div class="acp-end-space">
-      </div>
-      <div class="acp-wait-bar">
-      </div>
-      <div class="acp-wait-fade">
-      </div>
     </div>
-  </div>
   </div>
 
   <div class="mdl-cell mdl-cell--4-col">
 
     <div id="save_spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner"></div>
 
+    <%# Update button %>
     <% if policy(@video).update? %>
       <div onclick='saveChanges()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
         <%= t('.save.button') %>
       </div>
     <% end %>
 
+    <%# Share button %>
     <% if policy(@video).share? %>
       <%= link_to(t('.share_button'), shares_path(@video),
             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
+    <%# Revisions button %>
     <% if policy(@video).revisions? %>
       <%= link_to(t('.revisions_button'), revisions_video_path(@video),
             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
+    <%# Delete button %>
     <% if policy(@video).destroy? %>
+
+      <%# Delete button with confirmation if javascript is enabled, otherwise just DELETE link %>
       <noscript>
         <%= link_to(t('.delete.button'), video_path(@video), method: :delete,
               class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
@@ -105,6 +112,8 @@
       </script>
     <% end %>
 
+    <%# Embed codes %>
+    <%# TODO: Make this look good %>
     <div>
       <input id="share_at_time" type="checkbox">
       <label id="share_at_time_label" for="share_at_time"></label>
@@ -114,21 +123,21 @@
     </div>
 
     <p>By: <%= @video.author.name %></p>
-    </p>
+
   </div>
 </div>
 
 <script>
 
-<% if current_user and policy(@video).update? %>
-  var user = {
-    "name": "<%=j current_user.name %>",
-    "uri": "",
-    "id": "<%=j current_user.sss_id %>",
-  };
-<% else %>
-  var user = null;
-<% end %>
+  <% if current_user and policy(@video).update? %>
+    var user = {
+      "name": "<%=j current_user.name %>",
+      "uri": "",
+      "id": "<%=j current_user.sss_id %>",
+    };
+  <% else %>
+    var user = null;
+  <% end %>
 
   var startTime = 0;
   if (window.location.hash) {

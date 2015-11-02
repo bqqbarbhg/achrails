@@ -1,6 +1,6 @@
 <% content_for :homelink do %>
   <a href="#" onClick="closeActivity()" id="ach_so_link">
-   <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
+    <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
   </a>
 <% end %>
 
@@ -10,13 +10,14 @@
 
 <%# Temporary!!! %>
 <ul>
-<% for video in @videos %>
-  <li><%= link_to(video.title, video_path(video)) %></li>
-<% end %>
+  <% for video in @videos %>
+    <li><%= link_to(video.title, video_path(video)) %></li>
+  <% end %>
 </ul>
 
 <% unless Rails.env.production? %>
 
+  <%# Manifest upload button for testing %>
   <% if policy(:video).create? %>
     <%= form_tag("/videos/upload", multipart: true) do %>
       <%= file_field_tag 'manifest' %>

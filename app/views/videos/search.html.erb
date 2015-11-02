@@ -2,34 +2,41 @@
 <%# ------- Temporary ------- %>
 
 <% content_for :homelink do %>
-    <i class="material-icons" style="color:white;font-size:2.1em;">&#xE8B6;</i>
+  <i class="material-icons" style="color:white;font-size:2.1em;">&#xE8B6;</i>
 <% end %>
 
 <% content_for :pagetitle do %>
-    <form method="get" style="padding: 0px">
-        <input style="font-size: 1.0em;" name="q" type="text"
-            placeholder="<%= t('.search_placeholder') %>"
-            value="<%= @query %>">
-    </form>
+  <form method="get" style="padding: 0px">
+    <input style="font-size: 1.0em;" name="q" type="text"
+        placeholder="<%= t('.search_placeholder') %>"
+        value="<%= @query %>">
+  </form>
 <% end %>
 
 <%# ------- End ------- %>
 
 <div class="mdl-grid">
 
-<% for manifest in @manifests %>
+  <% for manifest in @manifests %>
     <div class="search-view-container mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp">
-        <a class="search-link" href="<%= video_path(manifest["id"]) %>">
-          <canvas class="search-canvas search-invisible">
-          </canvas>
-          <div class="search-title">
-              <%= manifest["title"] %>
-          </div>
-          <div class="search-subtitles search-invisible">
-          </div>
-        </a>
+      <a class="search-link" href="<%= video_path(manifest["id"]) %>">
+
+        <%# Video frame container %>
+        <canvas class="search-canvas search-invisible">
+        </canvas>
+
+        <%# Title %>
+        <div class="search-title">
+            <%= manifest["title"] %>
+        </div>
+
+        <%# Subtitle container %>
+        <div class="search-subtitles search-invisible">
+        </div>
+
+      </a>
     </div>
-<% end %>
+  <% end %>
 
 </div>
 

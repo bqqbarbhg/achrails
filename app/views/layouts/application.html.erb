@@ -15,48 +15,56 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
   <header class="mdl-layout__header">
-      <div class="mdl-layout-icon">
-        <% if content_for?(:homelink) %>
-          <%= yield(:homelink) %>
-        <% else %>
-          <%= link_to groups_path() do %>
-            <i class="material-icons" style="color:white;">&#xE7EF;</i>
-          <% end %>                
-        <% end %>
-      </div>
 
-      <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <span class="mdl-layout-title"><%= yield :pagetitle %></span>
-        <!-- Add spacer, to align navigation to the right -->
-        <div class="mdl-layout-spacer"></div>
-        <!-- Navigation -->
-        <nav class="mdl-navigation">
-          <% if current_user %>
-            <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
+    <div class="mdl-layout-icon">
+      <% if content_for?(:homelink) %>
+        <%= yield(:homelink) %>
+      <% else %>
+        <%= link_to groups_path() do %>
+          <i class="material-icons" style="color:white;">&#xE7EF;</i>
+        <% end %>                
+      <% end %>
+    </div>
+
+    <div class="mdl-layout__header-row">
+
+      <!-- Title -->
+      <span class="mdl-layout-title"><%= yield :pagetitle %></span>
+
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer"></div>
+
+      <!-- Navigation -->
+      <nav class="mdl-navigation">
+        <% if current_user %>
+          <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
+        <% else %>
+
+          <% if Rails.env.production? %>
+            <%= link_to t('sign_in.learning_layers'), user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
           <% else %>
-            <% if Rails.env.production? %>
-              <%= link_to t('sign_in.learning_layers'), user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
-            <% else %>
-              <%= link_to t('sign_in.developer'), user_omniauth_authorize_url(:developer), class: "mdl-navigation__link" %>
-            <% end %>
+            <%= link_to t('sign_in.developer'), user_omniauth_authorize_url(:developer), class: "mdl-navigation__link" %>
           <% end %>
-        </nav>
-      </div>
+
+        <% end %>
+      </nav>
+    </div>
+
   </header>
 
   <main class="mdl-layout__content">
-    <% flash.each do |name, msg| %>
-      <%= javascript_tag do %>
-        createToast('<%= j msg %>');
-      <% end %>
-    <% end %>
-
     <div class="page-content">
       <%= yield %>
     </div>
-
   </main>
+
 </div>
+
+<%# Show flash messages as toasts %>
+<% flash.each do |name, msg| %>
+  <%= javascript_tag do %>
+    createToast('<%= j msg %>');
+  <% end %>
+<% end %>
 </body>
 </html>

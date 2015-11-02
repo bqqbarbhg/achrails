@@ -1,45 +1,56 @@
 
 <% content_for :pagetitle do %>
-  <% if @group.persisted? %>
-   <%= t('.pagetitle.edit') %>
-  <% else %>
-   <%= t('.pagetitle.create') %>
-  <% end %>
+  <%= @group.persisted? ? t('.pagetitle.edit') : t('.pagetitle.create') %>
 <% end %>
 
 <div class="mdl-grid">
-<%= form_for @group do |f| %>
-<div class="mdl-cell mdl-cell--12-col">
+  <%= form_for @group do |f| %>
 
-  <div class="mdl-textfield mdl-js-textfield">
-  <%= f.text_field :name, class:"mdl-textfield__input", required: true %>
-  <%= f.label :name, class:"mdl-textfield__label" %>
-  </div>
-  <div class="mld-spacer"></div>
-  <div class="mdl-textfield mdl-js-textfield">
-  <%= f.text_area :description, type: "text", class:"mdl-textfield__input" %>
-  <%= f.label :description, class:"mdl-textfield__label" %>
-  </div>
-</div>
-  <% unless sss # @SSS_Support(circle visibility) %>
-<div class="mdl-cell mdl-cell--12-col">
+    <div class="mdl-cell mdl-cell--12-col">
 
-    <% Group.visibilities.keys.each do |key| %>
-      <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
-        <div>
-          <%= f.radio_button :visibility, key, class:"mdl-radio__button" %>
-          <span class:"mdl-radio__label"><%= t("group.visibility.#{key}.title") %></span>
-          <%= content_tag(:p, t("group.visibility.#{key}.description")) %>
+        <div class="mdl-textfield mdl-js-textfield">
+          <%= f.text_field :name, class:"mdl-textfield__input", required: true %>
+          <%= f.label :name, class:"mdl-textfield__label" %>
         </div>
-      </label>
-    <div class="mld-spacer"></div>
+
+        <div class="mdl-spacer"></div>
+
+        <div class="mdl-textfield mdl-js-textfield">
+          <%= f.text_area :description, type: "text", class:"mdl-textfield__input" %>
+          <%= f.label :description, class:"mdl-textfield__label" %>
+        </div>
+
+    </div>
+
+    <%# @SSS_Support(circle visibility): Remove this when SSS supports different group
+                                         visibilities: Public, unlisted, private %>
+    <% unless sss %>
+      <div class="mdl-cell mdl-cell--12-col">
+
+        <% Group.visibilities.keys.each do |key| %>
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+
+            <div>
+              <%= f.radio_button :visibility, key, class:"mdl-radio__button" %>
+              <span class:"mdl-radio__label"><%= t("group.visibility.#{key}.title") %></span>
+              <%= content_tag(:p, t("group.visibility.#{key}.description")) %>
+            </div>
+
+
+          </label>
+
+          <div class="mdl-spacer"></div>
+        <% end %>
+
+      </div>
     <% end %>
-</div>
+
+    <%# Submit button %>
+    <div class="mdl-cell mdl-cell--12-col">
+      <p>
+        <%= f.button class:"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" %>
+      </p>
+    </div>
+
   <% end %>
-<div class="mdl-cell mdl-cell--12-col">
-<p>
-  <%= f.button class:"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" %>
-</p>
-</div>
-<% end %>
 </div>

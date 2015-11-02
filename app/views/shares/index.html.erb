@@ -1,6 +1,6 @@
 <% content_for :homelink do %>
   <a href="#" onClick="closeActivity()" id="ach_so_link">
-   <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
+    <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
   </a>
 <% end %>
 
@@ -10,44 +10,47 @@
 
 <div class="mdl-grid">
 
-<div class="mdl-cell mdl-cell--12-col">
-  <p>
-    <% for video in @videos %>
-    <%= video.title %></br>
-    <% end %>
-  </p>
-</div>
-
-<div class="mdl-cell mdl-cell--4-col">
-
-<% for share_group in @share_groups %>
-  <label id="grouplabel<%= share_group.group.id %>"
-      for="group<%= share_group.group.id %>"
-      class="mdl-switch mdl-js-switch mdl-js-ripple-effect"> 
-
-    <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,
-          class:"mdl-switch__input" %> 
-
-    <span class="mdl-switch__label">
-      <%= share_group.group.name %>
-      <% if share_group.shareclass == :mixed %>
-        <i class="mixed_warning"><%= t('.mixed_share_warning') %></i>
+  <%# List of video names to share %>
+  <div class="mdl-cell mdl-cell--12-col">
+    <p>
+      <% for video in @videos %>
+      <%= video.title %></br>
       <% end %>
-    </span>
+    </p>
+  </div>
 
-  </label>
+  <div class="mdl-cell mdl-cell--4-col">
+    <% for share_group in @share_groups %>
 
-  <div class="mld-spacer"></div>
-  <br/>
-<% end %>
+      <%# Group share switch %>
+      <label id="grouplabel<%= share_group.group.id %>"
+          for="group<%= share_group.group.id %>"
+          class="mdl-switch mdl-js-switch mdl-js-ripple-effect"> 
+
+        <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,
+              class:"mdl-switch__input" %> 
+
+        <span class="mdl-switch__label">
+          <%= share_group.group.name %>
+          <% if share_group.shareclass == :mixed %>
+            <i class="mixed_warning"><%= t('.mixed_share_warning') %></i>
+          <% end %>
+        </span>
+
+      </label>
+
+      <div class="mdl-spacer"></div>
+      <br/>
+
+    <% end %>
+  </div>
+
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-spinner mdl-js-spinner" id="sharing_spinner"></div>
+  </div>
 
 </div>
 
-<div class="mdl-cell mdl-cell--4-col">
-  <div class="mdl-spinner mdl-js-spinner" id="sharing_spinner"></div>
-</div>
-
-</div>
 <script>
 
   var groups = document.querySelectorAll(".mdl-switch__input");

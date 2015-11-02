@@ -1,10 +1,14 @@
 <%= t(".failed_action.#{@failed_action}") %>
+
 <br>
+
 <% if @infos %>
   <%= t('.required_information') %>
+
   <ul>
     <% for info in @infos %>
       <li><%= t(".user_info.#{info}") %></li>
     <% end %>
   </ul>
+
 <% end %>
