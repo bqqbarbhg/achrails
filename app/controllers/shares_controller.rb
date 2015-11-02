@@ -29,7 +29,8 @@ class SharesController < ApplicationController
 
     # HACK: Updating the sharing of a video does not refresh the token, so
     # force authentication to make sure we can do SSS requests later in
-    # client Javascript
+    # client Javascript. If they fail just reload the page.
+    # See views/shares/index.html.erb
     sss.force_authenticate() if sss
 
     render

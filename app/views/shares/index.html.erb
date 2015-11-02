@@ -109,6 +109,13 @@
         }
 
         refresh();
+
+        // HACK: Unauthorized means that our OAuth2 token has expired. The
+        // controller will reauthenticate on load of this page.
+        // See SharesController#index
+        if (xhr.status == 401) {
+          location.reload(true);
+        }
       };
 
       var params = {
