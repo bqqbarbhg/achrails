@@ -30,7 +30,17 @@
 
       <!-- Title -->
       <span class="mdl-layout-title"><%= yield :pagetitle %></span>
-
+      <form action="/videos/search" method="get">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="q">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="text" id="q" name="q" value="<%=	params[:q]  %>">
+            <label class="mdl-textfield__label" for="q">Search</label>
+          </div>
+        </div>
+      </form>
       <!-- Add spacer, to align navigation to the right -->
       <div class="mdl-layout-spacer"></div>
 

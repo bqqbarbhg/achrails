@@ -1,20 +1,3 @@
-
-<%# ------- Temporary ------- %>
-
-<% content_for :homelink do %>
-  <i class="material-icons" style="color:white;font-size:2.1em;">&#xE8B6;</i>
-<% end %>
-
-<% content_for :pagetitle do %>
-  <form method="get" style="padding: 0px">
-    <input style="font-size: 1.0em;" name="q" type="text"
-        placeholder="<%= t('.search_placeholder') %>"
-        value="<%= @query %>">
-  </form>
-<% end %>
-
-<%# ------- End ------- %>
-
 <div class="mdl-grid">
 
   <% for manifest in @manifests %>
