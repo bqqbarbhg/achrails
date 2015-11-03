@@ -58,7 +58,7 @@
             <%# Add contacts button (hidden by default) %>
             <div class="mdl-cell mdl-cell--6-col">
               <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
-                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored force-hidden-no-layout" %>
+                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored show-on-android" %>
             </div>
 
             <%# Submit button %>
@@ -141,15 +141,9 @@
 
 <script>
 
-// Add contacts button
-
-if (typeof Android !== 'undefined') {
-  var $addContactsButton = $('#add_contacts_button');
-  $addContactsButton.removeClass('force-hidden-no-layout');
-  $addContactsButton.on('click', function() {
+$('#add_contacts_button').on('click', function() {
     Android.openContactPicker();
   });
-}
 
 function addInviteEmail(email) {
     var $container = $("#addresses");
