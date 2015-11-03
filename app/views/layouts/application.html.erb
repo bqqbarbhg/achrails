@@ -38,13 +38,13 @@
       <nav class="mdl-navigation">
         <% if current_user %>
           <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
-          <button id="demo-menu-lower-right"
-                  class="mdl-button mdl-js-button mdl-button--icon">
+          <button id="menu-lower-right"
+                  class="mdl-button mdl-js-button mdl-button--icon hide-on-android">
             <i class="material-icons">more_vert</i>
           </button>
 
           <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect navbar-menu"
-              for="demo-menu-lower-right">
+              for="menu-lower-right">
               <%= link_to destroy_user_session_path(), method: :delete do %>
                 <li class="mdl-menu__item">
                   <%= t('sign_out') %>
