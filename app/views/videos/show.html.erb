@@ -113,17 +113,31 @@
     <% end %>
 
     <%# Embed codes %>
-    <%# TODO: Make this look good %>
-    <div>
-      <input id="share_at_time" type="checkbox">
-      <label id="share_at_time_label" for="share_at_time"></label>
-      <input id="share_link" type="text" onclick="this.focus();this.select();" readonly>
-      <input id="share_wordpress" type="text" onclick="this.focus();this.select();" readonly>
-      <input id="share_html" type="text" onclick="this.focus();this.select();" readonly>
+    <h4>Share video by <%= @video.author.name %>:</h4>
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect share-link-wrapper">
+      <div class="mdl-tabs__tab-bar">
+        <a href="#tab-link" class="mdl-tabs__tab">Link</a>
+        <a href="#tab-wordpress" class="mdl-tabs__tab">WordPress</a>
+        <a href="#tab-html" class="mdl-tabs__tab">HTML</a>
+      </div>
+
+      <div  class="mdl-tabs__panel is-active" id="tab-link">
+        <input class="mdl-textfield__input" id="share_link" type="text" onclick="this.focus();this.select();" readonly>
+      </div>
+
+      <div class="mdl-tabs__panel" id="tab-wordpress">
+        <input class="mdl-textfield__input" id="share_wordpress" type="text" onclick="this.focus();this.select();" readonly>
+      </div>
+
+      <div class="mdl-tabs__panel" id="tab-html">
+        <input class="mdl-textfield__input" id="share_html" type="text" onclick="this.focus();this.select();" readonly>
+      </div>
     </div>
 
-    <p>By: <%= @video.author.name %></p>
-
+    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="share_at_time">
+      <input type="checkbox" id="share_at_time" class="mdl-checkbox__input">
+      <span class="mdl-checkbox__label" id="share_at_time_label">Checkbox</span>
+    </label>
   </div>
 </div>
 
