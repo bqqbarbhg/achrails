@@ -9,11 +9,19 @@
 <% end %>
 
 <%# Temporary!!! %>
-<ul>
+<div class="mdl-grid">
   <% for video in @videos %>
-    <li><%= link_to(video.title, video_path(video)) %></li>
+
+      <div class="video-view-container mdl-card mdl-cell  mdl-cell--8-col-tablet mdl-shadow--2dp"
+      style="background-image: url('<%=	video.manifest_json['thumbUri']  %>')">
+        <a class="video-link" href="<%=	video_path(video)  %>">
+        <div class="video-title">
+          <%= video.manifest_json["title"] %>
+        </div>
+        </a>
+      </div>
   <% end %>
-</ul>
+</div>
 
 <% unless Rails.env.production? %>
 

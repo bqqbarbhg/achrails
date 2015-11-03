@@ -18,15 +18,15 @@
 <div class="mdl-grid">
 
   <% for manifest in @manifests %>
-    <div class="search-view-container mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp">
-      <a class="search-link" href="<%= video_path(manifest["id"]) %>">
+    <div class="video-view-container mdl-card mdl-cell--4-col-desktop mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp">
+      <a class="video-link" href="<%= video_path(manifest["id"]) %>">
 
         <%# Video frame container %>
         <canvas class="search-canvas search-invisible">
         </canvas>
 
         <%# Title %>
-        <div class="search-title">
+        <div class="video-title">
             <%= manifest["title"] %>
         </div>
 
@@ -126,7 +126,7 @@ for (var i = 0; i < titles.length; i++) {
 }
 
 function documentLoaded() {
-    var elements = document.querySelectorAll('.search-view-container');
+    var elements = document.querySelectorAll('.video-view-container');
     var frameRenderQueue = new WorkQueue();
 
     var workerCount = 4;
