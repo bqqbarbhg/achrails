@@ -45,10 +45,11 @@
       <div class="mdl-layout-spacer"></div>
 
       <!-- Navigation -->
+
       <nav class="mdl-navigation">
         <% if current_user %>
           <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
-          <button id="menu-lower-right"
+            <button id="menu-lower-right"
                   class="mdl-button mdl-js-button mdl-button--icon hide-on-android">
             <i class="material-icons">more_vert</i>
           </button>
@@ -60,6 +61,17 @@
                   <%= t('sign_out') %>
                 </li>
                 <% end %>
+
+            <a href="/groups">
+              <li class="mdl-menu__item">
+                Groups
+              </li>
+            </a>
+            <a href="/videos">
+              <li class="mdl-menu__item">
+                Videos
+              </li>
+            </a>
           </ul>
       <% else %>
           <% if Rails.env.production? %>
