@@ -32,6 +32,8 @@ fi:
     learning_layers: "Kirjaudu"
     developer: "Kirjaudu (kehittäjä)"
 
+  sign_out: "Kirjaudu ulos"
+
   player:
     annotation_edit:
       save: 'Tallenna'

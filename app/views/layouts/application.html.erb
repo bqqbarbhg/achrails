@@ -38,8 +38,20 @@
       <nav class="mdl-navigation">
         <% if current_user %>
           <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
-        <% else %>
+          <button id="demo-menu-lower-right"
+                  class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">more_vert</i>
+          </button>
 
+          <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect navbar-menu"
+              for="demo-menu-lower-right">
+              <%= link_to destroy_user_session_path(), method: :delete do %>
+                <li class="mdl-menu__item">
+                  <%= t('sign_out') %>
+                </li>
+                <% end %>
+          </ul>
+      <% else %>
           <% if Rails.env.production? %>
             <%= link_to t('sign_in.learning_layers'), user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
           <% else %>
