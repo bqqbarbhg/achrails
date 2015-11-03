@@ -4,32 +4,6 @@
 <% end %>
 
 <div class="content mdl-grid">
-
-  <%# --- Temporary, replace with video view --- %>
-
-  <div class="mdl-cell mdl-cell--12-col">
-
-    <h3><%= t('.videos.heading') %></h3>
-
-    <% unless @group.videos.empty? %>
-      <ul>
-
-        <% @group.videos.each do |video| %>
-          <li><%= link_to(video.title, video) %></li>
-        <% end %>
-
-      </ul>
-    <% else %>
-      <%= t('.videos.empty_filler') %>
-    <% end %>
-
-  </div>
-
-  <%# --- Temporary end --- %>
-
-
-  <div class="mdl-layout-spacer"></div>
-
   <div class="mdl-cell mdl-cell--4-col">
 
     <h3><%= t('.members.heading') %></h3>
@@ -37,65 +11,65 @@
     <%# View-Cleanup: There seems to be a lot of logic here %>
     <ul>
       <% for membership in @group.memberships %>
-        <% user = membership.user %>
-        <li>
-          <%= user.name %>
-          <% if membership.admin? %>
-            <span class="admin-badge"><%= t('.members.admin_tag') %></span>
-          <% end %>
-        </li>
+          <% user = membership.user %>
+          <li>
+            <%= user.name %>
+            <% if membership.admin? %>
+                <span class="admin-badge"><%= t('.members.admin_tag') %></span>
+            <% end %>
+          </li>
       <% end %>
     </ul>
 
     <% if policy(@group).join? %>
-      <%= link_to(t('.join_button'), join_group_path(@group), method: :post,
-            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+        <%= link_to(t('.join_button'), join_group_path(@group), method: :post,
+                    class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
     <% if policy(@group).leave? %>
-      <%= link_to(t('.leave_button'), leave_group_path(@group), method: :post,
-            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+        <%= link_to(t('.leave_button'), leave_group_path(@group), method: :post,
+                    class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
   </div>
 
   <% if policy(@group).invite? %>
-    <div class="mdl-layout-spacer"></div>
-    <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-layout-spacer"></div>
+      <div class="mdl-cell mdl-cell--4-col">
 
-      <h3><%= t('.invite.heading') %></h3>
+        <h3><%= t('.invite.heading') %></h3>
 
-      <%= form_tag(invite_group_path(@group)) do %>
+        <%= form_tag(invite_group_path(@group)) do %>
 
-        <%# Dynamic email inputs (see bottom of the file) %>
-        <div id="addresses"></div>
+            <%# Dynamic email inputs (see bottom of the file) %>
+            <div id="addresses"></div>
 
-        <%# Predefined email inputs for noscript %>
-        <noscript>
-          <% (0..9).each do |n| %>        
-            <div class="mdl-textfield mdl-js-textfield">
-              <%= text_field_tag 'address[#{n.to_s}]', '',
-                placeholder: t('.invite.email_placeholder'),
-                class: "mdl-textfield__input" %>
+            <%# Predefined email inputs for noscript %>
+            <noscript>
+              <% (0..9).each do |n| %>
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <%= text_field_tag 'address[#{n.to_s}]', '',
+                                       placeholder: t('.invite.email_placeholder'),
+                                       class: "mdl-textfield__input" %>
+                  </div>
+              <% end %>
+            </noscript>
+
+            <%# Add contacts button (hidden by default) %>
+            <div class="mdl-cell mdl-cell--6-col">
+              <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
+                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored force-hidden-no-layout" %>
             </div>
-          <% end %>
-        </noscript>
 
-        <%# Add contacts button (hidden by default) %>
-        <div class="mdl-cell mdl-cell--6-col">
-          <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
-                class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored force-hidden-no-layout" %>
-        </div>
+            <%# Submit button %>
+            <div class="mdl-cell mdl-cell--6-col">
+              <%= submit_tag t('.invite.submit'),
+                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+            </div>
 
-        <%# Submit button %>
-        <div class="mdl-cell mdl-cell--6-col">
-          <%= submit_tag t('.invite.submit'),
-                class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
-        </div>
+        <% end %>
 
-      <% end %>
-
-    </div>
+      </div>
   <% end %>
 
   <div class="mdl-layout-spacer"></div>
@@ -103,50 +77,66 @@
 
     <%# @SSS_Support(edit circles): Remove this when SSS supports editing existing circles %>
     <% unless sss %>
-      <% if policy(@group).edit? %>
-        <%= link_to(t('.edit_button'), edit_group_path(@group),
-              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-      <% end %>
+        <% if policy(@group).edit? %>
+            <%= link_to(t('.edit_button'), edit_group_path(@group),
+                        class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+        <% end %>
     <% end %>
 
     <% if policy(@group).destroy? %>
 
-      <%# Delete button with confirmation if javascript is enabled, otherwise just DELETE link %>
-      <noscript>
-        <%= link_to(t('.delete.button'), @group, method: :delete,
-              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
-      </noscript>
+        <%# Delete button with confirmation if javascript is enabled, otherwise just DELETE link %>
+        <noscript>
+          <%= link_to(t('.delete.button'), @group, method: :delete,
+                      class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+        </noscript>
 
-      <%= button_tag(t('.delete.button'), id: :delete_button,
-              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+        <%= button_tag(t('.delete.button'), id: :delete_button,
+                       class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
 
-      <script>
+        <script>
 
-        // @Copy-Paste(confirm delete button)
-        var $delete_button = $("#delete_button");
-        $delete_button.removeClass("force-hidden-no-layout")
-        $delete_button.on("click", function() {
-          // TODO: Material design dialog?
-          // MDL didn't offer a solution when this was written
-          if (confirm("<%=j t('.delete.confirm', group: @group.name) %>")) {
-            getHTTP().deleteJson('', {
-              success: function() {
-                window.location.href = '<%=j groups_path() %>';
-              },
-              error: function(xhr) {
-              <% if Rails.env.development? %>
-                replaceContentWithXHR(xhr);
-              <% else %>
-                createToast("<%j= t('.delete.error') %>");
-              <% end %>
-              }
-            });
-          }
-        });
-      </script>
+          // @Copy-Paste(confirm delete button)
+          var $delete_button = $("#delete_button");
+          $delete_button.removeClass("force-hidden-no-layout")
+          $delete_button.on("click", function() {
+            // TODO: Material design dialog?
+            // MDL didn't offer a solution when this was written
+            if (confirm("<%=j t('.delete.confirm', group: @group.name) %>")) {
+              getHTTP().deleteJson('', {
+                success: function() {
+                  window.location.href = '<%=j groups_path() %>';
+                },
+                error: function(xhr) {
+                  <% if Rails.env.development? %>
+                  replaceContentWithXHR(xhr);
+                  <% else %>
+                  createToast("<%j= t('.delete.error') %>");
+                  <% end %>
+                }
+              });
+            }
+          });
+        </script>
     <% end %>
 
   </div>
+
+  <div class="mdl-cell mdl-cell--12-col">
+
+    <h3><%= t('.videos.heading') %></h3>
+
+    <% unless @group.videos.empty? %>
+
+     <div class="mdl-grid">
+          <%= render partial: 'videos/videocontainer', collection: @group.videos %>
+     </div>
+    <% else %>
+     <p><%= t('.videos.empty_filler') %></p>
+  <% end %>
+
+  </div>
+
 </div>
 
 <script>

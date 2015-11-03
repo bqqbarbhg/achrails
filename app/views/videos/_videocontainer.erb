@@ -1,0 +1,8 @@
+ <div class="video-view-container mdl-card mdl-cell  mdl-cell--8-col-tablet mdl-shadow--2dp"
+           style="background-image: url('<%= videocontainer.manifest_json['thumbUri'] %>')">
+        <a class="video-link" href="<%=	video_path(videocontainer)  %>">
+          <div class="video-title">
+            <%= videocontainer.manifest_json["title"] %>
+          </div>
+        </a>
+ </div>
