@@ -37,6 +37,9 @@ gem 'jbuilder', '~> 2.0'
 # material style
 gem 'material_design_lite-rails'
 
+# Autoprefix vendor-related CSS rules
+gem 'autoprefixer-rails'
+
 # Frontend things
 gem 'lodash-rails'
 
