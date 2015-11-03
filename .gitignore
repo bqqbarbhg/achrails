@@ -29,3 +29,5 @@
 # Ignore docker caches
 /vendor
 
+# Ignore RubyMine project folders
+.idea/

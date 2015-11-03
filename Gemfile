@@ -52,6 +52,11 @@ gem 'rails-i18n', '~> 4.0.0'
 group :development do
   # View sent emails
   gem 'letter_opener_web'
+
+  # Development live reload
+  gem 'guard', require: false
+  gem 'guard-livereload', require: false
+  gem 'rack-livereload'
 end
 
 group :development, :test do
