@@ -141,6 +141,7 @@ en:
         genre: "Genre: "
     search:
       search_placeholder: 'Search...'
+      no_results: 'No results found!'
     show:
       share_button: 'Share to groups'
       revisions_button: 'Revisions'

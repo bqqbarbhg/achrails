@@ -140,6 +140,7 @@ fi:
         genre: "Lajityyppi: "
     search:
       search_placeholder: 'Hae...'
+      no_results: 'Ei tuloksia löytynyt!'
     show:
       share_button: 'Jaa ryhmälle'
       revisions_button: 'Versiot'

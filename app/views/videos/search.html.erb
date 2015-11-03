@@ -1,6 +1,6 @@
 <div class="mdl-grid">
 
-  <% for manifest in @manifests %>
+  <% if for manifest in @manifests %>
     <div class="video-view-container mdl-card mdl-cell--4-col-desktop mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp">
       <a class="video-link" href="<%= video_path(manifest["id"]) %>">
 
@@ -19,8 +19,9 @@
 
       </a>
     </div>
-  <% end %>
-
+  <% end.empty? %>
+   <h2><%= t('videos.search.no_results') %></h2>
+  <%end %>
 </div>
 
 <script>
