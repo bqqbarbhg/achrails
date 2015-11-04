@@ -32,7 +32,10 @@ fi:
     learning_layers: "Kirjaudu"
     developer: "Kirjaudu (kehittäjä)"
 
-  sign_out: "Kirjaudu ulos"
+  nav:
+    sign_out: 'Kirjaudu ulos'
+    groups: 'Ryhmät'
+    videos: 'Videot'
 
   player:
     annotation_edit:

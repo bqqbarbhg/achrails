@@ -58,18 +58,18 @@
               for="menu-lower-right">
               <%= link_to destroy_user_session_path(), method: :delete do %>
                 <li class="mdl-menu__item">
-                  <%= t('sign_out') %>
+                  <%= t('nav.sign_out') %>
                 </li>
                 <% end %>
 
-            <a href="/groups">
+            <a href="<%= groups_path %>">
               <li class="mdl-menu__item">
-                Groups
+                <%= t('nav.groups') %>
               </li>
             </a>
-            <a href="/videos">
+            <a href="<%= videos_path %>">
               <li class="mdl-menu__item">
-                Videos
+                <%= t('nav.videos') %>
               </li>
             </a>
           </ul>

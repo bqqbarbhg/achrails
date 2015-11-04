@@ -33,7 +33,10 @@ en:
     learning_layers: "Sign in"
     developer: "Sign in (developer)"
 
-  sign_out: "Sign out"
+  nav:
+    sign_out: 'Sign out'
+    groups: 'Groups'
+    videos: 'Videos'
 
   player:
     annotation_edit:
