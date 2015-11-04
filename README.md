@@ -27,6 +27,7 @@ of Arts, Design and Architecture of Aalto University, Finland.
 
 - Samuli Raivio (@bqqbarbhg)
 - Jukka Purma (@jpurma)
+- Matti Jokitulppo (@melonmanchan)
 
 Licence
 -------
