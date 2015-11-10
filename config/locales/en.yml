@@ -125,7 +125,8 @@ en:
       pagetitle:
         one: 'Share a video with groups'
         other: 'Share %{count} videos with groups'
-      mixed_share_warning: 'Some of the videos are shared' 
+      mixed_share_warning: 'Some of the videos are shared'
+      is_public: 'Is video public?'
       share_error:
         share: 'Failed to share video'
         unshare: 'Failed to unshare video'
