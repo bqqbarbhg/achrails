@@ -81,8 +81,11 @@ class SharesController < ApplicationController
   def set_publicity
     is_public = params[:isPublic]
     ids = params[:id].split(',')
-    Video.where(uuid: ids).update(is_public: is_public)
-    render json: {isPublic: is_public, id: id}
+
+    sss.set_videos_publicity(ids, is_public) if sss
+
+    Video.where(uuid: ids).update_all(is_public: is_public)
+    render json: {isPublic: is_public}
   end
 
 protected

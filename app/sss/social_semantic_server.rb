@@ -65,6 +65,18 @@ class SocialSemanticServer
     data.deep_symbolize_keys! if data
   end
 
+  def put(path, content_type, body)
+    logcall "PUT #{path} #{body}"
+    validate_response @conn.put(@root + path, body,
+                                 'Content-Type' => content_type)
+  end
+
+  def put_json(path, json)
+    response = put(path, 'application/json', json.to_json)
+    data = JSON.parse(response.body)
+    data.deep_symbolize_keys! if data
+  end
+
   def delete(path)
     logcall "DELETE #{path}"
     validate_response @conn.delete(@root + path)
@@ -176,6 +188,13 @@ class SocialSemanticServer
       link: Rails.application.routes.url_helpers.video_url(video),
       label: video.title
     log "Uploaded video #{video.uuid}"
+  end
+
+  def set_videos_publicity(ids, is_public)
+    for id in ids
+      put_json "/entities/entities/#{id}/share",
+               setPublic: is_public
+    end
   end
 
 end

@@ -122,10 +122,12 @@ fi:
   shares:
     index:
       pagetitle:
-        one: 'Jaa video ryhmälle'
-        other: 'Jaa %{count} videota ryhmälle'
+        one: 'Jaa video'
+        other: 'Jaa %{count} videota'
       mixed_share_warning: 'Vain osa videoista on jaettu'
-      is_public: 'Onko video julkinen?'
+      is_public:
+        one: 'Onko video julkinen?'
+        other: 'Ovatko videot julkisia?'
       share_error:
         share: 'Jakaminen epäonnistui'
         unshare: 'Jaon poisto epäonnistui'

@@ -11,8 +11,10 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--12-col">
     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="video-public">
-      <input type="checkbox" id="video-public" class="mdl-checkbox__input">
-      <span class="mdl-checkbox__label"><%= t('.is_public') %> </span>
+      <input type="checkbox" id="video-public" class="mdl-checkbox__input"
+       <%= @videos.any?(&:is_public) ? 'checked' : '' %>
+      >
+      <span class="mdl-checkbox__label"><%= t('.is_public', count: @videos.count) %> </span>
     </label>
   </div>
   <%# List of video names to share %>
@@ -71,7 +73,6 @@
 
 
   $('#video-public').click(function(event) {
-    //event.preventDefault();
     var checkBox = $(this);
     var label = checkBox.parent();
     var isPublic = checkBox.is(':checked');
@@ -83,10 +84,10 @@
       },
       error: function(xhr) {
         <% if Rails.env.development? %>
-        //replaceContentWithXHR(xhr);
+          replaceContentWithXHR(xhr);
         <% end %>
         checkBox.prop('checked', !isPublic);
-        label.toggleClass('is-checked', !isPublic)
+        label.toggleClass('is-checked', !isPublic);
         checkBox.prop('disabled', false);
         label.removeClass('is-disabled');
       }
