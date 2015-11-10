@@ -145,7 +145,8 @@ fi:
       search_placeholder: 'Hae...'
       no_results: 'Tuloksia ei löytynyt!'
     show:
-      share_button: 'Jaa ryhmälle'
+      share_button: 'Jaa'
+      share_link: 'Linkitä käyttäjän %{name} video '
       revisions_button: 'Versiot'
       save:
         button: 'Tallenna'

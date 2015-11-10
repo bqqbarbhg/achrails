@@ -113,7 +113,7 @@
     <% end %>
 
     <%# Embed codes %>
-    <h4>Share video by <%= @video.author.name %>:</h4>
+    <h4><%= t('.share_link', name: @video.author.name) %></h4>
     <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect share-link-wrapper">
       <div class="mdl-tabs__tab-bar">
         <a href="#tab-link" class="mdl-tabs__tab">Link</a>

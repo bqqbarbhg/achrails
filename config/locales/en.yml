@@ -146,7 +146,8 @@ en:
       search_placeholder: 'Search...'
       no_results: 'No results found!'
     show:
-      share_button: 'Share to groups'
+      share_button: 'Share'
+      share_link: 'Link video by %{name}'
       revisions_button: 'Revisions'
       save:
         button: 'Save'
