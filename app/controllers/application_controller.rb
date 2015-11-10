@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
     @explanation = explanation
 
     respond_to do |format|
-      format.json { render json: { "error": @explanation } }
+      format.json { render json: { "error": @explanation }, status: :forbidden }
       format.html { render "shared/forbidden", status: :forbidden }
     end
   end
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
     @sss_error = exception.message
 
     respond_to do |format|
-      format.json { render json: { "error": @sss_error } }
+      format.json { render json: { "error": @sss_error }, status: :internal_server_error }
       format.html { render "shared/sss_error", status: :internal_server_error }
     end
   end
