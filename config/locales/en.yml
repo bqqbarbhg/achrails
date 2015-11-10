@@ -123,10 +123,12 @@ en:
   shares:
     index:
       pagetitle:
-        one: 'Share a video with groups'
-        other: 'Share %{count} videos with groups'
+        one: 'Share a video'
+        other: 'Share %{count} videos'
       mixed_share_warning: 'Some of the videos are shared'
-      is_public: 'Is video public?'
+      is_public:
+        one: 'Is video public?'
+        other: 'Are videos public?'
       share_error:
         share: 'Failed to share video'
         unshare: 'Failed to unshare video'
