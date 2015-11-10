@@ -124,7 +124,8 @@ fi:
       pagetitle:
         one: 'Jaa video ryhmälle'
         other: 'Jaa %{count} videota ryhmälle'
-      mixed_share_warning: 'Vain osa videoista on jaettu' 
+      mixed_share_warning: 'Vain osa videoista on jaettu'
+      is_public: 'Onko video julkinen?'
       share_error:
         share: 'Jakaminen epäonnistui'
         unshare: 'Jaon poisto epäonnistui'

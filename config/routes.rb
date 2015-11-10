@@ -37,7 +37,11 @@ Rails.application.routes.draw do
         get 'search'
       end
       member do
-        resources 'shares', only: [:index, :create, :destroy], param: :group
+        resources 'shares', only: [:index, :create, :destroy], param: :group do
+          collection do
+            put 'set_publicity'
+          end
+        end
         get 'player'
         get 'revisions'
         post 'revert/:revision', to: 'videos#revert', as: 'revert'
