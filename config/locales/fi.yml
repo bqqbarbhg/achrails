@@ -126,8 +126,8 @@ fi:
         other: 'Jaa %{count} videota'
       mixed_share_warning: 'Vain osa videoista on jaettu'
       is_public:
-        one: 'Onko video julkinen?'
-        other: 'Ovatko videot julkisia?'
+        one: 'Onko video julkinen? (Pysyvä!)'
+        other: 'Ovatko videot julkisia? (Pysyvä!)'
       share_error:
         share: 'Jakaminen epäonnistui'
         unshare: 'Jaon poisto epäonnistui'
