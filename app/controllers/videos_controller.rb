@@ -114,6 +114,8 @@ class VideosController < ApplicationController
 
     manifest["uploadedAt"] = Time.now.utc.iso8601
 
+    @video.import_manifest_data(manifest)
+
     sss.create_video(@video) if sss
 
     @video.update_manifest(manifest)

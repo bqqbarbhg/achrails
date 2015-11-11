@@ -28,6 +28,15 @@ class Video < ActiveRecord::Base
     revisions_in(1..revision_num)
   end
 
+  def import_manifest_data(manifest)
+    self.revision_num = new_revision_num
+    self.manifest_json = manifest
+    self.title = manifest["title"]
+    self.uuid = manifest["id"]
+    self.searchable = Util.manifest_to_searchable(manifest),
+    self.video_url = Util.normalize_url(manifest["videoUri"])
+  end
+
   def update_manifest(manifest)
     new_revision_num = revision_num + 1
     manifest["revision"] = new_revision_num
@@ -42,12 +51,7 @@ class Video < ActiveRecord::Base
       rev_block.last_num = new_revision_num
     end
 
-    self.revision_num = new_revision_num
-    self.manifest_json = manifest
-    self.title = manifest["title"]
-    self.uuid = manifest["id"]
-    self.searchable = Util.manifest_to_searchable(manifest),
-    self.video_url = Util.normalize_url(manifest["videoUri"])
+    self.import_manifest_data(manifest)
 
     transaction do
       self.save!
