@@ -9,7 +9,7 @@
 <% end %>
 
 <div class="mdl-grid">
-  <%= render partial: 'videocontainer', collection: @videos %>
+  <%= render(partial: 'videocontainer', collection: @videos) || render(html: "<h2 class='mdl-color-text--grey-600'>#{t('.empty_filler')}</h2>".html_safe)%>
 </div>
 
 <% unless Rails.env.production? %>

@@ -138,6 +138,7 @@ en:
     index:
       pagetitle: 'Videos'
       upload_button: 'Upload video'
+      empty_filler: 'No videos'
     player:
       title: '%{video} - Ach so!'
     revisions:

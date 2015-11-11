@@ -136,6 +136,7 @@ fi:
     index:
       pagetitle: 'Videot'
       upload_button: 'Lähetä video'
+      empty_filler: 'Videoita ei ole'
     player:
       title: '%{video} - Ach so!'
     revisions:
