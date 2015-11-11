@@ -29,7 +29,6 @@ class Video < ActiveRecord::Base
   end
 
   def import_manifest_data(manifest)
-    self.revision_num = new_revision_num
     self.manifest_json = manifest
     self.title = manifest["title"]
     self.uuid = manifest["id"]
@@ -51,6 +50,7 @@ class Video < ActiveRecord::Base
       rev_block.last_num = new_revision_num
     end
 
+    self.revision_num = new_revision_num
     self.import_manifest_data(manifest)
 
     transaction do
