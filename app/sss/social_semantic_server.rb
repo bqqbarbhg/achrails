@@ -191,10 +191,14 @@ class SocialSemanticServer
   end
 
   def set_videos_publicity(ids, is_public)
-    raise SssInternalError, "Can't unpublicize" unless is_public
     for id in ids
-      put_json "/entities/entities/#{id}/share",
+      entity_route = "/entities/entities/#{id}"
+      if is_public
+        put_json "#{entity_route}/share",
                setPublic: is_public
+      else
+        put_json "#{entity_route}/unpublicize", {}
+      end
     end
   end
 
