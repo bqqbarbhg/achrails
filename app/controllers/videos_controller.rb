@@ -110,9 +110,9 @@ class VideosController < ApplicationController
 
     manifest["uploadedAt"] = Time.now.utc.iso8601
 
-    @video.update_manifest(manifest)
-
     sss.create_video(@video) if sss
+
+    @video.update_manifest(manifest)
 
     status = @video.revision_num > 1 ? :ok : :created
 
