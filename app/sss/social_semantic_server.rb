@@ -185,7 +185,7 @@ class SocialSemanticServer
   def create_video(video)
     post_json '/videos/videos',
       uuid: video.uuid,
-      link: Rails.application.routes.url_helpers.video_url(video),
+      link: Rails.application.routes.url_helpers.video_url(locale: nil, id: video.uuid),
       label: video.title
     log "Uploaded video #{video.uuid}"
   end
