@@ -41,7 +41,11 @@ class VideosController < ApplicationController
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
 
     respond_to do |format|
-      format.html { render }
+      format.html do
+        # HACK: Force reauthentication since the page does XHR
+        sss.force_authenticate() if sss
+        render
+      end
       format.json { render json: @manifest }
     end
   end
