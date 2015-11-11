@@ -128,8 +128,8 @@ en:
       mixed_share_warning: 'Some of the videos are shared'
       is_public:
 
-        one: 'Is video public? (Permanent!)'
-        other: 'Are videos public? (Permanent!)'
+        one: 'Is video public?'
+        other: 'Are videos public?'
       share_error:
         share: 'Failed to share video'
         unshare: 'Failed to unshare video'
