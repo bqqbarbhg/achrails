@@ -50,8 +50,8 @@ class ApplicationController < ActionController::Base
       if current_user
         refresh_token = session["ll_oidc_refresh_token"]
         if refresh_token && !@reauthenticated
-          client = OAuth2::Client.new(ENV["LL_OIDC_CLIENT_ID"], ENV["LL_OIDC_CLIENT_SECRET"],
-                                      site: ENV["LL_OIDC_HOST"],
+          client = OAuth2::Client.new(ENV["LAYERS_OIDC_CLIENT_ID"], ENV["LAYERS_OIDC_CLIENT_SECRET"],
+                                      site: ENV["LAYERS_API_URI"],
                                       token_url: "/o/oauth2/token")
           token = client.get_token({
             client_id: client.id,
