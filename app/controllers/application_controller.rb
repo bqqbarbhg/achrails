@@ -36,7 +36,10 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options(options={})
-    { locale: I18n.locale }.merge options
+    {
+      locale: I18n.locale,
+      host: ENV["HACK_URI"] || ENV["LAYERS_API_URI"] || options[:host],
+    }.merge options
   end
 
   def authenticate_and_redirect_back
