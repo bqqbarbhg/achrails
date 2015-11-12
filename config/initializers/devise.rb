@@ -270,8 +270,4 @@ Devise.setup do |config|
   #
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
-
-  prefix = ENV['RAILS_PREFIX'] || '/achrails'
-
-  config.omniauth_path_prefix = prefix
 end
