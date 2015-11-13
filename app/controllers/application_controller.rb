@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
           end
         end
       end
-      redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
+      redirect_to user_omniauth_authorize_path(:learning_layers_oidc)
       true
     else
       false
