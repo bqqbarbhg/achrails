@@ -16,7 +16,7 @@
 
   <%# Manifest upload button for testing %>
   <% if policy(:video).create? %>
-    <%= form_tag("/videos/upload", multipart: true) do %>
+    <%= form_tag(upload_videos_path, multipart: true) do %>
       <%= file_field_tag 'manifest' %>
       <%= submit_tag t('.upload_button'),
               class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
