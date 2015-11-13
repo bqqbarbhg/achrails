@@ -30,23 +30,23 @@
 
       <!-- Title -->
       <span class="mdl-layout-title"><%= yield :pagetitle %></span>
-      <form action="<%= search_videos_path %>" method="get" class="hide-on-android">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="q">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" id="q" name="q" value="<%=	params[:q]  %>">
-            <label class="mdl-textfield__label" for="q">Search</label>
-          </div>
-        </div>
-      </form>
       <!-- Add spacer, to align navigation to the right -->
       <div class="mdl-layout-spacer"></div>
 
       <!-- Navigation -->
-
       <nav class="mdl-navigation">
+        <form action="<%= search_videos_path %>" method="get" class="hide-on-android">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="q">
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <input class="mdl-textfield__input" type="text" id="q" name="q" value="<%=	params[:q]  %>">
+              <label class="mdl-textfield__label" for="q">Search</label>
+            </div>
+          </div>
+        </form>
+
         <% if current_user %>
           <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
             <button id="menu-lower-right"
