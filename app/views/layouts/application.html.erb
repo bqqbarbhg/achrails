@@ -77,9 +77,9 @@
           <% if Rails.env.production? %>
             <%#= link_to t('sign_in.learning_layers'), user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
             <%#= Temporarily don't redirect to HTTPS %>
-            <%= link_to t('sign_in.learning_layers'), user_omniauth_authorize_url(:learning_layers_oidc), class: "mdl-navigation__link" %>
+            <%= link_to t('sign_in.learning_layers'), user_omniauth_authorize_path(:learning_layers_oidc), class: "mdl-navigation__link" %>
           <% else %>
-            <%= link_to t('sign_in.developer'), user_omniauth_authorize_url(:developer), class: "mdl-navigation__link" %>
+            <%= link_to t('sign_in.developer'), user_omniauth_authorize_path(:developer), class: "mdl-navigation__link" %>
           <% end %>
 
         <% end %>
