@@ -68,6 +68,7 @@ en:
         edit: 'Edit group'
     index:
       pagetitle: 'Groups'
+      no_groups: 'You are not in any groups.'
     show:
       videos:
         heading: 'Videos'

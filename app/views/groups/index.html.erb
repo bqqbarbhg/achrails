@@ -10,7 +10,7 @@
 <% end %>
 
 <div class="mdl-grid">
-  <% for group in @groups %>
+  <% if for group in @groups %>
      
     <div class="group-card mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp"> 
 
@@ -27,6 +27,8 @@
 
     </div>
 
+  <% end.empty? %>
+  <h2 class='mdl-color-text--grey-600'><%= t('.no_groups') %></h2>
   <% end %>
 </div>
 

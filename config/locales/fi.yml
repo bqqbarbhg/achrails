@@ -67,6 +67,7 @@ fi:
         edit: 'Muokkaa ryhmää'
     index:
       pagetitle: 'Ryhmät'
+      no_groups: 'Et ole missään ryhmässä.'
     show:
       videos:
         heading: 'Videot'
