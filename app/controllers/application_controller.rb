@@ -38,7 +38,6 @@ class ApplicationController < ActionController::Base
   def default_url_options(options={})
     {
       locale: I18n.locale,
-      host: ENV["HACK_URI"] || ENV["LAYERS_API_URI"] || options[:host],
     }.merge options
   end
 
@@ -73,7 +72,7 @@ class ApplicationController < ActionController::Base
           end
         end
       end
-      redirect_to user_omniauth_authorize_path(:learning_layers_oidc)
+      redirect_to user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https')
       true
     else
       false
