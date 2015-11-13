@@ -56,11 +56,6 @@
 
           <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect navbar-menu"
               for="menu-lower-right">
-              <%= link_to destroy_user_session_path(), method: :delete do %>
-                <li class="mdl-menu__item">
-                  <%= t('nav.sign_out') %>
-                </li>
-                <% end %>
 
             <a href="<%= groups_path %>">
               <li class="mdl-menu__item">
@@ -72,6 +67,11 @@
                 <%= t('nav.videos') %>
               </li>
             </a>
+            <%= link_to destroy_user_session_path(), method: :delete do %>
+                <li class="mdl-menu__item">
+                  <%= t('nav.sign_out') %>
+                </li>
+            <% end %>
           </ul>
       <% else %>
           <% if Rails.env.production? %>
