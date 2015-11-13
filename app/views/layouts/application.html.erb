@@ -35,6 +35,24 @@
 
       <!-- Navigation -->
       <nav class="mdl-navigation">
+
+        <button id="menu-localization"
+                class="mdl-button mdl-js-button mdl-button--icon hide-on-android">
+          <i class="material-icons">language</i>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect navbar-menu"
+            for="menu-localization">
+          <a href="<%= url_for(params.merge(:locale => 'en')) %>">
+            <li class="mdl-menu__item">
+              <%= t('nav.language.english') %>
+          </a>
+          <a href="<%= url_for(params.merge(:locale => 'fi')) %>">
+            <li class="mdl-menu__item">
+              <%= t('nav.language.finnish') %>
+            </li>
+          </a>
+        </ul>
+
         <form action="<%= search_videos_path %>" method="get" class="hide-on-android">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
             <label class="mdl-button mdl-js-button mdl-button--icon" for="q">

@@ -36,6 +36,10 @@ fi:
     sign_out: 'Kirjaudu ulos'
     groups: 'Ryhmät'
     videos: 'Videot'
+    language:
+       finnish: 'Suomi'
+       english: 'Englanti'
+
 
   player:
     annotation_edit:
