@@ -37,9 +37,7 @@ en:
     sign_out: 'Sign out'
     groups: 'Groups'
     videos: 'Videos'
-    language:
-      finnish: 'Finnish'
-      english: 'English'
+    language_name: 'English'
 
   player:
     annotation_edit:

@@ -36,9 +36,7 @@ fi:
     sign_out: 'Kirjaudu ulos'
     groups: 'Ryhmät'
     videos: 'Videot'
-    language:
-       finnish: 'Suomi'
-       english: 'Englanti'
+    language_name: 'Suomi'
 
 
   player:

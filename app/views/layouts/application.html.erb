@@ -40,17 +40,17 @@
                 class="mdl-button mdl-js-button mdl-button--icon hide-on-android">
           <i class="material-icons">language</i>
         </button>
-        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect navbar-menu"
-            for="menu-localization">
-          <a href="<%= url_for(params.merge(:locale => 'en')) %>">
-            <li class="mdl-menu__item">
-              <%= t('nav.language.english') %>
-          </a>
-          <a href="<%= url_for(params.merge(:locale => 'fi')) %>">
-            <li class="mdl-menu__item">
-              <%= t('nav.language.finnish') %>
-            </li>
-          </a>
+
+        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect navbar-menu" for="menu-localization">
+          <% for option in [:en, :fi] %>
+
+            <a href="<%= url_for(params.merge(:locale => option)) %>">
+              <li class="mdl-menu__item">
+                <%= t('nav.language_name', locale: option) %>
+              </li>
+            </a>
+
+          <% end %>
         </ul>
 
         <form action="<%= search_videos_path %>" method="get" class="hide-on-android">
