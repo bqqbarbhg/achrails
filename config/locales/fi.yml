@@ -165,3 +165,22 @@ fi:
         error: 'Videon poistaminen epäonnistui'
       start_at_label: 'Aloita kohdasta'
       unsaved_video_warning: 'Video sisältää tallentamattomia muutoksia. Jos jatkat, muutokset häviävät.'
+
+  title:
+    groups:
+      create: 'Luo ryhmä'
+      edit: 'Muokkaa ryhmää'
+      index: 'Ryhmät'
+      show: 'Ryhmä %{name}'
+    mailer:
+      invite: 'Sähköpostikutsut'
+    shared:
+      forbidden: 'Kielletty'
+      sss_error: 'SSS-virhe'
+    shares:
+      index: 'Jaa video'
+    videos:
+      index: 'Videot'
+      revisions: 'Versiot'
+      search: 'Hakutulokset'
+      show: 'Video %{name}'

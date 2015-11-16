@@ -1,4 +1,4 @@
-<% provide(:title, 'Edit group') %>
+<% provide(:title, @group.persisted? ? t('title.groups.edit') : t('title.groups.create')) %>
 
 <% content_for :pagetitle do %>
   <%= @group.persisted? ? t('.pagetitle.edit') : t('.pagetitle.create') %>

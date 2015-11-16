@@ -168,3 +168,21 @@ en:
       start_at_label: 'Start at'
       unsaved_video_warning: 'There are unsaved changes in the video, which will be lost if you continue.'
 
+  title:
+    groups:
+      create: 'Create a group'
+      edit: 'Edit group'
+      index: 'Groups'
+      show: 'Group %{name}'
+    mailer:
+      invite: 'Mail invites'
+    shared:
+      forbidden: 'Forbidden'
+      sss_error: 'SSS error'
+    shares:
+      index: 'Share video'
+    videos:
+      index: 'Videos'
+      revisions: 'Revisions'
+      search: 'Search results'
+      show: 'Video %{name}'

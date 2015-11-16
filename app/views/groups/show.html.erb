@@ -1,4 +1,4 @@
-<% provide(:title, 'Group ' + @group.name) %>
+<% provide(:title, t('title.groups.show', name: @group.name)) %>
 
 <% content_for :pagetitle do %>
   <%= @group.name %>
