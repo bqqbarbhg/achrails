@@ -1,3 +1,5 @@
+<% provide(:title, 'Video ' +  @video.title) %>
+
 <% content_for :homelink do %>
   <a href="#" onClick="closeActivity()" id="ach_so_link">
    <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
