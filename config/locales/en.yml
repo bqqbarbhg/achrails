@@ -38,6 +38,7 @@ en:
     groups: 'Groups'
     videos: 'Videos'
     language_name: 'English'
+    logged_in_as_html: 'Logged in as <strong>%{user}</strong>'
 
   player:
     annotation_edit:

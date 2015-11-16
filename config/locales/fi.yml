@@ -37,7 +37,7 @@ fi:
     groups: 'Ryhmät'
     videos: 'Videot'
     language_name: 'Suomi'
-
+    logged_in_as_html: 'Kirjauduttu käyttäjällä <strong>%{user}</strong>'
 
   player:
     annotation_edit:

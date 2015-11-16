@@ -66,8 +66,9 @@
         </form>
 
         <% if current_user %>
-          <span class="mdl-navigation__link" >Logged in as <strong><%= current_user.name %></strong></span>
-            <button id="menu-lower-right"
+          <span class="mdl-navigation__link" ><%= t('nav.logged_in_as_html', user: current_user.name) %></span>
+
+          <button id="menu-lower-right"
                   class="mdl-button mdl-js-button mdl-button--icon hide-on-android">
             <i class="material-icons">more_vert</i>
           </button>
