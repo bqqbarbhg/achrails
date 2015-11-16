@@ -24,5 +24,14 @@ class HomeController < ApplicationController
     render
   end
 
+  def oidc_tokens
+    render nothing: true, status: :not_found and return unless ENV["SHOW_OIDC_TOKENS"]
+
+    render json: {
+      client_id: ENV["LAYERS_OIDC_CLIENT_ID"],
+      client_secret: ENV["LAYERS_OIDC_CLIENT_SECRET"],
+    }
+  end
+
 end
 
