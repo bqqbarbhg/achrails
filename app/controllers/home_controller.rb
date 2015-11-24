@@ -28,8 +28,8 @@ class HomeController < ApplicationController
     render nothing: true, status: :not_found and return unless ENV["SHOW_OIDC_TOKENS"]
 
     render json: {
-      client_id: ENV["LAYERS_OIDC_CLIENT_ID"],
-      client_secret: ENV["LAYERS_OIDC_CLIENT_SECRET"],
+      client_id: ENV["ACHRAILS_OIDC_CLIENT_ID"],
+      client_secret: ENV["ACHRAILS_OIDC_CLIENT_SECRET"],
     }
   end
 

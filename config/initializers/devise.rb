@@ -240,8 +240,8 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   if Rails.env.production?
-    config.omniauth :learning_layers_oidc, ENV['LAYERS_OIDC_CLIENT_ID'],
-      ENV['LAYERS_OIDC_CLIENT_SECRET'], scope: 'openid,email,profile,offline_access'
+    config.omniauth :learning_layers_oidc, ENV['ACHRAILS_OIDC_CLIENT_ID'],
+      ENV['ACHRAILS_OIDC_CLIENT_SECRET'], scope: 'openid,email,profile,offline_access'
   else
     config.omniauth :developer
   end

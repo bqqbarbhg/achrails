@@ -37,7 +37,7 @@ Warden::Strategies.add(:bearer_authentication) do
   end
 
   def authenticate!
-    client = OAuth2::Client.new(ENV["LAYERS_OIDC_CLIENT_ID"], ENV["LAYERS_OIDC_CLIENT_SECRET"],
+    client = OAuth2::Client.new(ENV["ACHRAILS_OIDC_CLIENT_ID"], ENV["ACHRAILS_OIDC_CLIENT_SECRET"],
                                 site: ENV["LAYERS_API_URI"],
                                 token_url: "/o/oauth2/token")
 
