@@ -82,7 +82,6 @@ Rails.application.configure do
 end
 
 Rails.application.routes.default_url_options[:host] = ENV["HACK_URI"] || ENV["LAYERS_API_URI"]
-Rails.application.routes.default_url_options[:port] = 80
 
 ActionMailer::Base.smtp_settings = {
   address: 'smtp.sendgrid.net',
