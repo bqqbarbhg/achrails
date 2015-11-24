@@ -5,6 +5,29 @@
 - Provides a web player for playing and annotating Ach so! videos with common web browsers.
 - Stores 'manifest' files, pieces of additional metadata for videos that allows them to have achso-style annotations.  
 
+Installing with Layers Box
+--------------------------
+
+Achrails is only one part of necessary server backend for Ach so! videos. In addition you'll need authentication service and video storage. Fortunately one part of Learning Layers project is to develop a mechanism for easing installation of this kind of complex modular services for small and medium scale use.  
+
+Achrails can be installed as a service in Layers Box. The instructions for preparing a Layers box can be found here: http://developer.learning-layers.eu/documentation/layers-box/environment-setup/  
+
+To create achrails in clean box (in following, 'newbox') run these commands in a folder containing the LayersBox-folder, retrieved from https://github.com/learning-layers/LayersBox :
+```
+./LayersBox/layersbox init -d newbox
+(Now you'll be asked for url that you can use for reaching the newbox)
+cd newbox
+../LayersBox/layersbox install learning-layers/openldap
+../LayersBox/layersbox install learning-layers/documentation
+../LayersBox/layersbox install learning-layers/openldapaccount
+../LayersBox/layersbox install learning-layers/openidconnect
+../LayersBox/layersbox install learning-layers/achrails
+```
+
+Now, if you go to url given in the 'layersbox init'-phase, you should reach 'Layers API'-page. if you go to url/achrails , you should see page from achrails with green bar on top of the screen and links to groups and login. 
+
+To be added: clvitra etc. 
+
 Web player
 ----------
 
