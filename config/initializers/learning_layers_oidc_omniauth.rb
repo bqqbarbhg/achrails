@@ -5,7 +5,7 @@ module OmniAuth
     class LearningLayersOidc < OmniAuth::Strategies::OAuth2
       option :name, "learning_layers_oidc"
       option :client_options,
-        site: ENV["LAYERS_API_URI"],
+        site: ENV["LAYERS_API_URI"].chomp('/'),
         authorize_url: "/o/oauth2/authorize",
         token_url: "/o/oauth2/token"
       
