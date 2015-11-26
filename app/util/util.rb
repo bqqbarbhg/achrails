@@ -22,6 +22,7 @@ module Util
       pos = annotation["position"]
       pos["x"] = pos["x"].round(5)
       pos["y"] = pos["y"].round(5)
+      annotation["time"] = annotation["time"].round
     end
   end
 
