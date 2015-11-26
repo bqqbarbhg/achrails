@@ -190,9 +190,6 @@ class SocialSemanticServer
       type: 'achso'
     log "Uploaded video #{video.uuid}"
 
-    # HACK: Skip annotation sync
-    return
-
     annotations = video.manifest_json["annotations"]
     put_json "/videos/videos/#{video.uuid}/annotations",
       timePoints: annotations.map { |a| a['time'] },
