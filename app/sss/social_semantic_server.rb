@@ -191,7 +191,7 @@ class SocialSemanticServer
     log "Uploaded video #{video.uuid}"
 
     annotations = video.manifest_json["annotations"]
-    put_json "/videos/#{video.uuid}/annotations",
+    put_json "/videos/videos/#{video.uuid}/annotations",
       timePoints: annotations.map { |a| a['time'] },
       x: annotations.map { |a| a['position']['x'] },
       y: annotations.map { |a| a['position']['y'] },
