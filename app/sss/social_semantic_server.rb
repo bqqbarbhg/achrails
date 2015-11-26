@@ -196,7 +196,7 @@ class SocialSemanticServer
       x: annotations.map { |a| a['position']['x'] },
       y: annotations.map { |a| a['position']['y'] },
       labels: annotations.map { |a| a['text'] },
-      descriptions: annotations.map { |a| '' },
+      descriptions: annotations.map { |a| a['text'] },
       removeExisting: true
 
     log "Synced annotations for video #{video.uuid}"
