@@ -186,8 +186,20 @@ class SocialSemanticServer
     post_json '/videos/videos',
       uuid: video.uuid,
       link: Rails.application.routes.url_helpers.video_url(locale: nil, id: video.uuid),
-      label: video.title
+      label: video.title,
+      type: 'achso'
     log "Uploaded video #{video.uuid}"
+
+    annotations = video.manifest_json["annotations"]
+    put_json "/videos/#{video.uuid}/annotations",
+      timePoints: annotations.map { |a| a['time'] },
+      x: annotations.map { |a| a['position']['x'] },
+      y: annotations.map { |a| a['position']['y'] },
+      labels: annotations.map { |a| a['text'] },
+      descriptions: annotations.map { |a| '' },
+      removeExisting: true
+
+    log "Synced annotations for video #{video.uuid}"
   end
 
   def set_videos_publicity(ids, is_public)
