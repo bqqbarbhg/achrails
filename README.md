@@ -26,9 +26,9 @@ cd newbox
 ../LayersBox/layersbox install learning-layers/achrails
 ```
 
-Now, if you go to url given in the 'layersbox init'-phase, you should reach 'Layers API'-page. if you go to url/achrails , you should see page from achrails with green bar on top of the screen and links to groups and login. 
+Now, if you go to url given in the 'layersbox init'-phase (https://192.168.99.100), you should see a page with large header 'Layers API'. if you go to https://192.168.99.100/achrails , you should see the achrails front page: empty page with green bar on top of the screen,  links to groups, search area and login. 
 
-To be added: clvitra, https-issues etc. 
+(To be added: clvitra, https-issues etc.) 
 
 Installing for development with Layers Box
 ------------------------------------------
