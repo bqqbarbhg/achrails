@@ -36,8 +36,8 @@ Installing for development with Layers box
 For development you'll want achrails to be running from your local code instead of relying a prepacked container image. For this we'll assume that you need to have a directory structure something like this:
 ``` 
 github/
-    achrails
-    LayersBox
+    achrails/
+    LayersBox/
 ```
 LayersBox is cloned from https://github.com/learning-layers/LayersBox and Achrails from https://github.com/learning-layers/achrails
 The folder can be your busy existing github folder, having other subdirectories there has no consequences.
@@ -54,14 +54,15 @@ In init-command asks for uri for layers box. Give the docker-boat's uri: 192.168
 Now you should have:
 ``` 
 github/
-    achrails
-    newbox
-    LayersBox
+    achrails/
+    newbox/
+    LayersBox/
 ```
 
 Then install required components to your newbox. This is similar to deployment build except for the achrails component, here we use special achrails-dev -component. Instead of fetching latest version from github, it links to your 'achrails' folder.
 
 ```
+cd newbox
 ../LayersBox/layersbox install learning-layers/openldap
 ../LayersBox/layersbox install learning-layers/documentation
 ../LayersBox/layersbox install learning-layers/openidconnect
