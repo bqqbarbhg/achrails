@@ -30,7 +30,7 @@ Now, if you go to url given in the 'layersbox init'-phase, you should reach 'Lay
 
 To be added: clvitra, https-issues etc. 
 
-Installing for development with Layers box
+Installing for development with Layers Box
 ------------------------------------------
 
 For development you'll want achrails to be running from your local code instead of relying a prepacked container image. For this we'll assume that you need to have a directory structure something like this:
@@ -79,7 +79,7 @@ Now you can go test how changes in achrails affect live server: go to
 ```
 to existing page. This should be immediately reflected in https://192.168.99.100/achrails front page.
 
-Since Ruby on Rails is running inside a container, to do proper restart or running rake -commands, you'll have to enter that container. Single commands can run with
+Since Ruby on Rails is running inside a container, to do proper restart or running rake -commands, you'll have to enter that container. Single commands can be run with:
 ```
 docker run achrails yourcommand
 ```
@@ -87,6 +87,8 @@ docker run achrails yourcommand
 (I haven't figured yet how to enter the container outside the running process, will be added when known)
 
 (Also the https -situation is missing, the authentication doesn't work without properly signed https.)
+
+To find out the details of development environment, see https://github.com/jpurma/achrails-dev-Dockerfiles  
 
 Web player
 ----------
