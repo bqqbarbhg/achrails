@@ -28,7 +28,7 @@ cd newbox
 
 Now, if you go to url given in the 'layersbox init'-phase (https://192.168.99.100), you should see a page with large header 'Layers API'. if you go to https://192.168.99.100/achrails , you should see the achrails front page: empty page with green bar on top of the screen,  links to groups, search area and login. 
 
-(To be added: clvitra, https-issues etc.) 
+(To be added: clvitra, https-issues etc.)
 
 Installing for development with Layers Box
 ------------------------------------------
@@ -43,7 +43,7 @@ LayersBox is cloned from https://github.com/learning-layers/LayersBox and Achrai
 The folder can be your busy existing github folder, having other subdirectories there has no consequences.
 
 Now create a new Layers box in the github folder.
-In OS X you need to be in terminal created by Docker Quickstart Terminal.app. On Launch it has displayed ascii ship and an url that can be used to reach  your docker. It is usually https://192.168.99.100 -- you'll need it soon.
+In OS X you need to be in terminal created by 'Docker Quickstart Terminal.app'. On launch it has displayed an ascii ship and an url that can be used to reach your Docker. It is usually https://192.168.99.100 -- you'll need it soon.
 
 ```
 cd github
