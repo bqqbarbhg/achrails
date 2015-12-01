@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     if Rails.env.production?
       {
         locale: I18n.locale,
-        host: ENV["HACK_URI"] || ENV["LAYERS_API_URI"].chomp('/') || options[:host],
+        host: ENV["HACK_URI"] || (ENV["LAYERS_API_URI"] || '').chomp('/') || options[:host],
       }.merge options
     else
       {
@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
         refresh_token = session["ll_oidc_refresh_token"]
         if refresh_token && !@reauthenticated
           client = OAuth2::Client.new(ENV["ACHRAILS_OIDC_CLIENT_ID"], ENV["ACHRAILS_OIDC_CLIENT_SECRET"],
-                                      site: ENV["LAYERS_API_URI"].chomp('/'),
+                                      site: (ENV["LAYERS_API_URI"] || '').chomp('/'),
                                       token_url: "/o/oauth2/token")
           token = client.get_token({
             client_id: client.id,
