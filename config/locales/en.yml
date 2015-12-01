@@ -157,6 +157,7 @@ en:
       share_button: 'Share'
       share_link: 'Link video by %{name}'
       revisions_button: 'Revisions'
+      edit_button: 'Properties'
       save:
         button: 'Save'
         success: 'Video saved'
@@ -167,6 +168,11 @@ en:
         error: 'Failed to delete video'
       start_at_label: 'Start at'
       unsaved_video_warning: 'There are unsaved changes in the video, which will be lost if you continue.'
+    edit:
+      pagetitle: 'Video properties'
+      form:
+        title: 'Title'
+        submit: 'Save'
 
   title:
     groups:
@@ -186,3 +192,4 @@ en:
       revisions: 'Revisions'
       search: 'Search results'
       show: 'Video %{name}'
+      edit: 'Video properties'

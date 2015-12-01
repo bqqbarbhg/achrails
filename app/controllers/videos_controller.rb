@@ -50,6 +50,25 @@ class VideosController < ApplicationController
     end
   end
 
+  def edit
+    @video = Video.find_by_uuid(params[:id])
+    authorize @video
+    @manifest = @video.read_manifest
+    render
+  end
+
+  def properties
+    @video = Video.find_by_uuid(params[:id])
+    manifest = @video.read_manifest.clone
+
+    manifest["title"] = params[:title]
+    manifest["genre"] = params[:genre]
+
+    update_video_with_manifest(@video, manifest)
+
+    redirect_to action: :show, id: @video.uuid
+  end
+
   def player
     # TODO: Create secure token?
     @manifest = Video.find_by_uuid(params[:id]).read_manifest
@@ -86,17 +105,22 @@ class VideosController < ApplicationController
   end
 
   def update
-
     manifest = JSON.parse(request.body.read)
+    @video = Video.find_by_uuid(params[:id])
+
+    status = update_video_with_manifest(@video, manifest)
+
+    render json: @video.read_manifest, status: status
+  end
+
+  def update_video_with_manifest(video, manifest)
     Util.normalize_manifest!(manifest)
 
-    @video = Video.find_by_uuid(params[:id])
     if @video
-      authorize @video
+      authorize @video, :update?
       ignore = ["revision", "uploadedAt", "lastModified"]
       if @video.read_manifest.except(*ignore) == manifest.except(*ignore)
-        render json: @video.read_manifest, status: :ok
-        return
+        return :ok
       end
 
       parent_rev = manifest["revision"]
@@ -120,9 +144,7 @@ class VideosController < ApplicationController
 
     @video.update_manifest(manifest)
 
-    status = @video.revision_num > 1 ? :ok : :created
-
-    render json: @video.manifest_json, status: status
+    return :created
   end
 
   def upload

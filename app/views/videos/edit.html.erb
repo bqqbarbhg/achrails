@@ -1,0 +1,38 @@
+<% provide(:title, t('title.videos.edit')) %>
+
+<% content_for :pagetitle do %>
+  <%= t('.pagetitle') %>
+<% end %>
+
+<div class="mdl-grid">
+
+  <%= form_tag(properties_video_path) do %>
+
+    <div class="mdl-cell mdl-cell--12-col">
+
+        <div class="mdl-textfield mdl-js-textfield">
+          <%= text_field_tag :title, @manifest["title"], class:"mdl-textfield__input", required: true %>
+          <%= label_tag :title, t('.form.title'), class:"mdl-textfield__label" %>
+        </div>
+
+        <div class="mdl-spacer"></div>
+
+        <% for genre in [:good_work, :problem, :site_overview, :trick_of_trade] %>
+          <%= label_tag "genre_#{genre}", value: genre, class:"mdl-radio mdl-js-radio" do %>
+            <%= radio_button_tag(:genre, genre, genre.to_s == @manifest["genre"], class:"mdl-radio__button") %>
+            <span class="mdl-radio__label"><%= t(genre, scope: :genre) %></span>
+          <% end %>
+          <div class="mdl-spacer"></div>
+        <% end %>
+
+    </div>
+
+    <%# Submit button %>
+    <div class="mdl-cell mdl-cell--12-col">
+      <p>
+        <%= submit_tag t('.form.submit'), class:"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" %>
+      </p>
+    </div>
+
+  <% end %>
+</div>

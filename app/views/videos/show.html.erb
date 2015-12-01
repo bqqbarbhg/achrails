@@ -75,6 +75,12 @@
             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
+    <%# Edit button %>
+    <% if policy(@video).edit? %>
+      <%= link_to(t('.edit_button'), edit_video_path(@video),
+            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+    <% end %>
+
     <%# Revisions button %>
     <% if policy(@video).revisions? %>
       <%= link_to(t('.revisions_button'), revisions_video_path(@video),

@@ -155,6 +155,7 @@ fi:
       share_button: 'Jaa'
       share_link: 'Linkitä käyttäjän %{name} video '
       revisions_button: 'Versiot'
+      edit_button: 'Ominaisuudet'
       save:
         button: 'Tallenna'
         success: 'Video tallennettu'
@@ -165,6 +166,11 @@ fi:
         error: 'Videon poistaminen epäonnistui'
       start_at_label: 'Aloita kohdasta'
       unsaved_video_warning: 'Video sisältää tallentamattomia muutoksia. Jos jatkat, muutokset häviävät.'
+    edit:
+      pagetitle: 'Videon asetukset'
+      form:
+        title: 'Nimi'
+        submit: 'Tallenna'
 
   title:
     groups:
@@ -184,3 +190,4 @@ fi:
       revisions: 'Versiot'
       search: 'Hakutulokset'
       show: 'Video %{name}'
+      edit: 'Videon asetukset'

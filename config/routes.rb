@@ -46,6 +46,7 @@ Rails.application.routes.draw do
         get 'player'
         get 'revisions'
         post 'revert/:revision', to: 'videos#revert', as: 'revert'
+        post 'properties'
       end
     end
 
