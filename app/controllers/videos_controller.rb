@@ -36,7 +36,7 @@ class VideosController < ApplicationController
       @video.read_manifest
     end
 
-    if params[:newer_than_rev].present? and @video.revision_num != params[:newer_than_rev].to_i
+    if params[:newer_than_rev].present? and @video.revision_num == params[:newer_than_rev].to_i
       render nothing: true, status: :not_modified
       return
     end
