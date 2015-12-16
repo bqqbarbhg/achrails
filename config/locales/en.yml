@@ -37,6 +37,7 @@ en:
     sign_out: 'Sign out'
     groups: 'Groups'
     videos: 'Videos'
+    my_videos: 'My videos'
     language_name: 'English'
     logged_in_as_html: 'Logged in as <strong>%{user}</strong>'
 

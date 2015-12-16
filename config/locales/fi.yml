@@ -36,6 +36,7 @@ fi:
     sign_out: 'Kirjaudu ulos'
     groups: 'Ryhmät'
     videos: 'Videot'
+    my_videos: 'My videos'
     language_name: 'Suomi'
     logged_in_as_html: 'Kirjauduttu käyttäjällä <strong>%{user}</strong>'
 

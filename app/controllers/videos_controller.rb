@@ -1,9 +1,29 @@
 class VideosController < ApplicationController
 
   def index
-    # Temporary
     authenticate_user!
-    redirect_to action: :own
+
+
+    respond_to do |format|
+      format.json do
+
+        own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :revision_num)
+        group_video_columns = current_user.videos.pluck(:id, :uuid, :revision_num)
+
+        all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
+        @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], revision: c[2] } }
+
+        render json: { videos: @all_videos }
+      end
+      format.html do
+        own_videos = current_user.authored_videos
+        group_videos = current_user.videos
+
+        @videos = (own_videos + group_videos).uniq { |c| c.id }
+
+        render
+      end
+    end
   end
 
   def own
@@ -11,18 +31,6 @@ class VideosController < ApplicationController
 
     @videos = current_user.authored_videos
     render
-  end
-
-  def suggested
-    authenticate_user!
-
-    own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :revision_num)
-    group_video_columns = current_user.videos.pluck(:id, :uuid, :revision_num)
-
-    all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
-    @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], revision: c[2] } }
-
-    render json: { videos: @all_videos }
   end
 
   def show

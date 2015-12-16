@@ -40,7 +40,6 @@ Rails.application.routes.draw do
         get 'find'
         get 'search'
         get 'own'
-        get 'suggested'
       end
       member do
         resources 'shares', only: [:index, :create, :destroy], param: :group do

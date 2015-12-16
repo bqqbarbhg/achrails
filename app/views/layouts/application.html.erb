@@ -82,16 +82,25 @@
                 <%= t('nav.groups') %>
               </li>
             </a>
+
             <a href="<%= videos_path %>">
               <li class="mdl-menu__item">
                 <%= t('nav.videos') %>
               </li>
             </a>
+
+            <a href="<%= own_videos_path %>">
+              <li class="mdl-menu__item">
+                <%= t('nav.my_videos') %>
+              </li>
+            </a>
+
             <%= link_to destroy_user_session_path(), method: :delete do %>
                 <li class="mdl-menu__item">
                   <%= t('nav.sign_out') %>
                 </li>
             <% end %>
+
           </ul>
       <% else %>
           <% if Rails.env.production? %>
