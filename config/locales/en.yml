@@ -140,8 +140,11 @@ en:
   videos:
     index:
       pagetitle: 'Videos'
-      upload_button: 'Upload video'
       empty_filler: 'No videos'
+    own:
+      pagetitle: 'My videos'
+      empty_filler: "You haven't uploaded videos yet"
+      upload_button: 'Upload video'
     player:
       title: '%{video} - Ach so!'
     revisions:
@@ -189,6 +192,7 @@ en:
       index: 'Share video'
     videos:
       index: 'Videos'
+      own: 'My videos'
       revisions: 'Revisions'
       search: 'Search results'
       show: 'Video %{name}'

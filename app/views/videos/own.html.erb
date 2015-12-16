@@ -1,4 +1,4 @@
-<% provide(:title, t('title.videos.index')) %>
+<% provide(:title, t('title.videos.own')) %>
 
 <% content_for :homelink do %>
   <a href="#" onClick="closeActivity()" id="ach_so_link">
@@ -13,4 +13,18 @@
 <div class="mdl-grid">
   <%= render(partial: 'videocontainer', collection: @videos) || render(html: "<h2 class='mdl-color-text--grey-600'>#{t('.empty_filler')}</h2>".html_safe)%>
 </div>
+
+<% unless Rails.env.production? %>
+
+  <%# Manifest upload button for testing %>
+  <% if policy(:video).create? %>
+    <%= form_tag(upload_videos_path, multipart: true) do %>
+      <%= file_field_tag 'manifest' %>
+      <%= submit_tag t('.upload_button'),
+              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+    <% end %>
+  <% end %>
+
+<% end %>
+
 

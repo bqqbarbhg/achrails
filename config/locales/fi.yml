@@ -138,8 +138,11 @@ fi:
   videos:
     index:
       pagetitle: 'Videot'
-      upload_button: 'Lähetä video'
       empty_filler: 'Videoita ei ole'
+    own:
+      pagetitle: 'Omat videot'
+      empty_filler: 'Et ole vielä jakanut videoita'
+      upload_button: 'Lähetä video'
     player:
       title: '%{video} - Ach so!'
     revisions:
@@ -187,6 +190,7 @@ fi:
       index: 'Jaa video'
     videos:
       index: 'Videot'
+      own: 'Omat videot'
       revisions: 'Versiot'
       search: 'Hakutulokset'
       show: 'Video %{name}'
