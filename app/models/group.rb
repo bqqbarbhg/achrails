@@ -39,7 +39,7 @@ class Group < ActiveRecord::Base
 
   def collection_json
     return self.as_json.merge({
-      videos: group.videos.pluck(:uuid).as_json
+      videos: self.videos.pluck(:uuid).as_json
     })
   end
 end

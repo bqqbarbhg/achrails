@@ -197,12 +197,13 @@ class VideosController < ApplicationController
   end
 
   def search
+    # TODO: Pagination
+    # NOTE: This is slow!
+
     @query = params[:q]
     videos = Video.search(@query)
 
-    for video in videos
-      authorize video, :show?
-    end
+    videos = videos.select { |video| policy(video).show? }
 
     @manifests = videos.map(&:read_manifest)
     render

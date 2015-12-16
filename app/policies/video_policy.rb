@@ -23,7 +23,7 @@ class VideoPolicy < Struct.new(:user, :video)
     # Other people if it has been shared into a group they can see
     # NOTE: This might be slow, SQL optimize if needed
     video.groups.each do |group|
-      return true if Pundit.policy(user, group).show?
+      return true if group.listed? || group.member?(user)
     end
 
     false

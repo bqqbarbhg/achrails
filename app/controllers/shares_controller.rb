@@ -83,7 +83,7 @@ class SharesController < ApplicationController
     is_public = params[:isPublic]
     ids = params[:id].split(',')
 
-    Video.where(uuid: ids).each do
+    Video.where(uuid: ids).each do |video|
       authorize video, :share?
     end
 
