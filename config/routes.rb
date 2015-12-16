@@ -27,6 +27,9 @@ Rails.application.routes.draw do
         post 'leave'
         post 'invite'
       end
+      collection do
+        get 'own'
+      end
     end
 
     resources :users
@@ -36,6 +39,8 @@ Rails.application.routes.draw do
         post 'upload'
         get 'find'
         get 'search'
+        get 'own'
+        get 'suggested'
       end
       member do
         resources 'shares', only: [:index, :create, :destroy], param: :group do

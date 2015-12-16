@@ -36,4 +36,10 @@ class Group < ActiveRecord::Base
   def has_video?(video)
     video.groups.where(id: id).count > 0
   end
+
+  def collection_json
+    return self.as_json.merge {
+      videos: group.videos.pluck(:uuid).as_json
+    }
+  end
 end

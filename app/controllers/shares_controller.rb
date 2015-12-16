@@ -1,6 +1,7 @@
 ShareGroup = Struct.new(:group, :shared, :shareclass)
 
 class SharesController < ApplicationController
+
   def index
     ids = params[:id].split(',')
     @videos = Video.where(uuid: ids)
@@ -82,9 +83,13 @@ class SharesController < ApplicationController
     is_public = params[:isPublic]
     ids = params[:id].split(',')
 
-    sss.set_videos_publicity(ids, is_public) if sss
+    Video.where(uuid: ids).each do
+      authorize video, :share?
+    end
 
+    sss.set_videos_publicity(ids, is_public) if sss
     Video.where(uuid: ids).update_all(is_public: is_public)
+
     render json: {isPublic: is_public}
   end
 

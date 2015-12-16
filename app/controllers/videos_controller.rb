@@ -1,29 +1,28 @@
 class VideosController < ApplicationController
 
   def index
+    # Temporary
+    authenticate_user!
+    redirect_to action: :own
+  end
 
-    # TODO: This returns different data sets now for html and json.
-    # TODO: Think about routes harder.
-    # TODO: Logged out view
-
+  def own
     authenticate_user!
 
-    respond_to do |format|
-      format.html do
-        @videos = current_user.authored_videos
-        render
-      end
-      format.json do
+    @videos = current_user.authored_videos
+    render
+  end
 
-        own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :revision_num)
-        group_video_columns = current_user.videos.pluck(:id, :uuid, :revision_num)
+  def suggested
+    authenticate_user!
 
-        all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
-        @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], revision: c[2] } }
+    own_video_columns = current_user.authored_videos.pluck(:id, :uuid, :revision_num)
+    group_video_columns = current_user.videos.pluck(:id, :uuid, :revision_num)
 
-        render json: { videos: @all_videos }
-      end
-    end
+    all_video_columns = (own_video_columns + group_video_columns).uniq { |c| c[0] }
+    @all_videos = all_video_columns.map { |c| { id: c[0].to_s, uuid: c[1], revision: c[2] } }
+
+    render json: { videos: @all_videos }
   end
 
   def show
@@ -41,6 +40,7 @@ class VideosController < ApplicationController
       return
     end
 
+    # Force reload
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
@@ -48,7 +48,7 @@ class VideosController < ApplicationController
     respond_to do |format|
       format.html do
         # HACK: Force reauthentication since the page does XHR
-        sss.force_authenticate() if sss
+        sss.force_authenticate() if current_user && sss
         render
       end
       format.json { render json: @manifest }
@@ -86,7 +86,8 @@ class VideosController < ApplicationController
     # source code leaks info.
     # TODO: If some of this data is made visible then don't remove that piece
     #       of data here.
-    # NOTE: NO NOT SAVE!!!
+
+    # NOTE: DO NOT SAVE THE MANIFEST!!!
     # These are temporary modifications only
     @manifest["author"] = nil
     @manifest["location"] = nil
@@ -101,6 +102,8 @@ class VideosController < ApplicationController
   end
 
   def create
+    authenticate_user!
+
     @video = Video.from_manifest(request.body.read, current_user)
     sss.create_video(@video) if sss
     respond_to do |format|
@@ -137,7 +140,7 @@ class VideosController < ApplicationController
       end
 
     else
-      # TODO: Authorization
+      authenticate_user!
       @video = Video.new(revision_num: 0, author: current_user)
     end
 
@@ -153,6 +156,8 @@ class VideosController < ApplicationController
   end
 
   def upload
+    authenticate_user!
+
     @video = Video.new(revision_num: 0, author: current_user)
 
     manifest = JSON.parse(params[:manifest].read)
@@ -180,7 +185,6 @@ class VideosController < ApplicationController
   end
 
   def find
-    # TODO: Authorization?
     video_url = Util.normalize_url(params[:video])
 
     @video = Video.where(video_url: video_url).first
@@ -194,8 +198,13 @@ class VideosController < ApplicationController
 
   def search
     @query = params[:q]
-    @manifests = Video.search(@query).map(&:read_manifest)
+    videos = Video.search(@query)
 
+    for video in videos
+      authorize video, :show?
+    end
+
+    @manifests = videos.map(&:read_manifest)
     render
   end
 
@@ -215,13 +224,11 @@ class VideosController < ApplicationController
     revision = params[:revision].to_i
 
     @video = Video.find_by_uuid(params[:id])
-
-    if @video
-      authorize @video
-    else
-      # TODO: Authorization
-      Video.new(revision_num: 0, author: current_user)
+    unless @video
+      render nothing: true, status: :not_found and return
     end
+
+    authorize @video
 
     manifest = @video.manifest_revision(revision)
     manifest["uploadedAt"] = Time.now.utc.iso8601

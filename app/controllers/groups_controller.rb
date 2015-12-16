@@ -2,22 +2,19 @@
 class GroupsController < ApplicationController
 
   def index
-    # TODO: Fix this to another endpoint with videos
-
+    @groups = policy_scope(Group)
     respond_to do |format|
-      format.json do
-        authenticate_user!
-        @groups = current_user.groups
-        group_json = @groups.map do |group|
-          ids = group.videos.pluck(:uuid)
-          group.as_json.merge({ videos: ids.as_json })
-        end
-        render json: { groups: group_json }
-      end
-      format.html do
-        @groups = policy_scope(Group)
-        render :index
-      end
+      format.json { render json: { groups: @groups.map(&:collection_json) } }
+      format.html { render :index }
+    end
+  end
+
+  def own
+    authenticate_user!
+    @groups = current_user.groups
+    respond_to do |format|
+      format.json { render json: { groups: @groups.map(&:collection_json) } }
+      format.html { render :index }
     end
   end
 
@@ -36,6 +33,8 @@ class GroupsController < ApplicationController
   end
 
   def create
+    authenticate_user!
+
     @group = Group.new(group_params)
     sss.create_group(@group) if sss
 
@@ -67,6 +66,7 @@ class GroupsController < ApplicationController
   def destroy
     group = Group.find(params[:id])
     authorize group
+
     sss.destroy_group(group) if sss
     group.destroy
 

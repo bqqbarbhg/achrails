@@ -17,11 +17,15 @@ class VideoPolicy < Struct.new(:user, :video)
     # Video author can see unconditionally
     return true if video.author?(user)
 
+    # Public videos are visible
+    return true if video.is_public
+
     # Other people if it has been shared into a group they can see
     # NOTE: This might be slow, SQL optimize if needed
     video.groups.each do |group|
       return true if Pundit.policy(user, group).show?
     end
+
     false
   end
 
