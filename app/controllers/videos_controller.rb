@@ -36,6 +36,11 @@ class VideosController < ApplicationController
       @video.read_manifest
     end
 
+    if params[:newer_than_rev].present? and @video.revision != params[:newer_than_rev]
+      render nothing: true, status: :not_modified
+      return
+    end
+
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
