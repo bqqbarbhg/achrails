@@ -26,6 +26,16 @@ function closeActivity() {
     }
 }
 
+function iosLoaded() {
+  // The iOS embedded environment has a header already, so hide the page one.
+  $('header').hide();
+}
+
+function iosNavigationTitle() {
+  // The title to display in the iOS NavigationController.
+  return $('.mdl-layout-title').text().trim();
+}
+
 function fitInParent(element, focus, doFill, aspect, state) {
 
     var parentElement = element.parentElement;
