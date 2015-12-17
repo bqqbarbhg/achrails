@@ -13,7 +13,12 @@ class GroupsController < ApplicationController
     authenticate_user!
     @groups = current_user.groups
     respond_to do |format|
-      format.json { render json: { groups: @groups.map(&:collection_json) } }
+      format.json do
+        render json: {
+          groups: @groups.map(&:collection_json),
+          user: current_user.manifest_json,
+        }
+      end
       format.html { render :index }
     end
   end
