@@ -24,4 +24,12 @@ class User < ActiveRecord::Base
     user
   end
 
+  def manifest_json
+    {
+      'id': self.sss_id || '',
+      'name': self.name,
+      'uri': '',
+    }
+  end
+
 end

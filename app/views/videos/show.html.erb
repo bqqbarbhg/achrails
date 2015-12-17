@@ -152,11 +152,7 @@
 <script>
 
   <% if current_user and policy(@video).update? %>
-    var user = {
-      "name": "<%=j current_user.name %>",
-      "uri": "",
-      "id": "<%=j current_user.sss_id %>",
-    };
+    var user = <%= current_user.manifest_json.to_json.html_safe %>;
   <% else %>
     var user = null;
   <% end %>

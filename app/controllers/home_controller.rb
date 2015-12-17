@@ -33,5 +33,10 @@ class HomeController < ApplicationController
     }
   end
 
+  def show_user
+    authenticate_user!
+    render json: current_user.manifest_json
+  end
+
 end
 
