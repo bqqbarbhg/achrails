@@ -29,6 +29,8 @@ function closeActivity() {
 function iosLoaded() {
   // The iOS embedded environment has a header already, so hide the page one.
   $('header').hide();
+
+  $('.hide-on-ios').hide();
 }
 
 function iosNavigationTitle() {
