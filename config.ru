@@ -4,7 +4,11 @@ require ::File.expand_path('../config/environment', __FILE__)
 
 # Serve the rails app under a  prefix. Defaults to '/achrails'
 prefix = ENV['RAILS_RELATIVE_URL_ROOT']
-map prefix do
+if prefix.present?
+  map prefix do
+    run Rails.application
+  end
+else
   run Rails.application
 end
 
