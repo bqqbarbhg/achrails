@@ -16,8 +16,8 @@ class VideosController < ApplicationController
         render json: { videos: @all_videos }
       end
       format.html do
-        own_videos = current_user.authored_videos
-        group_videos = current_user.videos
+        own_videos = current_user.authored_videos.order(created_at: :desc)
+        group_videos = current_user.videos.order(created_at: :desc)
 
         @videos = (own_videos + group_videos).uniq { |c| c.id }
 
@@ -29,7 +29,7 @@ class VideosController < ApplicationController
   def own
     authenticate_user!
 
-    @videos = current_user.authored_videos
+    @videos = current_user.authored_videos.order(created_at: :desc)
     render
   end
 
