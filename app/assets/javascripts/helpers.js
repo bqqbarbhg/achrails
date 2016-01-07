@@ -29,13 +29,11 @@ function closeActivity() {
 function iosLoaded() {
   // The iOS embedded environment has a header already, so hide the page one.
   $('header').hide();
-
   $('.hide-on-ios').hide();
-}
 
-function iosNavigationTitle() {
   // The title to display in the iOS NavigationController.
-  return $('.mdl-layout-title').text().trim();
+  var title = $('.mdl-layout-title').text().trim();
+  window.webkit.messageHandlers.setTitle.postMessage(title);
 }
 
 function fitInParent(element, focus, doFill, aspect, state) {
