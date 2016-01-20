@@ -114,8 +114,9 @@ class GroupsController < ApplicationController
       next unless invitation
 
       address_list.push(address)
-
-      InvitationMailer.invite_email(invitation, @group.name).deliver_later
+      if current_user
+        InvitationMailer.invite_email(invitation, @group.name, current_user.name).deliver_later
+      end
     end
 
     flash[:notice] = t('groups.invite.users_invited_message',

@@ -1,3 +1,3 @@
 <% provide(:title, t('title.mailer.invite')) %>
 
-<p><%= t('.body_text_html', url: @url) %></p>
+<p><%= t('.body_text_html', url: @url, group_name: @group_name, inviter: @inviter) %></p>
