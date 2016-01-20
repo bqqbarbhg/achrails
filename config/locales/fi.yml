@@ -111,6 +111,7 @@ fi:
     invite_email:
       body_text: '%{inviter} on kutsunut sinut "Ach so!"-ryhmään "%{group_name}" osoitteessa %{url}.\nHyväksy kutsu klikkaamalla linkkiä.\n\nKiittäen, \nAch so! -tiimi'
       body_text_html: '%{inviter} on kutsunut sinut "Ach so!"-ryhmään "%{group_name}" osoitteessa <a href="%{url}">%{url}</a>.<br/>Hyväksy kutsu klikkaamalla linkkiä.<br/><br/>Kiittäen, <br/>Ach so! -tiimi'
+    subject_line: 'Sinut on kutsuttu "Ach so!" ryhmään: %{group_name}' 
 
   invitations:
     error_expected_email: 'Kutsuttu sähköpostiosoitteella %{email}'
