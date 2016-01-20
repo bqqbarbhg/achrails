@@ -14,10 +14,14 @@ class Invitation < ActiveRecord::Base
     expect_email == user.email
   end
 
+  def self.group_from_token(token)
+    token.split(' ', 1)[0]
+  end
+
 protected
   def generate_token
     self.token ||= loop do
-      random_token = SecureRandom.urlsafe_base64(32)
+      random_token = "#{group.id}-#{SecureRandom.urlsafe_base64(32)}"
       break random_token unless Invitation.exists?(token: random_token)
     end
   end

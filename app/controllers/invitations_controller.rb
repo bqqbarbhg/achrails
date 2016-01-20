@@ -5,6 +5,16 @@ class InvitationsController < ApplicationController
     return if authenticate_and_redirect_back
 
     @invitation = Invitation.find_by(token: params[:id])
+    unless @invitation
+      group = Group.find_by_id(Invitation.group_from_token(params[:id]))
+      if group.nil?
+        redirect_to controller: :groups, action: :index
+      else
+        redirect_to group
+      end
+      return
+    end
+
     if current_user && current_user.email.blank?
       redirect_to oidc_action_error_path(failed_action: "accept_invitation")
       return
