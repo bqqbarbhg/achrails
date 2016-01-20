@@ -110,8 +110,9 @@ en:
 
   invitation_mailer:
     invite_email:
-      body_text: 'You have been invited to %{url}'
-      body_text_html: 'You have been invited to <a href="%{url}">%{url}</a>'
+      body_text: '%{inviter} has invited you to "Ach so!" group "%{group_name}" at %{url}.\nClick the link to accept the invitation.\n\nThank you, \nAch so! Team'
+      body_text_html: '%{inviter} has invited you to "Ach so!" group "%{group_name}" at <a href="%{url}">%{url}</a>.<br/>Click the link to accept the invitation.<br/><br/>Thank you, <br/>Ach so! Team'
+    subject_line: 'You have been invited to "Ach so!" group: %{group_name}' 
 
   invitations:
     error_expected_email: 'Expected to join with email %{email}'
