@@ -1,0 +1,164 @@
+de:
+  activerecord:
+    models:
+      group: 'Gruppe'
+    attributes:
+      group:
+        name: 'Name'
+        description: 'Beschreibung'
+  sign_in:
+    learning_layers: "Anmelden"
+    developer: "Anmelden (Entwickler)"
+  nav:
+    sign_out: 'Abmelden'
+    groups: 'Gruppen'
+    videos: 'Videos'
+    my_videos: 'Meine Videos'
+    language_name: 'Englisch'
+    logged_in_as_html: 'Eingeloggt als <strong>%{user}</strong>'
+  player:
+    annotation_edit:
+      save: 'Speichern'
+      delete: 'Löschen'
+  genre:
+    good_work: 'Gute Arbeit'
+    problem: 'Problem'
+    site_overview: 'Seitenübersicht'
+    trick_of_trade: 'Tricks'
+  group:
+    visibility:
+      invite_only:
+        title: 'Nur eingeladene'
+        description: 'Nur Benutzer die eine Email Einladung bekommen haben können diese Gruppe sehen und ihr beitreten.'
+      unlisted:
+        title: 'Nicht gelistet'
+        description: 'Nutzer mit einem Link zu dieser Gruppe dürfen ihr beitreten.'
+      listed:
+        title: 'Öffentlich gelistet'
+        description: 'Diese Gruppe ist öffentlich und sichtbar für alle.'
+  groups:
+    edit:
+      pagetitle:
+        create: 'Erstelle Gruppe'
+        edit: 'Bearbeite Gruppe'
+    index:
+      pagetitle: 'Gruppen'
+      no_groups: 'Du bist in keiner Gruppe'
+    show:
+      videos:
+        heading: 'Videos'
+        empty_filler: 'Es sind bisher keine Videos mit dieser Gruppe geteilt worden.'
+      members:
+        heading: 'Mitglieder'
+        admin_tag: 'Admin'
+      invite:
+        heading: 'Lade neue Mitglieder ein'
+        email_placeholder: 'Adresse zum Einladen hinzufügen'
+        add_contacts: 'Kontakte hinzufügen'
+        submit: 'Einladungen senden'
+      delete:
+        button: 'Gruppe löschen'
+        confirm: 'Bist Du sicher, dass Du die Gruppe %{group} löschen möchtest?'
+        error: 'Fehler beim Löschen der Gruppe'
+      edit_button: 'Bearbeite Gruppe'
+      join_button: 'Gruppe beitreten'
+      leave_button: 'Gruppe verlassen'
+    invite:
+      users_invited_message:
+        one: '%{count} Person wurde zu der Gruppe %{group} eingeladen'
+        other: '%{count} Personen wurden zu der Gruppe %{group} eingeladen'
+  home:
+    oidc_error:
+      required_information: 'Benötigte Informationen:'
+      failed_action:
+        generic: 'Mehr Berechtigungen sind benötigt für diese Aktion.'
+        log_in: 'Ach so benötigt Zugang zu Deinem Profil, Email und OpenID login.'
+        accept_invitation: 'Ach so benötigt Zugang zu Deiner Email um Einladungen zu akzeptieren.'
+      user_info:
+        email: 'Email'
+        openid: 'OpenID'
+        profile: 'Profil'
+  invitation_mailer:
+    invite_email:
+      body_text: 'Du wurdest zu %{url} eingeladen'
+      body_text_html: 'Du wurdest zu <a href="%{url}">%{url}</a> eingeladen'
+  invitations:
+    error_expected_email: 'Erwartet mit der E-Mail Adresse %{email} beizutreten'
+    joined_message: 'Gruppe %{group} beigetreten'
+  shared:
+    forbidden:
+      heading: 'Verboten'
+      return: 'Zurück'
+    sss_error:
+      heading: 'SocialSemanticServer Fehler'
+  shares:
+    index:
+      pagetitle:
+        one: 'Ein Video teilen'
+        other: '%{count} Videos teilen'
+      mixed_share_warning: 'Einige Videos sind geteilt'
+      is_public:
+        one: 'Ist das Video öffentlich?'
+        other: 'Sind die Videos öffentlich?'
+      share_error:
+        share: 'Konnte Video nicht teilen'
+        unshare: 'Konnte das Teilen der Videos nicht entfernen'
+  videos:
+    index:
+      pagetitle: 'Videos'
+      empty_filler: 'Keine Videos'
+    own:
+      pagetitle: 'Meine Videos'
+      empty_filler: "Du hast noch keine Videos hochgeladen"
+      upload_button: 'Video hochladen'
+    player:
+      title: '%{video} - Ach so!'
+    revisions:
+      revision_title: 'Version %{num} (vor %{time} hochgeladen)'
+      revert_button: 'Zurücksetzen auf diese Version'
+      video_property:
+        title: "Titel:"
+        genre: "Genre:"
+    search:
+      search_placeholder: 'Suchen...'
+      no_results: 'Keine Ergebnisse gefunden!'
+    show:
+      share_button: 'Teilen'
+      share_link: 'Video teilen als %{name}'
+      revisions_button: 'Versionen'
+      edit_button: 'Eigenschaften'
+      save:
+        button: 'Speichern'
+        success: 'Video gespeichert'
+        error: 'Konnte Video nicht speichern'
+      delete:
+        button: 'Löschen'
+        confirm: 'Bist Du sicher, dass du dieses Video löschen willst?'
+        error: 'Konnte Video nicht löschen'
+      start_at_label: 'Anfangen bei'
+      unsaved_video_warning: 'Es gibt ungespeicherte Änderungen in diesem Video, welche verloren gehen wenn Du fortfährst.'
+    edit:
+      pagetitle: 'Video Eigenschaften'
+      form:
+        title: 'Titel'
+        submit: 'Speichern'
+  title:
+    groups:
+      create: 'Gruppe erstellen'
+      edit: 'Bearbeite Gruppe'
+      index: 'Gruppen'
+      show: 'Gruppe %{name}'
+    mailer:
+      invite: 'Email Einladungen'
+    shared:
+      forbidden: 'Verboten'
+      sss_error: 'SSS Fehler'
+    shares:
+      index: 'Video teilen'
+    videos:
+      index: 'Videos'
+      own: 'Meine Videos'
+      revisions: 'Versionen'
+      search: 'Ergebnisse durchsuchen'
+      show: 'Video %{name}'
+      edit: 'Video Eigenschaften'
