@@ -116,6 +116,11 @@ function documentLoaded() {
     var frameRenderQueue = new WorkQueue();
 
     var workerCount = 4;
+
+    if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+        workerCount = 1;
+    }
+
     for (var i = 0; i < workerCount; i++) {
         frameRenderQueue.addWorker(new VideoFrameRenderer());
     }
