@@ -1,5 +1,11 @@
 <% provide(:title, t('title.videos.edit')) %>
 
+<% content_for :homelink do %>
+  <%= link_to @video do %>
+    <i class="material-icons" style="color:white;">&#xE5C4;</i>
+  <% end %>                
+<% end %>
+
 <% content_for :pagetitle do %>
   <%= t('.pagetitle') %>
 <% end %>

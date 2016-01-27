@@ -1,5 +1,12 @@
 <% provide(:title, t('title.videos.revisions')) %>
 
+<% content_for :homelink do %>
+  <%= link_to @video do %>
+    <i class="material-icons" style="color:white;">&#xE5C4;</i>
+  <% end %>                
+<% end %>
+
+
 <%# View-Cleanup: There is _way_ too much logic here %>
 
 <% now = Time.now %>

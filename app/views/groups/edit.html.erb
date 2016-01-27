@@ -1,5 +1,11 @@
 <% provide(:title, @group.persisted? ? t('title.groups.edit') : t('title.groups.create')) %>
 
+<% content_for :homelink do %>
+  <%= link_to @group do %>
+    <i class="material-icons" style="color:white;">&#xE5C4;</i>
+  <% end %>                
+<% end %>
+
 <% content_for :pagetitle do %>
   <%= @group.persisted? ? t('.pagetitle.edit') : t('.pagetitle.create') %>
 <% end %>

@@ -1,9 +1,12 @@
 <% provide(:title, t('title.shares.index')) %>
 
 <% content_for :homelink do %>
-  <a href="#" onClick="closeActivity()" id="ach_so_link">
+  <a href="#" onClick="closeActivity()" id="ach_so_link" class="show-on-android">
     <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
   </a>
+  <%= link_to @videos.first do %>
+    <i class="material-icons" style="color:white;" class="hide-on-android">&#xE5C4;</i>
+  <% end %>
 <% end %>
 
 <% content_for :pagetitle do %>
