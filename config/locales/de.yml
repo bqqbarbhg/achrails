@@ -14,7 +14,7 @@ de:
     groups: 'Gruppen'
     videos: 'Videos'
     my_videos: 'Meine Videos'
-    language_name: 'Englisch'
+    language_name: 'Deutsch'
     logged_in_as_html: 'Eingeloggt als <strong>%{user}</strong>'
   player:
     annotation_edit:

@@ -43,7 +43,7 @@
         </button>
 
         <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect navbar-menu" for="menu-localization">
-          <% for option in [:en, :fi] %>
+          <% for option in [:en, :fi, :de] %>
 
             <a href="<%= url_for(params.merge(:locale => option)) %>">
               <li class="mdl-menu__item">
