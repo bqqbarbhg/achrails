@@ -10,6 +10,8 @@ function VideoFrameRenderer(options) {
     this.work = null;
     this.frames = [];
     this.frameIndex = 0;
+
+    this.timeoutTimeout = null;
 }
 
 VideoFrameRenderer.prototype.wakeUp = function(queue) {
@@ -36,12 +38,26 @@ VideoFrameRenderer.prototype.doWork = function(work) {
     this.canvases = this.work.canvases || [this.work.canvas];
     if (this.work.video != this.video.src) {
         this.video.src = this.work.video;
+
+        this.timeoutTimeout = window.setTimeout(this.handleCustomTimeout.bind(this),
+                (this.options.timeout || 2.0) * 1000);
+
     } else {
         this.onMetadata();
     }
 };
 
+VideoFrameRenderer.prototype.handleCustomTimeout = function() {
+    window.clearTimeout(this.timeoutTimeout);
+    this.timeoutTimeout = null;
+    this.video.src = '';
+    this.queue.findWork(this);
+};
+
 VideoFrameRenderer.prototype.onMetadata = function() {
+    window.clearTimeout(this.timeoutTimeout);
+    this.timeoutTimeout = null;
+
     var duration = this.video.duration;
 
     this.frames = this.work.timesCallback(this.work, duration);
