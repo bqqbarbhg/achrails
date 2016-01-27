@@ -1,2 +1,23 @@
-<%# Temporary!!! %>
-<%= link_to('Groups', groups_path()) %>
+
+<div class="mdl-grid">
+
+  <div class="mdl-cell mdl-cell--12-col">
+    <h1><%= t('.welcome_heading') %></h1>
+  </div>
+
+  <div class="mdl-cell mdl-cell--12-col">
+
+    <% unless current_user.present? %>
+      <% if Rails.env.production? %>
+        <h4><%= link_to(t('.sign_in'), user_omniauth_authorize_path(:learning_layers_oidc)) %></h4>
+      <% else %>
+        <h4><%= link_to(t('.sign_in'), user_omniauth_authorize_path(:developer)) %></h4>
+      <% end %>
+    <% end %>
+
+    <h4><%= link_to(t('.app.android'), 'https://play.google.com/store/apps/details?id=fi.aalto.legroup.achso') %></h4>
+
+  </div>
+
+</div>
+

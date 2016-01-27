@@ -106,6 +106,12 @@ fi:
         email: 'sähköposti'
         openid: 'openid-tunnus'
         profile: 'profiili'
+    index:
+      welcome_heading: 'Ach so!'
+      sign_in: 'Kirjaudu sisään tai rekisteröidy'
+      app:
+        android: 'Sovellus Androidille'
+        ios: 'Sovellus iOS:lle'
 
   invitation_mailer:
     invite_email:

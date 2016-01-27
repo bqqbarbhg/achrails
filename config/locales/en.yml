@@ -107,6 +107,12 @@ en:
         email: 'email'
         openid: 'openid'
         profile: 'profile'
+    index:
+      welcome_heading: 'Ach so!'
+      sign_in: 'Sign in or register'
+      app:
+        android: 'App for Android'
+        ios: 'App for iOS'
 
   invitation_mailer:
     invite_email:
