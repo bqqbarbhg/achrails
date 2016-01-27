@@ -148,7 +148,7 @@ fi:
     player:
       title: '%{video} - Ach so!'
     revisions:
-      revision_title: 'Versio %{num} (lähetetty %{time} sitten)'
+      revision_title: 'Versio %{num}, %{name} (lähetetty %{time} sitten)'
       revert_button: 'Palauta tähän versioon'
       video_property: 
         title: "Nimi: "

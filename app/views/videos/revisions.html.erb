@@ -10,7 +10,7 @@
 
   <%# Revision title %>
   <% time_ago = distance_of_time_in_words(Time.parse(new["uploadedAt"]), now) %>
-  <h4><%= t('.revision_title', num: new["revision"], time: time_ago) %></h4>
+  <h4><%= t('.revision_title', num: new["revision"], time: time_ago, name: new["editedBy"] || '?') %></h4>
 
   <%# Revert button %>
   <% if policy(@video).revert? and new["revision"] != @video.revision_num %>

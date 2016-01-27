@@ -114,7 +114,7 @@ de:
     player:
       title: '%{video} - Ach so!'
     revisions:
-      revision_title: 'Version %{num} (vor %{time} hochgeladen)'
+      revision_title: 'Version %{num} von %{name} (vor %{time} hochgeladen)'
       revert_button: 'Zurücksetzen auf diese Version'
       video_property:
         title: "Titel:"

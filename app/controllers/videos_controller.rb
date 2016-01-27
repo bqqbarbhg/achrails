@@ -134,7 +134,7 @@ class VideosController < ApplicationController
 
     if @video
       authorize @video, :update?
-      ignore = ["revision", "uploadedAt", "lastModified"]
+      ignore = ["revision", "uploadedAt", "lastModified", "editedBy"]
       if @video.read_manifest.except(*ignore) == manifest.except(*ignore)
         return :ok
       end
@@ -153,6 +153,7 @@ class VideosController < ApplicationController
     end
 
     manifest["uploadedAt"] = Time.now.utc.iso8601
+    manifest["editedBy"] = current_user.name
 
     @video.import_manifest_data(manifest)
 
