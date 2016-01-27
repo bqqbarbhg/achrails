@@ -35,8 +35,8 @@ class VideoPolicy < Struct.new(:user, :video)
   end
 
   def update?
-    # Only authors are allowed to update their videos
-    video.author?(user)
+    # All users can edit visible videos
+    user.present? && show?
   end
 
   def edit?
@@ -44,19 +44,19 @@ class VideoPolicy < Struct.new(:user, :video)
   end
 
   def destroy?
-    update?
+    video.author?(user)
   end
 
   def share?
-    update?
+    video.author?(user)
   end
 
   def revert?
-    update?
+    video.author?(user)
   end
 
   def revisions?
-    revert?
+    show?
   end
 
 end
