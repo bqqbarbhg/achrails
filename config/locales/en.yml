@@ -150,6 +150,7 @@ en:
     player:
       title: '%{video} - Ach so!'
     revisions:
+      pagetitle: 'Video revisions'
       revision_title: 'Revision %{num} by %{name} (uploaded %{time} ago)'
       revert_button: 'Revert to this version'
       video_property: 
