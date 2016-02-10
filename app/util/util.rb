@@ -35,7 +35,8 @@ module Util
       existing_i = old_as.index(ann)
       old_as.slice!(existing_i) and next if not existing_i.nil?
 
-      moved_i = old_as.index { |a| a["time"] == ann["time"] && a["text"].present? && a["text"] == ann["text"] }
+      moved_i = old_as.index { |a| a["time"] == ann["time"] && a["text"].present? && a["text"] == ann["text"]
+                               && a["createdTimestamp"].present? && a["createdTimestamp"] == b["createdTimestamp"] }
       if moved_i
         ops << { op: :move, time: ann["time"] / 1000.0, dst: ann, src: old_as.slice!(moved_i) }
         next
