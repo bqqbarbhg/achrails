@@ -27,6 +27,9 @@ class InvitationsController < ApplicationController
     end
 
     @group = @invitation.group
+
+    log_event(:join_group, @group)
+
     sss.join_group(@group, current_user) if sss
     @group.join(current_user)
     @invitation.destroy

@@ -53,6 +53,8 @@ class VideosController < ApplicationController
         new_recent_views[@video.uuid] = time
         @video.increment!(:views)
 
+        log_event(:view_video, @video)
+
       end
 
       if new_recent_views != recent_views
@@ -170,9 +172,12 @@ class VideosController < ApplicationController
         lost_data = merge[:lost_data]
       end
 
+      log_event(:edit_video, @video)
     else
       authenticate_user!
       @video = Video.new(revision_num: 0, author: current_user)
+
+      log_event(:upload_video, @video)
     end
 
     manifest["uploadedAt"] = Time.now.utc.iso8601
@@ -206,6 +211,8 @@ class VideosController < ApplicationController
   def destroy
     @video = Video.find_by_uuid(params[:id])
     authorize @video
+
+    log_event(:delete_video, @video)
 
     # SSS_Support(delete video)
     @video.destroy

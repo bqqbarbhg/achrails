@@ -148,6 +148,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def log_event(type, target)
+    LogEvent.log(current_user, type, target)
+  end
+
   rescue_from Pundit::NotAuthorizedError, with: :render_exception_forbidden
   rescue_from SssConnectError, with: :reauthenticate
   rescue_from SssInternalError, with: :render_sss_error

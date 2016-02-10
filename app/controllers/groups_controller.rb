@@ -46,6 +46,8 @@ class GroupsController < ApplicationController
     @group.save!
     @group.join(current_user).update(admin: true)
 
+    log_event(:create_group, @group)
+
     redirect_to action: :show, id: @group
   end
 
@@ -72,6 +74,8 @@ class GroupsController < ApplicationController
     group = Group.find(params[:id])
     authorize group
 
+    log_event(:delete_group, group)
+
     sss.destroy_group(group) if sss
     group.destroy
 
@@ -86,6 +90,8 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     authorize @group
 
+    log_event(:join_group, @group)
+
     @group.join(current_user)
     redirect_to action: :show, id: @group.id
   end
@@ -93,6 +99,8 @@ class GroupsController < ApplicationController
   def leave
     @group = Group.find(params[:id])
     authorize @group
+
+    log_event(:leave_group, @group)
 
     sss.leave_group(@group, current_user) if sss
     @group.leave(current_user)
