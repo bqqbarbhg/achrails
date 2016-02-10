@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110104812) do
+ActiveRecord::Schema.define(version: 20160210113546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20151110104812) do
     t.string   "name"
     t.text     "bearer_token"
     t.string   "sss_id"
+    t.json     "recent_views"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -86,6 +87,7 @@ ActiveRecord::Schema.define(version: 20151110104812) do
     t.text     "searchable"
     t.integer  "revision_num",                  null: false
     t.boolean  "is_public",     default: false, null: false
+    t.integer  "views",         default: 0,     null: false
   end
 
   add_index "videos", ["uuid"], name: "index_videos_on_uuid", unique: true, using: :btree

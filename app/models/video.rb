@@ -32,7 +32,7 @@ class Video < ActiveRecord::Base
     self.manifest_json = manifest
     self.title = manifest["title"]
     self.uuid = manifest["id"]
-    self.searchable = Util.manifest_to_searchable(manifest),
+    self.searchable = Util.manifest_to_searchable(manifest)
     self.video_url = Util.normalize_url(manifest["videoUri"])
   end
 

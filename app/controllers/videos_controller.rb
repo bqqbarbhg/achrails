@@ -37,15 +37,38 @@ class VideosController < ApplicationController
     @video = Video.find_by_uuid(params[:id])
     authorize @video
 
-    @manifest = if params[:rev].present?
-      @video.manifest_revision(params[:rev].to_i)
-    else
-      @video.read_manifest
+    if (params[:is_view] || request.format.html?) && current_user.present?
+      time = Time.now.to_i / (60 * 60) # hours
+
+      recent_views = current_user.recent_views || { }
+
+      # Remove views that are older than 24h
+      limit = time - 24
+      new_recent_views = recent_views.select { |k,v| v >= limit }
+
+      # If this video is still in the hash it was viewed in the last 24h
+      if new_recent_views[@video.uuid].nil?
+
+        # Count as a new view
+        new_recent_views[@video.uuid] = time
+        @video.increment!(:views)
+
+      end
+
+      if new_recent_views != recent_views
+        current_user.update(recent_views: new_recent_views)
+      end
     end
 
     if params[:newer_than_rev].present? and @video.revision_num == params[:newer_than_rev].to_i
       render nothing: true, status: :not_modified
       return
+    end
+
+    @manifest = if params[:rev].present?
+      @video.manifest_revision(params[:rev].to_i)
+    else
+      @video.read_manifest
     end
 
     # Force reload
