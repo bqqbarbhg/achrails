@@ -10,21 +10,32 @@ class LogEvent < ActiveRecord::Base
     :delete_video,
     :view_video,
     :edit_video,
-    :share_video,
+    :share_video, # extra: group, state: is shared?
+    :publish_video, # state: is public?
   ]
 
   validates :user, presence: true
   validates :event_type, presence: true
   validates :event_target, presence: true
 
-  def self.log(user, type, target)
+  def self.log(user, type, target, extra, state)
     return unless user.present?
 
-    LogEvent.create!(user: user.id, event_type: type, event_target: target.id)
+    unless state.nil?
+      previous = LogEvent.where(event_type: self.event_types[type], event_target: target.id, extra: extra).order(:id).last
+      Rails.logger.debug('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+      Rails.logger.debug(previous)
+      if previous.present? && previous.user == user.id && previous.created_at >= Time.now - 1.hours
+        previous.update(state: state)
+        return previous
+      end
+    end
+
+    LogEvent.create!(user: user.id, event_type: type, event_target: target.id, extra: extra, state: state)
   end
 
   def to_line
-    "#{event_type} #{user} #{event_target}"
+    "#{created_at}, #{event_type}, #{user}, #{event_target}, #{extra}, #{state}"
   end
 
 end

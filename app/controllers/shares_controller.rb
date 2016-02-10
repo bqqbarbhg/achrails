@@ -53,7 +53,10 @@ class SharesController < ApplicationController
     # NOTE: This might be slow, but it doesn't seem that there's really any obvious
     # better way to do it.
     @videos.each do |video|
-      video.groups << group unless video.groups.exists?(group)
+      unless video.groups.exists?(group)
+        video.groups << group 
+        log_event(:share_video, video, group.id, 1)
+      end
     end
 
     respond_to do |format|
@@ -71,7 +74,10 @@ class SharesController < ApplicationController
 
     @videos.each do |video|
       authorize video, :share?
-      video.groups.destroy(group)
+      if video.groups.exists?(group)
+        video.groups.destroy(group)
+        log_event(:share_video, video, group.id, 0)
+      end
     end
 
     respond_to do |format|
@@ -83,12 +89,18 @@ class SharesController < ApplicationController
     is_public = params[:isPublic]
     ids = params[:id].split(',')
 
-    Video.where(uuid: ids).each do |video|
+    videos = Video.where(uuid: ids)
+    
+    videos.each do |video|
       authorize video, :share?
     end
 
     sss.set_videos_publicity(ids, is_public) if sss
     Video.where(uuid: ids).update_all(is_public: is_public)
+
+    videos.each do |video|
+      log_event(:publish_video, video, nil, is_public ? 1 : 0)
+    end
 
     render json: {isPublic: is_public}
   end

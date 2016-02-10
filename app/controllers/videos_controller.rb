@@ -157,6 +157,8 @@ class VideosController < ApplicationController
   def update_video_with_manifest(video, manifest)
     Util.normalize_manifest!(manifest)
 
+    is_new = false
+
     if @video
       authorize @video, :update?
       ignore = ["revision", "uploadedAt", "lastModified", "editedBy"]
@@ -171,13 +173,10 @@ class VideosController < ApplicationController
         manifest = merge[:manifest]
         lost_data = merge[:lost_data]
       end
-
-      log_event(:edit_video, @video)
     else
       authenticate_user!
       @video = Video.new(revision_num: 0, author: current_user)
-
-      log_event(:upload_video, @video)
+      is_new = true
     end
 
     manifest["uploadedAt"] = Time.now.utc.iso8601
@@ -188,6 +187,12 @@ class VideosController < ApplicationController
     sss.create_video(@video) if sss
 
     @video.update_manifest(manifest)
+
+    if is_new
+      log_event(:upload_video, @video)
+    else
+      log_event(:edit_video, @video)
+    end
 
     return :created
   end

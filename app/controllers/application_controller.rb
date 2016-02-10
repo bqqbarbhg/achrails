@@ -148,8 +148,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def log_event(type, target)
-    LogEvent.log(current_user, type, target)
+  def log_event(type, target, extra=nil, state=nil)
+    LogEvent.log(current_user, type, target, extra, state)
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :render_exception_forbidden
