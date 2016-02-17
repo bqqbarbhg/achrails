@@ -23,8 +23,6 @@ class LogEvent < ActiveRecord::Base
 
     unless state.nil?
       previous = LogEvent.where(event_type: self.event_types[type], event_target: target.id, extra: extra).order(:id).last
-      Rails.logger.debug('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-      Rails.logger.debug(previous)
       if previous.present? && previous.user == user.id && previous.created_at >= Time.now - 1.hours
         previous.update(state: state)
         return previous
