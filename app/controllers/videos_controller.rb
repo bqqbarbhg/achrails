@@ -166,6 +166,11 @@ class VideosController < ApplicationController
         return :ok
       end
 
+      mutable_keys = ["title", "genre", "tag", "formatVersion", "annotations"] + ignore
+      if @video.read_manifest.except(*mutable_keys) != manifest.except(*mutable_keys)
+        return :forbidden
+      end
+
       parent_rev = manifest["revision"]
       if parent_rev != @video.revision_num
         parent_manifest = @video.manifest_revision(parent_rev)
