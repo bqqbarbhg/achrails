@@ -226,11 +226,12 @@ class VideosController < ApplicationController
 
     # Delete the video data
     manifest = @video.read_manifest
-    deleteUrl = manifest["deleteUrl"]
+    deleteUrl = manifest["deleteUri"]
     if deleteUrl.present?
-      Faraday.delete(deleteUrl) do |req|
+      response = Faraday.delete(deleteUrl) do |req|
         req.headers['Authorization'] = "Bearer #{current_user.bearer_token}"
       end
+      Rails.logger.debug "DELETE #{deleteUrl} -> #{response.status}"
     end
 
     # SSS_Support(delete video)
