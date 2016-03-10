@@ -33,7 +33,7 @@ en:
     learning_layers: "Sign in"
     developer: "Sign in (developer)"
     learning_layers_oidc: "Sign in with Learning Layers OIDC"
-    google_oauth2: "Sign in with Google+"
+    google_oauth2: "Sign in with Google"
 
   nav:
     sign_out: 'Sign out'

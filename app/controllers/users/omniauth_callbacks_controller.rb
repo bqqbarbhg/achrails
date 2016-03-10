@@ -8,6 +8,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return
     end
 
+    if request.env["omniauth.params"]['redirect_to']
+      session = Session.create!
+      request.env["achrails.session_token"] = session.token
+    end
+
     user_sss = sss(@user)
     if user_sss
       @user.sss_id = user_sss.current_user_sss_id
@@ -61,7 +66,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
-      set_flash_message(:notice, :success, :kind => "Google+") if is_navigational_format?
+      set_flash_message(:notice, :success, :kind => "Google") if is_navigational_format?
     else
       session["devise.developer_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
