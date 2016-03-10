@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
     user.email = auth.info.email if auth.info.email
     user.name = auth.info.name
     user.bearer_token = auth.extra.try(:bearer)
-    user.refresh_token = auth.extra.try(:refresh_token)
+    user.refresh_token = auth.extra.try(:refresh)
 
     user.save!
     user
