@@ -38,5 +38,9 @@ class HomeController < ApplicationController
     render json: current_user.manifest_json
   end
 
+  def new_session
+    render
+  end
+
 end
 

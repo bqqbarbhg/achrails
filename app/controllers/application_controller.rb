@@ -112,7 +112,12 @@ class ApplicationController < ActionController::Base
 
   # Try to return back to the page the login originated from
   def after_sign_in_path_for(resource)
-    stored_location_for(:user) || request.env['omniauth.origin'] || super
+    redirect_url = request.env['omniauth.params']['redirect_to']
+    if redirect_url 
+      redirect_url + "?session=#{request.env["achrails.session_token"]}"
+    else
+      stored_location_for(:user) || request.env['omniauth.origin'] || super
+    end
   end
 
   def reauthenticate

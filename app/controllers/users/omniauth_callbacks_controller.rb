@@ -31,6 +31,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return
     end
 
+    if request.env["omniauth.params"]['redirect_to']
+      session = Session.create!
+      request.env["achrails.session_token"] = session.token
+    end
+
     if @user.persisted?
       sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Developer") if is_navigational_format?

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get '/oidc_error', to: 'home#oidc_error'
     get '/oidc_error/:failed_action', to: 'home#oidc_error', as: 'oidc_action_error'
     get '/oidc_tokens', to: 'home#oidc_tokens'
+    get '/new_session', to: 'home#new_session'
     get '/user', to: 'home#show_user'
 
     resources :groups do

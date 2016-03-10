@@ -1,14 +1,10 @@
 class User < ActiveRecord::Base
-  devise :rememberable, :omniauthable,
-    omniauth_providers: if Rails.env.production?
-                          [:learning_layers_oidc]
-                        else
-                          [:developer]
-                        end
+  devise :rememberable, :omniauthable
 
   has_many :memberships
   has_many :groups, through: :memberships, source: :group
   has_many :videos, through: :groups
+  has_many :sessions
 
   has_many :authored_videos, class_name: "Video", foreign_key: :author_id
 
