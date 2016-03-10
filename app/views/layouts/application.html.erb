@@ -103,14 +103,24 @@
 
           </ul>
       <% else %>
-          <% if Rails.env.production? %>
-            <%#= link_to t('sign_in.learning_layers'), user_omniauth_authorize_url(:learning_layers_oidc, protocol: 'https'), class: "mdl-navigation__link" %>
-            <%#= Temporarily don't redirect to HTTPS %>
-            <%= link_to t('sign_in.learning_layers'), user_omniauth_authorize_path(:learning_layers_oidc), class: "mdl-navigation__link" %>
-          <% else %>
-            <%= link_to t('sign_in.developer'), user_omniauth_authorize_path(:developer), class: "mdl-navigation__link" %>
-          <% end %>
+          <button id="menu-lower-right"
+                  style="color: white"
+                  class="mdl-button mdl-js-button hide-on-android">
+            <%= t('.sign_in') %>
+          </button>
 
+          <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect navbar-menu"
+              for="menu-lower-right">
+
+            <% for provider in Devise.omniauth_providers %>
+              <%= link_to user_omniauth_authorize_path(provider) do %>
+                <li class="mdl-menu__item">
+                  <%= t(provider, scope:'sign_in') %>
+                </li>
+              <% end %>
+            <% end %>
+
+          </ul>
         <% end %>
       </nav>
     </div>
