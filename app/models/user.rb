@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   devise :rememberable, :omniauthable
 
+  before_validation :generate_token
+  validates :token, presence: true
+
   has_many :memberships
   has_many :groups, through: :memberships, source: :group
   has_many :videos, through: :groups
@@ -29,4 +32,10 @@ class User < ActiveRecord::Base
     }
   end
 
+  def generate_token
+    self.token ||= loop do
+      random_token = SecureRandom.urlsafe_base64(32)
+      break random_token unless User.exists?(token: random_token)
+    end
+  end
 end

@@ -41,7 +41,7 @@ class HomeController < ApplicationController
   def userinfo
     authenticate_user!
     render json: {
-      sub: "#{current_user.provider} #{current_user.uid}",
+      sub: current_user.token,
       name: current_user.name,
     }
   end
