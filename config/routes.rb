@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     get '/oidc_tokens', to: 'home#oidc_tokens'
     get '/new_session', to: 'home#new_session'
     get '/user', to: 'home#show_user'
+    get '/userinfo', to: 'home#userinfo'
 
     resources :groups do
       member do
