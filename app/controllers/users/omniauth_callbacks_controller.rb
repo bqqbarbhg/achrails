@@ -9,7 +9,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if request.env["omniauth.params"]['redirect_to']
-      session = Session.create!
+      session = Session.create!(user: @user)
       request.env["achrails.session_token"] = session.token
     end
 
@@ -37,7 +37,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if request.env["omniauth.params"]['redirect_to']
-      session = Session.create!
+      session = Session.create!(user: @user)
       request.env["achrails.session_token"] = session.token
     end
 
@@ -59,7 +59,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if request.env["omniauth.params"]['redirect_to']
-      session = Session.create!
+      session = Session.create!(user: @user)
       request.env["achrails.session_token"] = session.token
     end
 

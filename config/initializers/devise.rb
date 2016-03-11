@@ -262,7 +262,7 @@ Devise.setup do |config|
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
   config.warden do |manager|
-    manager.default_strategies(scope: :user).unshift :bearer_authentication
+    manager.default_strategies(scope: :user).unshift :session_authentication
   end
 
   # ==> Mountable engine configurations
