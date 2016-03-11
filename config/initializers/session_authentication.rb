@@ -24,7 +24,7 @@ protected
       auth = authorization
       if auth
         tokens = auth.split(/\s+/, 2)
-        tokens[1] if tokens.length == 2 && tokens[0].downcase == 'session'
+        tokens[1] if tokens.length == 2 && tokens[0].downcase == 'bearer'
       end
     end
   end
