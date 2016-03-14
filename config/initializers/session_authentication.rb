@@ -1,11 +1,11 @@
 
 Warden::Strategies.add(:session_authentication) do
   def valid?
-    session_token
+    session_token.present?
   end
 
   def authenticate!
-    session = Session.find_by_token(session_token)
+    session = Session.find_by_access_token(session_token)
     if session
       success!(session.user) 
     else

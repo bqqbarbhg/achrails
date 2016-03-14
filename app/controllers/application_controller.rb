@@ -106,9 +106,19 @@ class ApplicationController < ActionController::Base
 
   # Try to return back to the page the login originated from
   def after_sign_in_path_for(resource)
-    redirect_url = request.env['omniauth.params']['redirect_to']
+
+    redirect_url = request.env['omniauth.params']['redirect_uri']
     if redirect_url 
-      redirect_url + "?session=#{request.env["achrails.session_token"]}"
+      pars = {
+        code: request.env["achrails.session_code"],
+      }
+      if request.env["achrails.session_state"]
+        pars[:state] = request.env["achrails.session_state"]
+      end
+
+      url = Addressable::URI.parse(redirect_url)
+      url.query_values = (url.query_values || {}).merge(pars)
+      url.to_s
     else
       stored_location_for(:user) || request.env['omniauth.origin'] || super
     end

@@ -56,6 +56,9 @@ gem 'rails-i18n', '~> 4.0.0'
 # Google OAuth2
 gem "omniauth-google-oauth2"
 
+# JWT for OIDC implementation
+gem 'jwt'
+
 group :development do
   # View sent emails
   gem 'letter_opener_web'

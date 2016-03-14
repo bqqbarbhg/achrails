@@ -282,6 +282,7 @@ DEPENDENCIES
   guard-livereload
   jbuilder (~> 2.0)
   jquery-rails
+  jwt
   letter_opener_web
   lodash-rails
   material_design_lite-rails

@@ -1,0 +1,5 @@
+
+<% for provider in Devise.omniauth_providers %>
+  <h4><%= link_to(t(provider, scope:'sign_in'), user_omniauth_authorize_path(provider, @link_state)) %></h4>
+<% end %>
+

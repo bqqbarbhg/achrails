@@ -4,10 +4,10 @@ class User < ActiveRecord::Base
   before_validation :generate_token
   validates :token, presence: true
 
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships, source: :group
   has_many :videos, through: :groups
-  has_many :sessions
+  has_many :sessions, dependent: :destroy
 
   has_many :authored_videos, class_name: "Video", foreign_key: :author_id
 
