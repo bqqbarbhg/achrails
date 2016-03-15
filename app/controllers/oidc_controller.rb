@@ -99,7 +99,7 @@ class OidcController < ApplicationController
       render json: {
         error: :access_denied,
         error_description: 'User not signed in',
-      }, status: 401
+      }, status: :unauthorized
       return
     end
 
@@ -131,7 +131,7 @@ class OidcController < ApplicationController
     render json: {
       error: :invalid_request,
       error_description: exception.message,
-    }
+    }, status: :bad_request
   end
 
 end
