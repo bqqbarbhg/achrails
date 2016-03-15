@@ -1,3 +1,5 @@
+require 'addressable/uri'
+
 class ApplicationController < ActionController::Base
   include Pundit
 

@@ -59,6 +59,9 @@ gem "omniauth-google-oauth2"
 # JWT for OIDC implementation
 gem 'jwt'
 
+# Addressable::URI
+gem 'addressable'
+
 group :development do
   # View sent emails
   gem 'letter_opener_web'
