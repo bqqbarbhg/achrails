@@ -107,7 +107,7 @@ class OidcController < ApplicationController
       sub: current_user.token,
       name: current_user.name,
       preferred_username: current_user.preferred_username,
-    }
+    }.delete_if { |k, v| v.nil? }
 
   end
 
