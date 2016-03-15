@@ -106,6 +106,7 @@ class OidcController < ApplicationController
     render json: {
       sub: current_user.token,
       name: current_user.name,
+      preferred_username: current_user.preferred_username,
     }
 
   end

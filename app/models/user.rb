@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 
     user = where(provider: auth.provider, uid: auth.uid).first_or_initialize
     user.email = auth.info.email if auth.info.email
+    user.preferred_username = auth.info.preferred_username if auth.info.preferred_username
     user.name = auth.info.name
     user.bearer_token = auth.extra.try(:bearer)
     user.refresh_token = auth.extra.try(:refresh)
