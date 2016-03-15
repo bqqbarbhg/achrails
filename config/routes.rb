@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       get 'authorize', to: 'oidc#show_authorize'
       post 'token', to: 'oidc#token'
       get 'userinfo', to: 'oidc#userinfo'
+      delete 'end_session', to: 'oidc#end_session'
     end
 
     resources :groups do

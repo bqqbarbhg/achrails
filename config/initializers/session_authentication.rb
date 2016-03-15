@@ -7,6 +7,7 @@ Warden::Strategies.add(:session_authentication) do
   def authenticate!
     session = Session.find_by_access_token(session_token)
     if session
+      request.env["achrails.session_id"] = session.id
       success!(session.user) 
     else
       fail

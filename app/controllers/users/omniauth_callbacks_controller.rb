@@ -9,8 +9,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if request.env["omniauth.params"]['redirect_to']
-      session = Session.create!(user: @user)
-      request.env["achrails.session_token"] = session.token
+      s = Session.create!(user: @user)
+      request.env["achrails.session_token"] = s.token
     end
 
     user_sss = sss(@user)
@@ -39,9 +39,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     params = request.env["omniauth.params"]
     if params['redirect_uri']
 
-      session = Session.create_code_auth(user: @user, client_id: params['client_id'])
+      s = Session.create_code_auth(user: @user, client_id: params['client_id'])
 
-      request.env["achrails.session_code"] = session.code
+      request.env["achrails.session_code"] = s.code
       request.env["achrails.session_state"] = params['state'] if params['state']
     end
 

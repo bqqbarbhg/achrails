@@ -110,6 +110,22 @@ class OidcController < ApplicationController
 
   end
 
+  def end_session
+
+    session_id = request.env["achrails.session_id"]
+    session = session_id ? Session.find_by_id(session_id) : nil
+    if session.nil?
+      render json: {
+        error: :access_denied,
+        error_description: 'User not signed in',
+      }, status: :unauthorized
+      return
+    end
+
+    session.destroy
+    render nothing: true, status: :no_content
+  end
+
   rescue_from OidcError do |exception|
     render json: {
       error: :invalid_request,
