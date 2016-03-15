@@ -8,9 +8,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return
     end
 
-    if request.env["omniauth.params"]['redirect_to']
-      s = Session.create!(user: @user)
-      request.env["achrails.session_token"] = s.token
+    params = request.env["omniauth.params"]
+    if params['acr_redirect_uri']
+
+      s = Session.create_code_auth(user: @user, client_id: params['acr_client_id'])
+
+      request.env["achrails.session_code"] = s.code
+      request.env["achrails.session_state"] = params['state'] if params['state']
     end
 
     user_sss = sss(@user)
@@ -37,9 +41,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     params = request.env["omniauth.params"]
-    if params['redirect_uri']
+    if params['acr_redirect_uri']
 
-      s = Session.create_code_auth(user: @user, client_id: params['client_id'])
+      s = Session.create_code_auth(user: @user, client_id: params['acr_client_id'])
 
       request.env["achrails.session_code"] = s.code
       request.env["achrails.session_state"] = params['state'] if params['state']
@@ -62,9 +66,13 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return
     end
 
-    if request.env["omniauth.params"]['redirect_to']
-      session = Session.create!(user: @user)
-      request.env["achrails.session_token"] = session.token
+    params = request.env["omniauth.params"]
+    if params['acr_redirect_uri']
+
+      s = Session.create_code_auth(user: @user, client_id: params['acr_client_id'])
+
+      request.env["achrails.session_code"] = s.code
+      request.env["achrails.session_state"] = params['state'] if params['state']
     end
 
     if @user.persisted?

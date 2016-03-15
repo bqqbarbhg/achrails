@@ -18,8 +18,8 @@ class OidcController < ApplicationController
 
     @link_state = {
       state: state,
-      redirect_uri: redirect_uri,
-      client_id: client_id,
+      acr_redirect_uri: redirect_uri,
+      acr_client_id: client_id,
     }
 
     render
