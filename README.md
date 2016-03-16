@@ -30,6 +30,30 @@ Now, if you go to url given in the 'layersbox init'-phase (https://192.168.99.10
 
 (To be added: clvitra, https-issues etc.)
 
+Installing for deployment without Layers Box
+--------------------------------------------
+
+Achrails is a straightforward typical Rails app that uses Postgres as a database. It only needs some environment variables to configure.
+
+```
+# Host
+ACHRAILS_SELF_URI = [required] Base host that achrails will be running under
+RAILS_RELATIVE_URL_ROOT = [optional] Set this if achrails is not running in the root eg. /achrails
+
+# Social Semantic Server
+SSS_URL = [optional] Enable SocialSemanticServer at this endpoint
+DISABLE_SSS = [optional] Disable SSS even is SSS_URL is set, use for debugging
+
+# Authentication
+LAYERS_API_URI = [optional] Endpoint of the Learning Layers OIDC
+ACHRAILS_OIDC_CLIENT_ID ACHRAILS_OIDC_CLIENT_SECRET = [optional] Credentials of Learning Layers OIDC
+
+GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET = [optional] Enable Google OAuth with credentials
+
+# Mailer
+SENDGRID_USER SENDGRID_PASS = [optional] Use Sendgrid to send mail with these
+```
+
 Installing for development with Layers Box
 ------------------------------------------
 
