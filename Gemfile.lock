@@ -45,7 +45,6 @@ GEM
     builder (3.2.2)
     byebug (4.0.5)
       columnize (= 0.9.0)
-    chronic (0.10.2)
     coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -269,8 +268,6 @@ GEM
       raindrops (~> 0.7)
     warden (1.2.3)
       rack (>= 1.0)
-    whenever (0.9.4)
-      chronic (>= 0.6.3)
 
 PLATFORMS
   ruby
@@ -309,7 +306,6 @@ DEPENDENCIES
   therubyracer
   uglifier (>= 1.3.0)
   unicorn
-  whenever
 
 BUNDLED WITH
    1.11.2

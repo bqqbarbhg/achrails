@@ -62,9 +62,6 @@ gem 'jwt'
 # Addressable::URI
 gem 'addressable'
 
-# Cron manager
-gem 'whenever', require: false
-
 group :development do
   # View sent emails
   gem 'letter_opener_web'
