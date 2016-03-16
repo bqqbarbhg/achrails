@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     if Rails.env.production?
       {
         locale: I18n.locale,
-        host: ENV["HACK_URI"] || (ENV["LAYERS_API_URI"] || '').chomp('/') || options[:host],
+        host: ENV["ACHRAILS_SELF_URI"] || (ENV["LAYERS_API_URI"] || '').chomp('/') || options[:host],
       }.merge options
     else
       {
