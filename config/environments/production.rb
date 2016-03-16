@@ -81,7 +81,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 end
 
-Rails.application.routes.default_url_options[:host] = ENV["ACHRAILS_SELF_URI"] || ENV["LAYERS_API_URI"].chomp('/')
+Rails.application.routes.default_url_options[:host] = (ENV["ACHRAILS_SELF_URI"] || ENV["LAYERS_API_URI"]).chomp('/')
 Rails.application.routes.default_url_options.delete(:port)
 
 ActionMailer::Base.smtp_settings = {
