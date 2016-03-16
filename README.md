@@ -54,6 +54,8 @@ GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET = [optional] Enable Google OAuth with cred
 SENDGRID_USER SENDGRID_PASS = [optional] Use Sendgrid to send mail with these
 ```
 
+You should also run `bundle exec rake sessions:purge` every now and then, preferably with `cron` or so.
+
 Installing for development with Layers Box
 ------------------------------------------
 
