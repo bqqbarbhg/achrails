@@ -15,9 +15,9 @@ class User < ActiveRecord::Base
     return nil if [auth.info.name, auth.provider, auth.uid].any? &:blank?
 
     user = where(provider: auth.provider, uid: auth.uid).first_or_initialize
-    user.email = auth.info.email if auth.info.email
-    user.preferred_username = auth.info.preferred_username if auth.info.preferred_username
-    user.name = auth.info.name
+    user.email = auth.info.try(:email) || user.email
+    user.preferred_username = auth.info.try(:preferred_username) || user.preferred_username
+    user.name = auth.info.try(:name) || user.name
     user.bearer_token = auth.extra.try(:bearer)
     user.refresh_token = auth.extra.try(:refresh)
 

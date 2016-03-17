@@ -1,6 +1,6 @@
 
 class LearningLayersUser
-  class UserInfo < Struct.new(:email, :name)
+  class UserInfo < Struct.new(:email, :preferred_username, :name)
   end
   class Extra < Struct.new(:bearer, :refresh)
   end
@@ -14,7 +14,7 @@ class LearningLayersUser
     @uid = hash['sub']
     @provider = 'learning_layers_oidc'
 
-    @info = UserInfo.new(hash['email'], hash['name'])
+    @info = UserInfo.new(hash['email'], hash['preferred_username'], hash['name'])
     @extra = Extra.new(bearer, refresh)
   end
 end
