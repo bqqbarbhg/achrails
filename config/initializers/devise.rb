@@ -239,10 +239,17 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  if Rails.env.production?
+
+  if ENV['ACHRAILS_OIDC_CLIENT_ID']
     config.omniauth :learning_layers_oidc, ENV['ACHRAILS_OIDC_CLIENT_ID'],
       ENV['ACHRAILS_OIDC_CLIENT_SECRET'], scope: 'openid,email,profile,offline_access'
-  else
+  end
+
+  if ENV["GOOGLE_CLIENT_ID"]
+    config.omniauth :google_oauth2, ENV["GOOGLE_CLIENT_ID"], ENV["GOOGLE_CLIENT_SECRET"]
+  end
+
+  if Rails.env.development?
     config.omniauth :developer
   end
 
@@ -255,7 +262,13 @@ Devise.setup do |config|
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
   config.warden do |manager|
-    manager.default_strategies(scope: :user).unshift :bearer_authentication
+
+    if ENV['SUPPORT_DIRECT_LL_OIDC'].present?
+      manager.default_strategies(scope: :user).unshift :bearer_authentication
+    end
+
+    manager.default_strategies(scope: :user).unshift :session_authentication
+
   end
 
   # ==> Mountable engine configurations

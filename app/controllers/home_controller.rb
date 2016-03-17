@@ -38,5 +38,17 @@ class HomeController < ApplicationController
     render json: current_user.manifest_json
   end
 
+  def userinfo
+    authenticate_user!
+    render json: {
+      sub: current_user.token,
+      name: current_user.name,
+    }
+  end
+
+  def new_session
+    render
+  end
+
 end
 

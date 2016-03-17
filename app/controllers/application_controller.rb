@@ -1,7 +1,8 @@
+require 'addressable/uri'
+
 class ApplicationController < ActionController::Base
   include Pundit
 
-  before_action :get_refresh_token_from_header
   before_action :get_locale_from_params
   before_action :set_sss_id_for_user
 
@@ -15,11 +16,6 @@ class ApplicationController < ActionController::Base
   # Visitors can view public content without having to authenticate, authentication
   # checks are mostly done now in policies or per route authenticate_user! calls.
   # before_action :authenticate_user!
-
-  def get_refresh_token_from_header
-    refresh_token = request.headers['HTTP_X_REFRESH_TOKEN']
-    session['ll_oidc_refresh_token'] = refresh_token if refresh_token
-  end
 
   def get_locale_from_params
     locale = params[:locale]
@@ -39,7 +35,7 @@ class ApplicationController < ActionController::Base
     if Rails.env.production?
       {
         locale: I18n.locale,
-        host: ENV["HACK_URI"] || (ENV["LAYERS_API_URI"] || '').chomp('/') || options[:host],
+        host: ENV["ACHRAILS_SELF_URI"] || (ENV["LAYERS_API_URI"] || '').chomp('/') || options[:host],
       }.merge options
     else
       {
@@ -57,7 +53,7 @@ class ApplicationController < ActionController::Base
     store_location_for(:user, request.fullpath)
     if Rails.env.production?
       if current_user
-        refresh_token = session["ll_oidc_refresh_token"]
+        refresh_token = current_user.refresh_token
         if refresh_token && !@reauthenticated
           client = OAuth2::Client.new(ENV["ACHRAILS_OIDC_CLIENT_ID"], ENV["ACHRAILS_OIDC_CLIENT_SECRET"],
                                       site: (ENV["LAYERS_API_URI"] || '').chomp('/'),
@@ -70,8 +66,8 @@ class ApplicationController < ActionController::Base
 
           if token
             current_user.bearer_token = token.token
+            current_user.refresh_token = token.refresh_token
             current_user.save!
-            session["ll_oidc_refresh_token"] = token.refresh_token
             @reauthenticated = true
             make_sss(current_user)
             send(action_name)
@@ -112,7 +108,22 @@ class ApplicationController < ActionController::Base
 
   # Try to return back to the page the login originated from
   def after_sign_in_path_for(resource)
-    stored_location_for(:user) || request.env['omniauth.origin'] || super
+
+    redirect_url = request.env['omniauth.params']['acr_redirect_uri']
+    if redirect_url 
+      pars = {
+        code: request.env["achrails.session_code"],
+      }
+      if request.env["achrails.session_state"]
+        pars[:state] = request.env["achrails.session_state"]
+      end
+
+      url = Addressable::URI.parse(redirect_url)
+      url.query_values = (url.query_values || {}).merge(pars)
+      url.to_s
+    else
+      stored_location_for(:user) || request.env['omniauth.origin'] || super
+    end
   end
 
   def reauthenticate

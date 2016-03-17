@@ -1,14 +1,13 @@
 class User < ActiveRecord::Base
-  devise :rememberable, :omniauthable,
-    omniauth_providers: if Rails.env.production?
-                          [:learning_layers_oidc]
-                        else
-                          [:developer]
-                        end
+  devise :rememberable, :omniauthable
 
-  has_many :memberships
+  before_validation :generate_token
+  validates :token, presence: true
+
+  has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships, source: :group
   has_many :videos, through: :groups
+  has_many :sessions, dependent: :destroy
 
   has_many :authored_videos, class_name: "Video", foreign_key: :author_id
 
@@ -16,9 +15,11 @@ class User < ActiveRecord::Base
     return nil if [auth.info.name, auth.provider, auth.uid].any? &:blank?
 
     user = where(provider: auth.provider, uid: auth.uid).first_or_initialize
-    user.email = auth.info.email if auth.info.email
-    user.name = auth.info.name
+    user.email = auth.info.try(:email) || user.email
+    user.preferred_username = auth.info.try(:preferred_username) || user.preferred_username
+    user.name = auth.info.try(:name) || user.name
     user.bearer_token = auth.extra.try(:bearer)
+    user.refresh_token = auth.extra.try(:refresh)
 
     user.save!
     user
@@ -32,4 +33,10 @@ class User < ActiveRecord::Base
     }
   end
 
+  def generate_token
+    self.token ||= loop do
+      random_token = SecureRandom.urlsafe_base64(32)
+      break random_token unless User.exists?(token: random_token)
+    end
+  end
 end

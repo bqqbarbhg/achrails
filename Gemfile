@@ -22,7 +22,7 @@ gem 'therubyracer'
 # For authentication
 gem 'devise'
 # For Learning Layers OIDC
-gem 'omniauth-oauth2'
+gem 'omniauth-oauth2', '~> 1.3.1'
 # For authorization
 gem 'pundit'
 
@@ -48,9 +48,19 @@ gem 'pg_search'
 
 # Better server
 gem 'puma'
+gem 'unicorn'
 
 # Internationalization
 gem 'rails-i18n', '~> 4.0.0'
+
+# Google OAuth2
+gem "omniauth-google-oauth2"
+
+# JWT for OIDC implementation
+gem 'jwt'
+
+# Addressable::URI
+gem 'addressable'
 
 group :development do
   # View sent emails

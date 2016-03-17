@@ -1,5 +1,5 @@
 class Membership < ActiveRecord::Base
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships, source: :group
   has_many :videos, through: :groups
 
