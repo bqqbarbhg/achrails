@@ -36,15 +36,16 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def learning_layers_oidc
-    authorize_user
+    base_authorize_user
 
+    # Save SSS ID if enabled
     user_sss = sss(@user)
     if user_sss
       @user.sss_id = user_sss.current_user_sss_id
       @user.save!
     end
 
-    base_redirect_user(:learning_layers_oidc)
+    base_redirect_user
   end
 
   # Add methods for providers
