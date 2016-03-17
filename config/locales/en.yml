@@ -35,6 +35,12 @@ en:
     learning_layers_oidc: "Sign in with Learning Layers OIDC"
     google_oauth2: "Sign in with Google"
 
+  signed_in:
+    developer: "Signed in (developer)"
+    learning_layers_oidc: "Signed in with Learning Layers OIDC"
+    google_oauth2: "Signed in with Google"
+
+
   nav:
     sign_out: 'Sign out'
     groups: 'Groups'
