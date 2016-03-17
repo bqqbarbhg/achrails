@@ -262,7 +262,13 @@ Devise.setup do |config|
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
   config.warden do |manager|
+
+    if ENV['SUPPORT_DIRECT_LL_OIDC'].present?
+      manager.default_strategies(scope: :user).unshift :bearer_authentication
+    end
+
     manager.default_strategies(scope: :user).unshift :session_authentication
+
   end
 
   # ==> Mountable engine configurations
