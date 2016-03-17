@@ -1,5 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%# TODO: Changing title? %>
+  <title><%= full_title(yield(:title)) %></title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>    
+  <%= stylesheet_link_tag "https://storage.googleapis.com/code.getmdl.io/1.0.4/material.teal-red.min.css" %>
+  <%= stylesheet_link_tag "https://fonts.googleapis.com/icon?family=Material+Icons" %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'favicon.ico' %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-<% for provider in Devise.omniauth_providers %>
-  <h4><%= link_to(t(provider, scope:'sign_in'), user_omniauth_authorize_path(provider, @link_state)) %></h4>
-<% end %>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
+<main class="mdl-layout__content">
+<div class="page-content">
+
+<div class="content mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
+
+    <% for provider in Devise.omniauth_providers %>
+      <h4><%= link_to(t(provider, scope:'sign_in'), user_omniauth_authorize_path(provider, @link_state)) %></h4>
+    <% end %>
+  </div>
+</div>
+
+</div>
+</main>
+
+</div>
+
+</body>

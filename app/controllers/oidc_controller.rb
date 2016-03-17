@@ -22,7 +22,12 @@ class OidcController < ApplicationController
       acr_client_id: client_id,
     }
 
-    render
+    auto_auth = ENV['ACHRAILS_AUTO_AUTH']
+    if auto_auth
+      redirect_to user_omniauth_authorize_path(auto_auth, @link_state)
+    else
+      render layout: false
+    end
   end
 
   def id_token_for(session)
