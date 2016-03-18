@@ -94,7 +94,7 @@ de:
     invite_email:
       body_text: 'Du wurdest zu %{url} eingeladen'
       body_text_html: 'Du wurdest zu <a href="%{url}">%{url}</a> eingeladen'
-    subject_line: 'Du wurdest zu der folgenden "Ach so!'' Gruppe eingeladen: %{group_name}'
+    subject_line: 'Du wurdest zu der folgenden "Ach so!" Gruppe eingeladen: %{group_name}'
   invitations:
     error_expected_email: 'Erwartet mit der E-Mail Adresse %{email} beizutreten'
     joined_message: 'Gruppe %{group} beigetreten'
