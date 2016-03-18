@@ -9,6 +9,12 @@ de:
   sign_in:
     learning_layers: "Anmelden"
     developer: "Anmelden (Entwickler)"
+    learning_layers_oidc: "Mit Learning Layers Konto anmelden"
+    google_oauth2: "Mit Google Konto anmelden"
+  signed_in:
+    developer: "Angemeldet (Entwickler)"
+    learning_layers_oidc: "Mit Learning Layers Konto angemeldet"
+    google_oauth2: "Mit Google Konto angemeldet"
   nav:
     sign_out: 'Abmelden'
     groups: 'Gruppen'
@@ -78,10 +84,17 @@ de:
         email: 'Email'
         openid: 'OpenID'
         profile: 'Profil'
+    index:
+      welcome_heading: 'Ach so!'
+      sign_in: 'Anmelden oder registrieren'
+      app:
+        android: 'App für Android'
+        ios: 'App für iOS'
   invitation_mailer:
     invite_email:
       body_text: 'Du wurdest zu %{url} eingeladen'
       body_text_html: 'Du wurdest zu <a href="%{url}">%{url}</a> eingeladen'
+    subject_line: 'Du wurdest zu der folgenden "Ach so!'' Gruppe eingeladen: %{group_name}'
   invitations:
     error_expected_email: 'Erwartet mit der E-Mail Adresse %{email} beizutreten'
     joined_message: 'Gruppe %{group} beigetreten'
