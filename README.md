@@ -132,6 +132,19 @@ The web player can also be embedded. It adjusts itself to given size:
 
 The web player can be provided with an anchor t to give a starting time for playing. `.../player#t=2s`would start the video from 2 second point. Time must be provided in seconds and it can include decimals.  
 
+Development setup
+-----------------
+
+- Get [Vagrant](https://www.vagrantup.com) on your platform
+- Clone this repository and `cd` into it
+- Run `vagrant up`
+
+Now you should have a server running at `http://10.11.12.13:9292`.
+You can also use `vagrant ssh` to get into the machine.
+`rails` is defined as an upstart service. So if you restart the box
+use `sudo service rails restart` to start the server as it's started
+automatically only in the provisioning phase, which is done only once.
+
 Authors
 -------
 
