@@ -249,7 +249,7 @@ class VideosController < ApplicationController
     @video.update_manifest(manifest)
     sss.create_video(@video) if sss
 
-    redirect_to action: :show, id: @video.uuid
+    redirect_to action: :edit, id: @video.uuid
   end
 
   def destroy
