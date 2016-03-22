@@ -53,6 +53,9 @@ GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET = [optional] Enable Google OAuth with cred
 # Mailer
 SENDGRID_USER SENDGRID_PASS = [optional] Use Sendgrid to send mail with these
 
+# Video host
+ACHRAILS_VIDEO_UPLOADER_URL = [optional] Endpoint to upload videos to from the web UI
+
 # Legacy (should not be used in new deployemenets)
 ACHRAILS_AUTO_AUTH = [optional] Automatically redirect to this provider when authenticating
 SUPPORT_DIRECT_LL_OIDC = [optional] Enable legacy direct OIDC Bearer authentication
