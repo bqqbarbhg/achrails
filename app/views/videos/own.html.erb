@@ -14,7 +14,17 @@
   <%= render(partial: 'videocontainer', collection: @videos) || render(html: "<h2 class='mdl-color-text--grey-600'>#{t('.empty_filler')}</h2>".html_safe)%>
 </div>
 
-<% unless Rails.env.production? %>
+<%# Video upload button %>
+<% if policy(:video).create? && ENV["ACHRAILS_VIDEO_UPLOADER_URL"].present? %>
+  <% post_url = ENV["ACHRAILS_VIDEO_UPLOADER_URL"] + "?upload_token=#{@upload_token}&redirect_to=#{upload_callback_videos_url}" %>
+  <%= form_tag(post_url, multipart: true, id: 'video_upload_form') do %>
+    <%= file_field_tag 'video' %>
+    <%= submit_tag t('.upload_button'),
+            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+  <% end %>
+<% end %>
+
+<% if Rails.env.development? %>
 
   <%# Manifest upload button for testing %>
   <% if policy(:video).create? %>

@@ -33,6 +33,16 @@ class User < ActiveRecord::Base
     }
   end
 
+  def create_upload_token
+    upload_token ||= loop do
+      random_token = SecureRandom.urlsafe_base64(32)
+      break random_token unless User.exists?(upload_token: random_token)
+    end
+
+    self.update(upload_token: upload_token)
+    upload_token
+  end
+
   def generate_token
     self.token ||= loop do
       random_token = SecureRandom.urlsafe_base64(32)

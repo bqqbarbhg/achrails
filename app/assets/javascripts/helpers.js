@@ -93,7 +93,7 @@ var global_get_http = null;
 function getHTTP() {
 
   if (!global_get_http) {
-    var token = $('meta[name=csrf-token]').attr('content');;
+    var token = $('meta[name=csrf-token]').attr('content');
     global_get_http = new HTTP();
     global_get_http.globalHeader("X-CSRF-Token", token);
   }

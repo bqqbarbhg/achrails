@@ -30,6 +30,8 @@ class VideosController < ApplicationController
     authenticate_user!
 
     @videos = current_user.authored_videos.order(created_at: :desc)
+    @upload_token = current_user.create_upload_token
+
     render
   end
 
@@ -175,7 +177,7 @@ class VideosController < ApplicationController
       if parent_rev != @video.revision_num
         parent_manifest = @video.manifest_revision(parent_rev)
         merge = Util.merge_manifests(manifest, @video.manifest_json, parent_manifest)
-        manifest = merge[:manifest]
+        
         lost_data = merge[:lost_data]
       end
     else
@@ -211,6 +213,38 @@ class VideosController < ApplicationController
     Util.normalize_manifest!(manifest)
 
     manifest["uploadedAt"] = Time.now.utc.iso8601
+
+    @video.update_manifest(manifest)
+    sss.create_video(@video) if sss
+
+    redirect_to action: :show, id: @video.uuid
+  end
+
+  def upload_callback
+
+    time = Time.now.utc.iso8601
+
+    manifest = {
+      id: SecureRandom.uuid,
+      date: time,
+      uploadedAt: time,
+      revision: 0,
+      title: params[:title] || Time.now.to_formatted_s(:db),
+      genre: "good_work",
+      videoUri: params[:video_url],
+      thumbUri: params[:thumb_url],
+      deleteUri: params[:delete_url],
+      author: current_user.manifest_json,
+      annotations: [],
+      rotation: 0,
+      editedBy: current_user.name,
+      formatVersion: 1,
+    }
+    manifest.stringify_keys!
+
+    @video = Video.new(revision_num: 0, author: current_user)
+
+    Util.normalize_manifest!(manifest)
 
     @video.update_manifest(manifest)
     sss.create_video(@video) if sss

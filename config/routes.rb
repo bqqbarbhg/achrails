@@ -48,6 +48,7 @@ Rails.application.routes.draw do
         get 'find'
         get 'search'
         get 'own'
+        get 'upload_callback'
       end
       member do
         resources 'shares', only: [:index, :create, :destroy], param: :group do

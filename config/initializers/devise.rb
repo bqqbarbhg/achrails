@@ -269,6 +269,8 @@ Devise.setup do |config|
 
     manager.default_strategies(scope: :user).unshift :session_authentication
 
+    manager.default_strategies(scope: :user).unshift :upload_token_authentication
+
   end
 
   # ==> Mountable engine configurations
