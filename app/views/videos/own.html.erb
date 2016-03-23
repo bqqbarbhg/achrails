@@ -14,8 +14,6 @@
   <%= render(partial: 'videocontainer', collection: @videos) || render(html: "<h2 class='mdl-color-text--grey-600'>#{t('.empty_filler')}</h2>".html_safe)%>
 </div>
 
-<% ENV["ACHRAILS_VIDEO_UPLOADER_URL"] = 'http://localhost:8080/uploads' %>
-
 <%# Video upload button %>
 <% if policy(:video).create? && ENV["ACHRAILS_VIDEO_UPLOADER_URL"].present? %>
   <% post_url = "#{ENV["ACHRAILS_VIDEO_UPLOADER_URL"]}?upload_token=#{@upload_token}" %>
