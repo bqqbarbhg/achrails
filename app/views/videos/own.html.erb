@@ -14,13 +14,80 @@
   <%= render(partial: 'videocontainer', collection: @videos) || render(html: "<h2 class='mdl-color-text--grey-600'>#{t('.empty_filler')}</h2>".html_safe)%>
 </div>
 
+<% ENV["ACHRAILS_VIDEO_UPLOADER_URL"] = 'http://localhost:8080/uploads' %>
+
 <%# Video upload button %>
 <% if policy(:video).create? && ENV["ACHRAILS_VIDEO_UPLOADER_URL"].present? %>
-  <% post_url = ENV["ACHRAILS_VIDEO_UPLOADER_URL"] + "?upload_token=#{@upload_token}&redirect_to=#{upload_callback_videos_url}" %>
-  <%= form_tag(post_url, multipart: true, id: 'video_upload_form') do %>
+  <% post_url = "#{ENV["ACHRAILS_VIDEO_UPLOADER_URL"]}?upload_token=#{@upload_token}" %>
+  <% post_redirect_url = "#{post_url}?redirect_to=#{upload_callback_videos_url}" %>
+
+  <div id="upload_progress" style="width:250px" class="mdl-progress mdl-js-progress"></div>
+
+  <%= form_tag(post_redirect_url, multipart: true, id: 'video_upload_form') do %>
     <%= file_field_tag 'video' %>
     <%= submit_tag t('.upload_button'),
             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+
+    <script>
+      var form = document.getElementById("video_upload_form");
+      var uploadProgressBar = document.getElementById("upload_progress");
+      var hasBeenSubmitted = false;
+
+      function uploadProgress(e) {
+        var prog = e.loaded * 100 / e.total;
+        uploadProgressBar.MaterialProgress.setProgress(prog);
+      }
+
+      function uploadError() {
+        if (hasBeenSubmitted) return;
+        hasBeenSubmitted = true;
+        form.submit();
+      }
+
+      function uploadDone(e) {
+        if (this.status != 200) {
+          // TODO: Use something else than alert()
+          console.error(this.response);
+          uploadError();
+          return;
+        }
+
+        var data = JSON.parse(this.response);
+        var query = {
+          video_url: data.video,
+          thumb_url: data.thumbnail,
+          delete_url: data.deleteUrl,
+          title: data.title || null,
+        };
+        var url = '<%=j upload_callback_videos_url %>?' + encodeQuery(query);
+        window.location.href = url;
+      }
+
+      function uploadWithXHR() {
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener('progress', uploadProgress, false);
+        xhr.upload.addEventListener('error', uploadError, false);
+        xhr.addEventListener('error', uploadError, false);
+        xhr.addEventListener('load', uploadDone, false);
+
+        var data = new FormData(form);
+        xhr.open("POST", '<%=j post_url %>');
+        xhr.send(data);
+      }
+
+      function formSubmit(e) {
+
+        uploadWithXHR();
+
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+
+      form.onsubmit = formSubmit;
+
+    </script>
+
   <% end %>
 <% end %>
 

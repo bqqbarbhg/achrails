@@ -82,6 +82,7 @@ Rails.application.configure do
 end
 
 Rails.application.routes.default_url_options[:host] = (ENV["ACHRAILS_SELF_URI"] || ENV["LAYERS_API_URI"] || '').chomp('/')
+Rails.application.routes.default_url_options[:protocol] = 'https'
 Rails.application.routes.default_url_options.delete(:port)
 
 ActionMailer::Base.smtp_settings = {

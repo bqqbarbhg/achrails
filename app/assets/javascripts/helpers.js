@@ -107,3 +107,10 @@ function replaceContentWithXHR(xhr) {
   document.close();
 }
 
+function encodeQuery(params) {
+  var strs = _.map(params, function(val, key) {
+    return encodeURIComponent(key) + "=" + encodeURIComponent(val);
+  });
+  return strs.join("&");
+}
+

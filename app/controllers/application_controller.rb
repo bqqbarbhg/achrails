@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
       {
         locale: I18n.locale,
         host: ENV["ACHRAILS_SELF_URI"] || (ENV["LAYERS_API_URI"] || '').chomp('/') || options[:host],
+        protocol: 'https',
       }.merge options
     else
       {
