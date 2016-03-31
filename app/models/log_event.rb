@@ -33,7 +33,7 @@ class LogEvent < ActiveRecord::Base
   end
 
   def to_line
-    "#{created_at}, #{event_type}, #{user}, #{event_target}, #{extra}, #{state}"
+    "#{created_at},#{event_type},#{user},#{event_target},#{extra},#{state}"
   end
 
 end
