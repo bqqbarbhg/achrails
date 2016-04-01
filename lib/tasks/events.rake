@@ -2,7 +2,7 @@ namespace :events do
   desc "Dumps all log data"
   task :dump => :environment do
 
-    lines = LogEvent.all.map(&:to_line)
+    lines = LogEvent.all.order(:created_at).map(&:to_line)
     puts lines.join("\n")
 
   end
