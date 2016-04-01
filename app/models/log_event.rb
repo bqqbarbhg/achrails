@@ -1,17 +1,17 @@
 class LogEvent < ActiveRecord::Base
 
   enum event_type: [
-    :create_group,
-    :delete_group,
-    :join_group,
-    :leave_group,
+    :create_group, # target: group
+    :delete_group, # target: group
+    :join_group, # target: group
+    :leave_group, # target: group
 
-    :upload_video,
-    :delete_video,
-    :view_video,
-    :edit_video,
-    :share_video, # extra: group, state: is shared?
-    :publish_video, # state: is public?
+    :upload_video, # target: video
+    :delete_video, # target: video
+    :view_video, # target: video
+    :edit_video, # target: video
+    :share_video, # target: video, extra: group, state: is shared?
+    :publish_video, # target: video, state: is public?
   ]
 
   validates :user, presence: true
