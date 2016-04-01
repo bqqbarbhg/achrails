@@ -123,6 +123,20 @@ docker run achrails yourcommand
 
 To find out the details of development environment, see https://github.com/jpurma/achrails-dev-Dockerfiles  
 
+Rake tasks
+----------
+
+```
+# Dump all event data
+rake events:dump
+
+# Dump mapping from event entity IDs to names
+rake events:names
+
+# Delete expired sessions
+rake sessions:purge
+```
+
 Web player
 ----------
 

@@ -6,5 +6,14 @@ namespace :events do
     puts lines.join("\n")
 
   end
+
+  desc "Dumps mapping between IDs and names"
+  task :names => :environment do
+    puts JSON.genrate({
+      users: User.all.pluck(:id, :name).to_h,
+      groups: Group.all.pluck(:id, :name).to_h,
+      videos: Video.all.pluck(:id, :title).to_h,
+    })
+  end
 end
 
