@@ -9,7 +9,7 @@ namespace :events do
 
   desc "Dumps mapping between IDs and names"
   task :names => :environment do
-    puts JSON.genrate({
+    puts JSON.generate({
       users: User.all.pluck(:id, :name).to_h,
       groups: Group.all.pluck(:id, :name).to_h,
       videos: Video.all.pluck(:id, :title).to_h,
