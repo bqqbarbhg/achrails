@@ -111,6 +111,7 @@ class OidcController < ApplicationController
     render json: {
       sub: current_user.token,
       name: current_user.name,
+      email: current_user.email,
       preferred_username: current_user.preferred_username,
     }.delete_if { |k, v| v.nil? }
 
