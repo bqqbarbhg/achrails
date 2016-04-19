@@ -64,6 +64,8 @@ class OidcController < ApplicationController
       fail OidcError, 'Invalid client_id' if session.client_id != client_id
       fail OidcError, 'Session has expired' if session.expired?
 
+      session.activate!
+
       render json: {
         token_type: 'Bearer',
         access_token: session.access_token,
