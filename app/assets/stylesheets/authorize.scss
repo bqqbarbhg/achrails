@@ -1,0 +1,28 @@
+.sign-in-button {
+    width: 100%;
+
+    &.developer {
+        background-color: #757575 !important;
+    }
+
+    &.google_oauth2 {
+        background-color: rgb(255, 82, 82) !important;
+    }
+
+    &.learning_layers_oidc {
+        background-color: rgb(255, 171, 64)  !important;
+    }
+}
+
+.auth-wrapper {
+    width: 95vw;
+}
+
+.flex-outer {
+    display: flex;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}

@@ -19,11 +19,19 @@
 <div class="page-content">
 
 <div class="content mdl-grid">
-  <div class="mdl-cell mdl-cell--4-col">
-
+    <div class="flex-outer">
     <% for provider in Devise.omniauth_providers %>
-      <h4><%= link_to(t(provider, scope:'sign_in'), user_omniauth_authorize_path(provider, @link_state)) %></h4>
+        <div class="mdl-grid auth-wrapper">
+            <div class="mdl-cell mdl-cell--12-col">
+                <%= link_to(user_omniauth_authorize_path(provider, @link_state)) do %> 
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent sign-in-button <%=provider%>">
+                    <%= t(provider, scope:'sign_in')%>
+                </button>
+                <% end %>
+            </div>
+        </div>
     <% end %>
+    </div>
   </div>
 </div>
 
