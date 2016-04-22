@@ -11,12 +11,18 @@ class Session < ActiveRecord::Base
   def activate!
     access_token = SecureRandom.urlsafe_base64(16)
     refresh_token = SecureRandom.urlsafe_base64(64)
-    ttl = 2.hours.from_now
+
+    # SUPERHACK! HUGE TTL
+    # TODO: FIX TOKEN REFRESHING!!!!
+    ttl = 200.weeks.from_now
     update!(code: nil, access_token: access_token, refresh_token: refresh_token, expires_at: ttl)
   end
 
   def refresh!
-    activate!
+    # SUPERHACK!!!! DON'T REFRESH TOKENS ONLY MORE TTL!!!!
+    # TODO: FIX TOKEN REFRESHING!!!!
+    ttl = 200.weeks.from_now
+    update!(code: nil, expires_at: ttl)
   end
 
   def expires_in
