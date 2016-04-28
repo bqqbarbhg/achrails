@@ -76,7 +76,8 @@ class ApplicationController < ActionController::Base
           end
         end
       end
-      redirect_to '/oidc/authorize?response_type=code&client_id=client&redirect_uri=' + request.fullpath
+      prefix = ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
+      redirect_to prefix + '/oidc/authorize?response_type=code&client_id=client&redirect_uri=' + request.fullpath
       true
     else
       false
