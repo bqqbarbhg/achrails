@@ -53,6 +53,7 @@ class ApplicationController < ActionController::Base
   def force_authenticate_and_redirect_back
     store_location_for(:user, request.fullpath)
     if Rails.env.production?
+      # TODO: Figure out if this is needed anymore?
       if current_user
         refresh_token = current_user.refresh_token
         if refresh_token && !@reauthenticated
