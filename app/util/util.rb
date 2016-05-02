@@ -13,6 +13,8 @@ module Util
   end
 
   def self.normalize_manifest!(manifest)
+    manifest["genre"] ||= "good_work"
+    
     manifest["annotations"].sort_by! do |a|
       [a["time"], a["position"]["x"], a["position"]["y"], a["text"],
        a["author"]["id"], a["author"]["uri"], a["author"]["name"]]
