@@ -4,9 +4,27 @@
 # This script installs the development environment.
 #
 
-# Require all variables to be set and exit on first error.
-set -u
+# Exit on first error.
 set -e
+
+# Set up environment variables if passed on from Vagrant
+if [ -n "$ACHRAILS_OIDC_CLIENT_URL" ]; then
+    echo "Found Achrails oidc client url: $ACHRAILS_OIDC_CLIENT_URL"
+    echo "ACHRAILS_OIDC_CLIENT_URL=$ACHRAILS_OIDC_CLIENT_URL" | sudo tee -a /etc/environment > /dev/null
+fi
+
+if [ -n "$ACHRAILS_OIDC_CLIENT_ID" ]; then
+    echo "Found Achrails oidc client id: $ACHRAILS_OIDC_CLIENT_ID"
+    echo "ACHRAILS_OIDC_CLIENT_ID=$ACHRAILS_OIDC_CLIENT_ID" | sudo tee -a /etc/environment > /dev/null
+fi
+
+if [ -n "$ACHRAILS_OIDC_CLIENT_SECRET" ]; then
+    echo "Found Achrails oidc client secret: $ACHRAILS_OIDC_CLIENT_SECRET"
+    echo "ACHRAILS_OIDC_CLIENT_SECRET=$ACHRAILS_OIDC_CLIENT_SECRET" | sudo tee -a /etc/environment > /dev/null
+fi
+
+# Require all variables to be set
+set -u
 
 LOG='/vagrant/provisioning/provisioning.log'
 
