@@ -4,26 +4,8 @@
 # This script installs the development environment.
 #
 
-# Exit on first error.
+# Exit on first error and require all variables to be set
 set -e
-
-# Set up environment variables if passed on from Vagrant
-if [ -n "$LAYERS_API_URI" ]; then
-    echo "Found Layers API URI : $LAYERS_API_URI"
-    echo "LAYERS_API_URI=$LAYERS_API_URI" | sudo tee -a /etc/environment > /dev/null
-fi
-
-if [ -n "$ACHRAILS_OIDC_CLIENT_ID" ]; then
-    echo "Found Achrails oidc client id: $ACHRAILS_OIDC_CLIENT_ID"
-    echo "ACHRAILS_OIDC_CLIENT_ID=$ACHRAILS_OIDC_CLIENT_ID" | sudo tee -a /etc/environment > /dev/null
-fi
-
-if [ -n "$ACHRAILS_OIDC_CLIENT_SECRET" ]; then
-    echo "Found Achrails oidc client secret: $ACHRAILS_OIDC_CLIENT_SECRET"
-    echo "ACHRAILS_OIDC_CLIENT_SECRET=$ACHRAILS_OIDC_CLIENT_SECRET" | sudo tee -a /etc/environment > /dev/null
-fi
-
-# Require all variables to be set
 set -u
 
 LOG='/vagrant/provisioning/provisioning.log'
