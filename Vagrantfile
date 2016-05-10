@@ -9,5 +9,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network 'private_network', ip: '10.11.12.13'
 
   config.vm.provision 'shell', path: './provisioning/provisioning.sh',
-                               privileged: false
+                               privileged: false,
+                               env: {"ACHRAILS_OIDC_CLIENT_URL" => ENV["ACHRAILS_OIDC_CLIENT_URL"], "ACHRAILS_OIDC_CLIENT_SECRET" => ENV["ACHRAILS_OIDC_CLIENT_SECRET"]}
 end
