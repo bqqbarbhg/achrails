@@ -8,9 +8,9 @@
 set -e
 
 # Set up environment variables if passed on from Vagrant
-if [ -n "$ACHRAILS_OIDC_CLIENT_URL" ]; then
-    echo "Found Achrails oidc client url: $ACHRAILS_OIDC_CLIENT_URL"
-    echo "ACHRAILS_OIDC_CLIENT_URL=$ACHRAILS_OIDC_CLIENT_URL" | sudo tee -a /etc/environment > /dev/null
+if [ -n "$LAYERS_API_URI" ]; then
+    echo "Found Layers API URI : $LAYERS_API_URI"
+    echo "LAYERS_API_URI=$LAYERS_API_URI" | sudo tee -a /etc/environment > /dev/null
 fi
 
 if [ -n "$ACHRAILS_OIDC_CLIENT_ID" ]; then

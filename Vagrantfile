@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'shell', path: './provisioning/provisioning.sh',
                                privileged: false,
-                               env: { "ACHRAILS_OIDC_CLIENT_URL" => ENV["ACHRAILS_OIDC_CLIENT_URL"],
+                               env: { "LAYERS_API_URI" => ENV["LAYERS_API_URI"],
                                       "ACHRAILS_OIDC_CLIENT_SECRET" => ENV["ACHRAILS_OIDC_CLIENT_SECRET"],
                                       "ACHRAILS_OIDC_CLIENT_ID" => ENV["ACHRAILS_OIDC_CLIENT_ID"] }
 end
