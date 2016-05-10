@@ -63,6 +63,59 @@ SUPPORT_DIRECT_LL_OIDC = [optional] Enable legacy direct OIDC Bearer authenticat
 
 You should also run `bundle exec rake sessions:purge` every now and then, preferably with `cron` or so.
 
+Installing for development with Vagrant
+------------------------------------------
+Simply install Vagrant, clone this repository and run
+
+```sh
+vagrant up
+```
+at the root!
+
+### Development environment variables
+
+You can configure additional environment variables for development as key-value pairs in the .env-file.
+Just make sure not commit anything secret to GitHub...
+
+### Using Vagrant and the Layers OIDC and Vagrant together during development
+
+Registering a new development application is pretty easy
+
+Step 1. Go to https://api.learning-layers.eu/o/oauth2/ and register a new account
+
+Step 2. Go to https://api.learning-layers.eu/o/oauth2/manage/dev/dynreg/new to register your vagrant
+development machine as a new OID client.
+
+Step 3. In the Main subview, Give your client a nice and descriptive name, and add the following redirect URI
+```
+    http://10.11.12.13:9292/users/auth/learning_layers_oidc/callback
+```
+
+Step 4. Set up the correct permissions at the Access subview
+
+```
+openid
+profile
+email
+offline_access
+```
+
+Step 5. Go to the "Other"-subview, and untick the "Require authentication time"-checkbox
+
+Step 6. Done! Click save, and you should see the Client ID and Client Secret variables in the "Main"-subview
+
+Step 7. Copy-and-paste the client ID and client secret to the .env file at the base of this repository
+
+```
+ACHRAILS_OIDC_CLIENT_ID='<id goes here>'
+ACHRAILS_OIDC_CLIENT_SECRET='<secret goes here>'
+LAYERS_API_URI='https://api.learning-layers.eu'
+```
+
+Step 8. Restart Rails with vagrant ssh. Now, you should see the option "Log in with Learning Layers OIDC"
+at the top bar under the login-button at http://10.11.12.13:9292 . Great job! Remember not to commit the secret to GitHub!
+
+
 Installing for development with Layers Box
 ------------------------------------------
 
