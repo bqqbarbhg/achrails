@@ -129,6 +129,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def after_sign_out_path_for(resource)
+    root_path
+  end
+
   def reauthenticate
     respond_to do |format|
       format.json do

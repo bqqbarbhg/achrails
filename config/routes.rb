@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       post 'token', to: 'oidc#token'
       get 'userinfo', to: 'oidc#userinfo'
       delete 'end_session', to: 'oidc#end_session'
+      delete 'sign_user_out', to: 'oidc#sign_user_out'
     end
 
     resources :groups do

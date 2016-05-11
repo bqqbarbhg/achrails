@@ -41,6 +41,13 @@ class OidcController < ApplicationController
     }
   end
 
+  def sign_user_out
+    if current_user.provider == "learning_layers_oidc"
+
+    end
+    sign_out_and_redirect current_user
+  end
+
   def token
 
     response.headers['Cache-Control'] = 'no-store'
