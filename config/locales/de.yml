@@ -59,7 +59,7 @@ de:
         admin_tag: 'Admin'
       invite:
         heading: 'Lade neue Mitglieder ein'
-        email_placeholder: 'Adresse zum Einladen hinzufügen'
+        email_placeholder: 'Adresse oder Layers Konto zum Einladen hinzufügen'
         add_contacts: 'Kontakte hinzufügen'
         submit: 'Einladungen senden'
       delete:

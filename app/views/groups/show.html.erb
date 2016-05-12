@@ -155,7 +155,7 @@ function addInviteEmail(email) {
 // Dynamic email list
 
 function makeInput() {
-    var $input = $('<input type="email" class="mdl-textfield__input" placeholder="Add address to invite">');
+    var $input = $('<input type="email" class="mdl-textfield__input" placeholder="<%=t('.invite.email_placeholder')%>">');
 
     $input.on('input', function(e) {
 

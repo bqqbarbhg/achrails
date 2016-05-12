@@ -80,7 +80,7 @@ fi:
         admin_tag: 'hallitsija'
       invite:
         heading: 'Kutsu uusia jäseniä'
-        email_placeholder: 'Lisää kutsuttava osoite'
+        email_placeholder: 'Lisää kutsuttava sähköpostiosoite tai Layers-käyttäjänimi'
         add_contacts: 'Lisää kontakteja'
         submit: 'Lähetä kutsut'
       delete:

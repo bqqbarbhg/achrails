@@ -89,7 +89,7 @@ en:
         admin_tag: 'admin'
       invite:
         heading: 'Invite new members'
-        email_placeholder: 'Add address to invite'
+        email_placeholder: 'Add email address or Layers account name to invite'
         add_contacts: 'Add contacts'
         submit: 'Send invites'
       delete:
