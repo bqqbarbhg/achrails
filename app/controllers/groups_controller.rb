@@ -117,11 +117,23 @@ class GroupsController < ApplicationController
     address_list = []
 
     for i, address in addresses
-      next unless address.include?('@')
-      invitation = Invitation.create(expect_email: address, group: @group)
+      address_to_invite = address
+
+      # No ad-sign, check if we're attempting to add by Layers account
+      if not address_to_invite.include?('@')
+       user_to_invite =  User.find_by preferred_username: address
+        if not user_to_invite.blank?
+          address_to_invite = user_to_invite.email
+        else
+          next
+        end
+      else
+      end
+
+      invitation = Invitation.create(expect_email: address_to_invite, group: @group)
       next unless invitation
 
-      address_list.push(address)
+      address_list.push(address_to_invite)
       if current_user
         InvitationMailer.invite_email(invitation, @group.name, current_user.name).deliver_later
       end
