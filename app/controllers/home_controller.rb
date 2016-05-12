@@ -2,6 +2,7 @@
 class HomeController < ApplicationController
 
   def index
+    @cur_user = current_user
     render
   end
 

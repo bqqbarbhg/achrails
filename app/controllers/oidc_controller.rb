@@ -41,11 +41,30 @@ class OidcController < ApplicationController
     }
   end
 
-  def sign_user_out
-    if current_user.provider == "learning_layers_oidc"
+  def invalidate_layers_token(token)
+    layers_uri = ENV["LAYERS_API_URI"].chomp('/') + '/o/oauth2/revoke'
+    #layers_uri = 'https://httpbin.org/post'
+    #conn = Faraday.new(:url => layers_uri) do |faraday|
+    #  faraday.request :url_encoded
+    #end
+    conn = Faraday.new(layers_uri,
+                        headers: {
+                            "Authorization" => "Bearer #{current_user.bearer_token}",
+                            "Accept" => "application/json",
+                        })
 
+    response = conn.post(layers_uri, {:token => token})
+  end
+
+  def sign_user_out
+    provider = current_user.provider
+    sign_out current_user
+    if provider == "learning_layers_oidc"
+      redirect_to 'https://api.learning-layers.eu/o/oauth2/logout'
+    else
+      redirect_to root_path
     end
-    sign_out_and_redirect current_user
+
   end
 
   def token
