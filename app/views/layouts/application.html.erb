@@ -107,7 +107,7 @@
                 if ("<%= current_user.provider %>" === 'learning_layers_oidc') {
                   var iframe = document.createElement('iframe');
                   iframe.style.display = 'none';
-                  iframe.src = '<%= ENV['LAYERS_API_URI']%>/o/oauth2/logout';
+                  iframe.src = '<%= ENV['LAYERS_API_URI'].chomp('/')%>/o/oauth2/logout';
                   document.body.appendChild(iframe);
                 }
                 window.location = window.location.origin + '<%= ENV['RAILS_RELATIVE_URL_ROOT']%>' + '/sign_out?locale=<%=locale %>';
