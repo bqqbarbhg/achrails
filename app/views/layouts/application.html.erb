@@ -99,6 +99,9 @@
               <%= t('nav.sign_out') %>
             </li>
 
+            <%-# iFrame hack ahead! If we're currently logged out via learning layers, we'll have to ping  %>
+            <%-# their site to log out the cookies, since the OIDC implementation in use does not yet have %>
+            <%-# session management. %>
             <script type="text/javascript" charset="utf-8">
               $('#sign-out').on('click', function () {
                 if ("<%= current_user.provider %>" === 'learning_layers_oidc') {
@@ -107,7 +110,7 @@
                   iframe.src = '<%= ENV['LAYERS_API_URI']%>/o/oauth2/logout';
                   document.body.appendChild(iframe);
                 }
-                window.location = window.location.origin + '<%= ENV['RAILS_RELATIVE_URL_ROOT'] || '/'%>' + '/sign_out';
+                window.location = window.location.origin + '<%= ENV['RAILS_RELATIVE_URL_ROOT']%>' + '/sign_out';
               })
             </script>
           </ul>
