@@ -95,12 +95,18 @@
               </li>
             </a>
 
-            <%= link_to destroy_user_session_path(), method: :delete do %>
-                <li class="mdl-menu__item">
-                  <%= t('nav.sign_out') %>
-                </li>
-            <% end %>
+            <li class="mdl-menu__item" id="sign-out">
+              <%= t('nav.sign_out') %>
+            </li>
 
+            <script type="text/javascript" charset="utf-8">
+              $('#sign-out').on('click', function () {
+                if ("<%= current_user.provider %>" === 'learning_layers_oidc') {
+                  console.log('');
+                }
+                window.location = window.location.origin + '<%= ENV['RAILS_RELATIVE_URL_ROOT'] || '/'%>' + '/sign_out';
+              })
+            </script>
           </ul>
       <% else %>
           <button id="menu-lower-right"
