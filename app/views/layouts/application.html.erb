@@ -110,7 +110,7 @@
                   iframe.src = '<%= ENV['LAYERS_API_URI']%>/o/oauth2/logout';
                   document.body.appendChild(iframe);
                 }
-                window.location = window.location.origin + '<%= ENV['RAILS_RELATIVE_URL_ROOT']%>' + '/sign_out';
+                window.location = window.location.origin + '<%= ENV['RAILS_RELATIVE_URL_ROOT']%>' + '/sign_out?locale=<%=locale %>';
               })
             </script>
           </ul>
