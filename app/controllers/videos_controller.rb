@@ -253,23 +253,23 @@ class VideosController < ApplicationController
   end
 
   def destroy
-    @video = Video.find_by_uuid(params[:id])
-    authorize @video
+    #@video = Video.find_by_uuid(params[:id])
+    #authorize @video
 
-    log_event(:delete_video, @video)
+    #log_event(:delete_video, @video)
 
-    # Delete the video data
-    manifest = @video.read_manifest
-    deleteUrl = manifest["deleteUri"]
-    if deleteUrl.present?
-      response = Faraday.delete(deleteUrl) do |req|
-        req.headers['Authorization'] = "Bearer #{current_user.bearer_token}"
-      end
-      Rails.logger.debug "DELETE #{deleteUrl} -> #{response.status}"
-    end
+    ## Delete the video data
+    #manifest = @video.read_manifest
+    #deleteUrl = manifest["deleteUri"]
+    #if deleteUrl.present?
+    #  response = Faraday.delete(deleteUrl) do |req|
+    #    req.headers['Authorization'] = "Bearer #{current_user.bearer_token}"
+    #  end
+    #  Rails.logger.debug "DELETE #{deleteUrl} -> #{response.status}"
+    #end
 
     # SSS_Support(delete video)
-    @video.destroy
+    #@video.destroy
 
     respond_to do |format|
       format.html { redirect_to action: :index }
