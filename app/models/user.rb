@@ -16,8 +16,10 @@ class User < ActiveRecord::Base
       return nil
     end
 
-    auth.info.name = auth.info.name.force_encoding('windows-1252').encode('utf-8')
-    auth.info.preferred_username = auth.info.preferred_username.force_encoding('windows-1252').encode('utf-8')
+    if auth.provider == 'learning_layers_oidc'
+      auth.info.name = auth.info.name.force_encoding('windows-1252').encode('utf-8')
+      auth.info.preferred_username = auth.info.preferred_username.force_encoding('windows-1252').encode('utf-8')
+    end
 
     user = where(provider: auth.provider, uid: auth.uid).first_or_initialize
     user.email = auth.info.try(:email) || user.email
