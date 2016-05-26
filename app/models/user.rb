@@ -12,7 +12,12 @@ class User < ActiveRecord::Base
   has_many :authored_videos, class_name: "Video", foreign_key: :author_id
 
   def self.from_omniauth(auth)
-    return nil if [auth.info.name, auth.provider, auth.uid].any? &:blank?
+    if not auth.info.name or not auth.provider or not auth.uid
+      return nil
+    end
+
+    auth.info.name = auth.info.name.force_encoding('windows-1252').encode('utf-8')
+    auth.info.preferred_username = auth.info.preferred_username.force_encoding('windows-1252').encode('utf-8')
 
     user = where(provider: auth.provider, uid: auth.uid).first_or_initialize
     user.email = auth.info.try(:email) || user.email
