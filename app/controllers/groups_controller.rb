@@ -71,13 +71,13 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    #group = Group.find(params[:id])
-    #authorize group
+    group = Group.find(params[:id])
+    authorize group
 
     log_event(:delete_group, group)
 
-    #sss.destroy_group(group) if sss
-    #group.destroy
+    sss.destroy_group(group) if sss
+    group.destroy
 
     respond_to do |format|
       format.html { redirect_to action: :index }

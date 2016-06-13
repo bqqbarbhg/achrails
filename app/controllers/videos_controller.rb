@@ -162,8 +162,13 @@ class VideosController < ApplicationController
     is_new = false
 
     if @video
+      # todo: rethink how to safely update only the mutable fields of the manifest.
+      # merge_manifest is fine, but currently its results are not used and if it would use only 
+      # the mutable portion of the new manifest
       authorize @video, :update?
-      ignore = ["revision", "uploadedAt", "lastModified", "editedBy"]
+      ignore = ["revision", "uploadedAt", "lastModified", "editedBy", "rotation", "deleteUri"] 
+      # temporarily added deleteUri and rotation, if the rejection of some annotation updates was
+      # caused by them being or being missing in Ach so! sent manifests and reverse in achrails 
       if @video.read_manifest.except(*ignore) == manifest.except(*ignore)
         return :ok
       end
@@ -177,7 +182,7 @@ class VideosController < ApplicationController
       if parent_rev != @video.revision_num
         parent_manifest = @video.manifest_revision(parent_rev)
         merge = Util.merge_manifests(manifest, @video.manifest_json, parent_manifest)
-        
+        # (jukka) it seems that merge[:manifest] is not used at all. is this on purpose? 
         lost_data = merge[:lost_data]
       end
     else
@@ -253,23 +258,23 @@ class VideosController < ApplicationController
   end
 
   def destroy
-    #@video = Video.find_by_uuid(params[:id])
-    #authorize @video
+    @video = Video.find_by_uuid(params[:id])
+    authorize @video
 
-    #log_event(:delete_video, @video)
+    log_event(:delete_video, @video)
 
-    ## Delete the video data
-    #manifest = @video.read_manifest
-    #deleteUrl = manifest["deleteUri"]
-    #if deleteUrl.present?
-    #  response = Faraday.delete(deleteUrl) do |req|
-    #    req.headers['Authorization'] = "Bearer #{current_user.bearer_token}"
-    #  end
-    #  Rails.logger.debug "DELETE #{deleteUrl} -> #{response.status}"
-    #end
+    # Delete the video data
+    manifest = @video.read_manifest
+    deleteUrl = manifest["deleteUri"]
+    if deleteUrl.present?
+      response = Faraday.delete(deleteUrl) do |req|
+        req.headers['Authorization'] = "Bearer #{current_user.bearer_token}"
+      end
+      Rails.logger.debug "DELETE #{deleteUrl} -> #{response.status}"
+    end
 
     # SSS_Support(delete video)
-    #@video.destroy
+    @video.destroy
 
     respond_to do |format|
       format.html { redirect_to action: :index }
