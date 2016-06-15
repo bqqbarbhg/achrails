@@ -1,18 +1,30 @@
+#!/usr/bin/python
+
 import csv
 import datetime 
+import sys
 
 # e.g. 
-# python3 readachsolog.py > achso_weekly.txt
+# python3 readachsolog.py  > achso_weekly.txt
+# or ./readachsolog.py dump.txt > achso_weekly.txt
 
 # Use this to dump weekly stats achrails log dump. This doesn't handle changing years, fix keys in 'weeks' to also include year when this is needed. Also you may want to add a way to set starting date.   
-
-file = open('achsodump.csv')
+if len(sys.argv) > 1:
+    file = open(sys.argv[1])
+else:
+    file = open('achsodump.csv')
 lines = csv.reader(file, delimiter=',')
 weeks = {}
 
-for datestamp, action, a, b, c, d in lines:
+for itemtuple in lines:
+    if len(itemtuple) != 6:
+        continue
+    datestamp, action, a, b, c, d = itemtuple
     # 2016-04-18 13:21:02 UTC
-    dd = datetime.datetime.strptime(datestamp, "%Y-%m-%d %H:%M:%S %Z")
+    try:
+        dd = datetime.datetime.strptime(datestamp, "%Y-%m-%d %H:%M:%S %Z")
+    except ValueError:
+        continue
     data = {'date': dd}
     if action in ['view_video', 'upload_video', 'edit_video', 'delete_video']:
         data['userid'] = a
@@ -61,5 +73,5 @@ for week_n in sorted(list(weeks.keys())):
         print('%s: %s' % (action_key, len(events)))
         for event in events:
             user_pool.add(event['userid'])
-    print('user_ids_active: ', len(user_pool))
-    print('edits to other peoples videos: ', video_edits)
+    print('user_ids_active: %s' % len(user_pool))
+    print('edits to other peoples videos: %s' % video_edits)
