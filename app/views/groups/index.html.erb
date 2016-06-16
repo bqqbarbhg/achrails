@@ -12,17 +12,17 @@
 
 <div class="mdl-grid">
   <% if for group in @groups %>
-     
-    <div class="group-card mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp"> 
+
+    <div class="group-card mdl-card mdl-cell mdl-cell--8-col-tablet mdl-shadow--2dp" data-url="<%= url_for(group) %>">
 
       <div class="mdl-card__actions">
-        <%= link_to(group, class: "mdl-button mdl-button--colored mdl-js-button") do %> 
+        <%= link_to(group, class: "mdl-button mdl-button--colored mdl-js-button") do %>
           <%# Group icon and name %>
-          <i class="material-icons">&#xE7EF;</i> <%= group.name %> 
+          <i class="material-icons">&#xE7EF;</i> <%= group.name %>
         <% end %>
       </div>
 
-      <div class="mdl-card__supporting-text mdl-card--border mdl-card--expand"> 
+      <div class="mdl-card__supporting-text mdl-card--border mdl-card--expand">
         <p><%= group.description %></p>
       </div>
 
@@ -47,3 +47,10 @@
 
   </div>
 <% end %>
+
+<script type="text/javascript" charset="utf-8">
+  $(".group-card").on('click', function () {;
+    location.href = $(this).data('url');
+  })
+</script>
+
