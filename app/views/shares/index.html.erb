@@ -37,18 +37,15 @@
       <%# Group share switch %>
       <label id="grouplabel<%= share_group.group.id %>"
           for="group<%= share_group.group.id %>"
-          class="mdl-switch mdl-js-switch mdl-js-ripple-effect"> 
-
+          class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
         <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,
-              class:"mdl-switch__input" %> 
-
-        <span class="mdl-switch__label">
+              class:"mdl-checkbox__input" %>
+        <span class="mdl-checkbox__label">
           <%= share_group.group.name %>
           <% if share_group.shareclass == :mixed %>
             <i class="mixed_warning"><%= t('.mixed_share_warning') %></i>
           <% end %>
         </span>
-
       </label>
 
       <div class="mdl-spacer"></div>
@@ -65,7 +62,7 @@
 
 <script>
 
-  var groups = document.querySelectorAll(".mdl-switch__input");
+  var groups = document.querySelectorAll(".mdl-checkbox__input");
   var pending = { };
   var state = {
   <% for share_group in @share_groups %>
