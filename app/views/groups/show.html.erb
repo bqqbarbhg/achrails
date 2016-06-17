@@ -42,6 +42,14 @@
 
         <%= form_tag(invite_group_path(@group)) do %>
 
+            <%# Add contacts button (hidden by default) %>
+            <div class="invite-form-btn">
+              <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
+                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+              <%= submit_tag t('.invite.submit'),
+                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+            </div>
+
             <%# Dynamic email inputs (see bottom of the file) %>
             <div id="addresses"></div>
 
@@ -56,17 +64,7 @@
               <% end %>
             </noscript>
 
-            <%# Add contacts button (hidden by default) %>
-            <div class="mdl-cell mdl-cell--6-col">
-              <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
-                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored show-on-android" %>
-            </div>
 
-            <%# Submit button %>
-            <div class="mdl-cell mdl-cell--6-col">
-              <%= submit_tag t('.invite.submit'),
-                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
-            </div>
 
         <% end %>
 
