@@ -9,6 +9,23 @@
     }
 }
 
+header {
+  z-index: 1 !important;
+}
+
+.mdl-cell {
+  .create-group-btn {
+    @media (max-width: 840px) {
+      & {
+        overflow: visible;
+        z-index: 10;
+        bottom: 45px;
+        right: 45px;
+        position: absolute;
+      }
+    }
+  }
+}
 .admin-badge {
     background: rgb(255,82,82);
     color: white;
