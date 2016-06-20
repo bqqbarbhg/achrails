@@ -15,9 +15,6 @@
   }
   margin-bottom: 15px;
 }
-header {
-  z-index: 1 !important;
-}
 
 .mdl-cell {
   .create-group-btn {
@@ -27,7 +24,7 @@ header {
         z-index: 10;
         bottom: 24px;
         right: 44px;
-        position: absolute;
+        position: fixed;
       }
     }
   }
