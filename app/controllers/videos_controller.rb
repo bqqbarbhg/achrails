@@ -306,7 +306,7 @@ class VideosController < ApplicationController
     @manifests = videos.map(&:read_manifest)
     respond_to do |format|
       format.html { render }
-      format.json { render json: @manifests}
+      format.json { render json: { videos: @manifests }}
     end
   end
 
