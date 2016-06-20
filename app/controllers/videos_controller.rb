@@ -304,7 +304,10 @@ class VideosController < ApplicationController
     videos = videos.select { |video| policy(video).show? }
 
     @manifests = videos.map(&:read_manifest)
-    render
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @manifests}
+    end
   end
 
   def revisions
