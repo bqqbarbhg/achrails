@@ -173,15 +173,17 @@ class VideosController < ApplicationController
         return :ok
       end
 
-      mutable_keys = ["title", "genre", "tag", "formatVersion", "annotations"] + ignore
-      if @video.read_manifest.except(*mutable_keys) != manifest.except(*mutable_keys)
-        return :forbidden
-      end
+      # Only allow the following keys to be mutable
+      mutable_keys = ["title", "genre", "tag", "formatVersion", "annotations"]
+
+      updated_manifest = manifest.clone.extract!(*mutable_keys)
+      previous_manifest = @video.manifest_json.clone
+      updated_manifest = previous_manifest.merge(new_manifest)
 
       parent_rev = manifest["revision"]
       if parent_rev != @video.revision_num
         parent_manifest = @video.manifest_revision(parent_rev)
-        merge = Util.merge_manifests(manifest, @video.manifest_json, parent_manifest)
+        merge = Util.merge_manifests(updated_manifest, @video.manifest_json, parent_manifest)
         # (jukka) it seems that merge[:manifest] is not used at all. is this on purpose? 
         lost_data = merge[:lost_data]
       end
@@ -191,14 +193,14 @@ class VideosController < ApplicationController
       is_new = true
     end
 
-    manifest["uploadedAt"] = Time.now.utc.iso8601
-    manifest["editedBy"] = current_user.name
+    updated_manifest["uploadedAt"] = Time.now.utc.iso8601
+    updated_manifest["editedBy"] = current_user.name
 
-    @video.import_manifest_data(manifest)
+    @video.import_manifest_data(updated_manifest)
 
     sss.create_video(@video) if sss
 
-    @video.update_manifest(manifest)
+    @video.update_manifest(updated_manifest)
 
     if is_new
       log_event(:upload_video, @video)
