@@ -178,7 +178,7 @@ class VideosController < ApplicationController
 
       updated_manifest = manifest.clone.extract!(*mutable_keys)
       previous_manifest = @video.manifest_json.clone
-      updated_manifest = previous_manifest.merge(new_manifest)
+      updated_manifest = previous_manifest.merge(updated_manifest)
 
       parent_rev = manifest["revision"]
       if parent_rev != @video.revision_num
