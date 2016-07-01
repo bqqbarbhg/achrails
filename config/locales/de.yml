@@ -133,6 +133,7 @@ de:
       video_property:
         title: "Titel:"
         genre: "Genre:"
+        author: "Autor:"
     search:
       search_placeholder: 'Suchen...'
       no_results: 'Keine Ergebnisse gefunden!'

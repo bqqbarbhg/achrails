@@ -160,6 +160,7 @@ fi:
       video_property: 
         title: "Nimi: "
         genre: "Lajityyppi: "
+        author: "Tekijä: "
     search:
       search_placeholder: 'Hae...'
       no_results: 'Tuloksia ei löytynyt!'

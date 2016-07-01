@@ -16,8 +16,10 @@
         </div>
 
         <%# Author %>
+
         <div class="video-heading video-author">
-          Author: <%= manifest["author"]["name"] %>
+          <span class="author-label"> <%= t('videos.revisions.video_property.author') %> </span>
+          <span class="author-name"> <%= manifest["author"]["name"] %> </span>
         </div>
 
         <%# Subtitle container %>
@@ -116,7 +118,7 @@ for (var i = 0; i < titles.length; i++) {
     title.innerHTML = highlightMatches(title.innerHTML);
 }
 
-var authors = document.querySelectorAll('.video-author');
+var authors = document.querySelectorAll('.author-name');
 for (var i = 0; i < authors.length; i++) {
   var author = authors[i];
   author.innerHTML = highlightMatches(author.innerHTML);

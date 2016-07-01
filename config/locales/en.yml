@@ -170,6 +170,7 @@ en:
       video_property: 
         title: "Title: "
         genre: "Genre: "
+        author: "Author: "
     search:
       search_placeholder: 'Search...'
       no_results: 'No results found!'
