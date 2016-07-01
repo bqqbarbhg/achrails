@@ -20,4 +20,21 @@ namespace :videos do
     puts "Normalized #{num} manifests"
 
   end
+
+  desc "Updates video search metadata"
+  task :update_search => :environment do
+
+    num = 0
+
+    puts "Updating video searching metadata"
+
+    Video.all.each do |video|
+      video.searchable = Util.manifest_to_searchable(video.manifest_json)
+      video.save!
+      num += 1
+    end
+
+    puts "Updated #{num} videos to searchable"
+
+  end
 end
