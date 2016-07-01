@@ -4,18 +4,26 @@
   display: block;
 }
 
-.video-title {
+.video-heading {
   position: absolute;
   z-index: 10;
-  top: 0;
-  left: 0;
   padding: 1rem;
   width: 100%;
   height: 40%;
-  background: linear-gradient(rgba(0,0,0, 0.6) 0%, rgba(0,0,0, 0.0) 100%);
   color: #fff;
   font-size: 2rem;
   line-height: 105%;
+}
+
+.video-title {
+  top: 0;
+  left: 0;
+  background: linear-gradient(rgba(0,0,0, 0.6) 0%, rgba(0,0,0, 0.0) 100%);
+}
+
+.video-author {
+  top: 50px;
+  left: 0;
 }
 
 .video-view-container {

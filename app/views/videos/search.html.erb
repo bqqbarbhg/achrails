@@ -11,8 +11,13 @@
         </canvas>
 
         <%# Title %>
-        <div class="video-title">
+        <div class="video-heading video-title">
             <%= manifest["title"] %>
+        </div>
+
+        <%# Author %>
+        <div class="video-heading video-author">
+          Author: <%= manifest["author"]["name"] %>
         </div>
 
         <%# Subtitle container %>
@@ -109,6 +114,12 @@ var titles = document.querySelectorAll('.video-title');
 for (var i = 0; i < titles.length; i++) {
     var title = titles[i];
     title.innerHTML = highlightMatches(title.innerHTML);
+}
+
+var authors = document.querySelectorAll('.video-author');
+for (var i = 0; i < authors.length; i++) {
+  var author = authors[i];
+  author.innerHTML = highlightMatches(author.innerHTML);
 }
 
 function documentLoaded() {
