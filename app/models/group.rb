@@ -2,6 +2,7 @@ class Group < ActiveRecord::Base
 
   has_many :memberships, dependent: :destroy
   has_many :invitations, dependent: :destroy
+  has_many :webhooks, dependent: :destroy
 
   has_many :members, through: :memberships, source: :user
   has_and_belongs_to_many :videos, uniq: true
