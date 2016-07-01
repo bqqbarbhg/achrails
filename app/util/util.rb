@@ -5,11 +5,12 @@ module Util
 
   def self.manifest_to_searchable(manifest)
     title = manifest["title"]
+    name = manifest["author"]["name"]
     annotation_texts = manifest["annotations"].map do |annotation|
       annotation["text"] or ''
     end
 
-    ([title] + annotation_texts).join(' ')
+    ([title] +  [name] + annotation_texts).join(' ')
   end
 
   def self.normalize_manifest!(manifest)
