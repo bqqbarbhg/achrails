@@ -65,6 +65,9 @@ fi:
 
   groups:
     webhooks:
+      delete: 'Poista'
+      save: 'Tallenna'
+      add_new: 'Lisää webhook'
       event_types:
         video_view: 'Videon katsominen'
         video_edit: 'Videon muokkaus'

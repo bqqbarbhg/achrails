@@ -24,10 +24,10 @@
                     <%= select_tag "event_type", options_for_select(t('groups.webhooks.event_types').invert, webhook.event_type) %>
                   </div>
                   <div class="mdl-cell mdl-cell--12-col webhook-buttons">
-                    <%= link_to("Delete", { :method => 'delete', :remote => true, :controller => :groups, :action => :delete_webhook, params: {:webhook_id => webhook } },
+                    <%= link_to(t('groups.webhooks.delete'), { :method => 'delete', :remote => true, :controller => :groups, :action => :delete_webhook, params: {:webhook_id => webhook } },
                                 { class: "webhook-delete-button mdl-button mdl-js-button mdl-button--raised mdl-button--accent" }) %>
 
-                    <button data-webhook-id="<%= webhook.id %>" class="webhook-save-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+                    <button data-webhook-id="<%= webhook.id %>" class="webhook-save-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"><%= t('groups.webhooks.save')%></button>
                    </div>
               </div>
             <% end %>
@@ -44,7 +44,7 @@
                 <%= select_tag "event_type", options_for_select(t('groups.webhooks.event_types').invert) %>
               </div>
               <div class="mdl-cell mdl-cell--12-col webhook-buttons">
-                <%= submit_tag "Add webhook", class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'%>
+                <%= submit_tag t('groups.webhooks.add_new'), class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'%>
               </div>
           <% end %>
         </div>

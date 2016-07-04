@@ -74,6 +74,9 @@ en:
 
   groups:
     webhooks:
+      delete: 'Delete'
+      save: 'Save'
+      add_new: 'Add webhook'
       event_types:
         video_view: 'View video'
         video_edit: 'Edit video'
