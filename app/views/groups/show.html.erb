@@ -33,14 +33,19 @@
             <% end %>
           </div>
           <h3>Add new webhook</h3>
-          <%= form_tag({ controller: "groups", action: "add_webhook" }, method: :post, :remote => true, :id => "add_webhook_form") do %>
-              <div class="mdl-textfield mdl-js-textfield">
-                <%= text_field_tag "notification_url", nil, class: 'mdl-textfield__input' %>
-                <label for="notification_url" class="mdl-textfield__label">Notification URL</label>
-              </div>
+          <%= form_tag({ controller: "groups", action: "add_webhook" }, method: :post, :id => "add_webhook_form") do %>
 
-              <%= select_tag "event_type", options_for_select(Webhook::event_types) %>
-            <%= submit_tag "Add webhook", class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'%>
+              <div class="mdl-cell mdl-cell--12-col">
+                <div class="mdl-textfield mdl-js-textfield">
+                  <%= text_field_tag "notification_url", nil, class: 'mdl-textfield__input' %>
+                  <label for="notification_url" class="mdl-textfield__label">Notification URL</label>
+                </div>
+
+                <%= select_tag "event_type", options_for_select(Webhook::event_types) %>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col webhook-buttons">
+                <%= submit_tag "Add webhook", class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'%>
+              </div>
           <% end %>
         </div>
       </div>
@@ -106,11 +111,7 @@
                         </div>
                     <% end %>
                   </noscript>
-
-
-
               <% end %>
-
             </div>
         <% end %>
 
@@ -198,10 +199,6 @@
           alert('Updating webhook failed');
     }});
 
-  });
-
-  $('#add_webhook_form').bind('ajax:complete', function () {
-    $('#notification_url').val("");
   });
 
   $('#add_contacts_button').on('click', function() {
