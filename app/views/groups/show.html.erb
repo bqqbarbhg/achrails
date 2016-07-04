@@ -20,11 +20,7 @@
             <div class="mdl-cell mdl-cell--12-col webhook-wrapper">
                 <div class="mdl-cell mdl-cell-12-col">
                   <input id="webhook-url" type="text" class="mdl-textfield__input webhook-url" value="<%= webhook.notification_url %>">
-                  <select name="webhook-type">
-                    <% for webhook_type in webhook.event_types %>
-                        <option value="<%= webhook_type %>"><%= webhook_type %></option>
-                    <% end %>
-                  </select>
+                  <%= select_tag "webhook-type", options_for_select(Webhook::event_types, webhook.event_type) %>
                 </div>
                 <div class="mdl-cell mdl-cell--12-col webhook-buttons">
                   <button class="webhook-delete-button mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Delete</button>
@@ -38,6 +34,8 @@
                 <%= text_field_tag "notification_url", nil, class: 'mdl-textfield__input' %>
                 <label for="notification_url" class="mdl-textfield__label">Notification URL</label>
               </div>
+
+              <%= select_tag "event_type", options_for_select(Webhook::event_types) %>
             <%= submit_tag "Add webhook", class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'%>
           <% end %>
         </div>

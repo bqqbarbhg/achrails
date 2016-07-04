@@ -27,6 +27,10 @@ class GroupPolicy < Struct.new(:user, :group)
     group.admin?(user)
   end
 
+  def add_webhook?
+    group.admin?(user)
+  end
+
   def edit?
     update?
   end
