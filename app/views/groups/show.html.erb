@@ -34,7 +34,7 @@
           <% end %>
           <h3>Add new webhook</h3>
           <%= form_tag({ controller: "groups", action: "add_webhook" }, method: :post) do %>
-              <div class="mdl-textfield">
+              <div class="mdl-textfield mdl-js-textfield">
                 <%= text_field_tag "notification_url", nil, class: 'mdl-textfield__input' %>
                 <label for="notification_url" class="mdl-textfield__label">Notification URL</label>
               </div>

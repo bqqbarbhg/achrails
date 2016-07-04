@@ -40,7 +40,7 @@ class GroupsController < ApplicationController
   def add_webhook
     authenticate_user!
     group = Group.find(params[:id])
-    authorize @group
+    authorize group
 
     webhook = Webhook.new(notification_url: params[:notification_url])
     group.webhooks << webhook
