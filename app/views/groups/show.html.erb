@@ -1,124 +1,139 @@
 <% provide(:title, t('title.groups.show', name: @group.name)) %>
 
 <% content_for :pagetitle do %>
-  <%= @group.name %>
+    <%= @group.name %>
 <% end %>
 
 <div class="content mdl-grid">
-  <div class="mdl-cell mdl-cell--4-col">
 
-    <h3><%= t('.members.heading') %></h3>
+  <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+      <a href="#tab-basic" class="mdl-tabs__tab is-active">Basic settings</a>
+      <a href="#tab-advanced" class="mdl-tabs__tab">Advanced settings</a>
+    </div>
 
-    <%# View-Cleanup: There seems to be a lot of logic here %>
-    <ul>
-      <% for membership in @group.memberships %>
-          <% user = membership.user %>
-          <li>
-            <%= user.name %>
-            <% if membership.admin? %>
-                <span class="admin-badge"><%= t('.members.admin_tag') %></span>
-            <% end %>
-          </li>
-      <% end %>
-    </ul>
+    <div class="mdl-tabs__panel" id="tab-advanced">
+      <h1>  ADVANCED</h1>
+    </div>
 
-    <% if policy(@group).join? %>
-        <%= link_to(t('.join_button'), join_group_path(@group), method: :post,
-                    class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-    <% end %>
+    <div class="mdl-tabs__panel is-active" id="tab-basic">
+      <div class="content mdl-grid">
+        <div class="mdl-cell mdl-cell--4-col">
 
-    <% if policy(@group).leave? %>
-        <%= link_to(t('.leave_button'), leave_group_path(@group), method: :post,
-                    class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-    <% end %>
+          <h3><%= t('.members.heading') %></h3>
 
-  </div>
-
-  <% if policy(@group).invite? %>
-      <div class="mdl-layout-spacer"></div>
-      <div class="mdl-cell mdl-cell--4-col">
-
-        <h3><%= t('.invite.heading') %></h3>
-
-        <%= form_tag(invite_group_path(@group)) do %>
-
-            <%# Add contacts button (hidden by default) %>
-            <div class="invite-form-btn">
-              <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
-                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
-              <%= submit_tag t('.invite.submit'),
-                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
-            </div>
-
-            <%# Dynamic email inputs (see bottom of the file) %>
-            <div id="addresses"></div>
-
-            <%# Predefined email inputs for noscript %>
-            <noscript>
-              <% (0..9).each do |n| %>
-                  <div class="mdl-textfield mdl-js-textfield">
-                    <%= text_field_tag 'address[#{n.to_s}]', '',
-                                       placeholder: t('.invite.email_placeholder'),
-                                       class: "mdl-textfield__input" %>
-                  </div>
-              <% end %>
-            </noscript>
-
-
-
-        <% end %>
-
-      </div>
-  <% end %>
-
-  <div class="mdl-layout-spacer"></div>
-  <div class="mdl-cell mdl-cell--8-col">
-
-    <%# @SSS_Support(edit circles): Remove this when SSS supports editing existing circles %>
-    <% unless sss %>
-        <% if policy(@group).edit? %>
-            <%= link_to(t('.edit_button'), edit_group_path(@group),
-                        class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-        <% end %>
-    <% end %>
-
-    <% if policy(@group).destroy? %>
-
-        <%# Delete button with confirmation if javascript is enabled, otherwise just DELETE link %>
-        <noscript>
-          <%= link_to(t('.delete.button'), @group, method: :delete,
-                      class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
-        </noscript>
-
-        <%= button_tag(t('.delete.button'), id: :delete_button,
-                       class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
-
-        <script>
-
-          // @Copy-Paste(confirm delete button)
-          var $delete_button = $("#delete_button");
-          $delete_button.removeClass("force-hidden-no-layout")
-          $delete_button.on("click", function() {
-            // TODO: Material design dialog?
-            // MDL didn't offer a solution when this was written
-            if (confirm("<%=j t('.delete.confirm', group: @group.name) %>")) {
-              getHTTP().deleteJson('', {
-                success: function() {
-                  window.location.href = '<%=j groups_path() %>';
-                },
-                error: function(xhr) {
-                  <% if Rails.env.development? %>
-                  replaceContentWithXHR(xhr);
-                  <% else %>
-                  createToast("<%j= t('.delete.error') %>");
+          <%# View-Cleanup: There seems to be a lot of logic here %>
+          <ul>
+            <% for membership in @group.memberships %>
+                <% user = membership.user %>
+                <li>
+                  <%= user.name %>
+                  <% if membership.admin? %>
+                      <span class="admin-badge"><%= t('.members.admin_tag') %></span>
                   <% end %>
-                }
-              });
-            }
-          });
-        </script>
-    <% end %>
+                </li>
+            <% end %>
+          </ul>
 
+          <% if policy(@group).join? %>
+              <%= link_to(t('.join_button'), join_group_path(@group), method: :post,
+                          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+          <% end %>
+
+          <% if policy(@group).leave? %>
+              <%= link_to(t('.leave_button'), leave_group_path(@group), method: :post,
+                          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+          <% end %>
+
+        </div>
+
+        <% if policy(@group).invite? %>
+            <div class="mdl-layout-spacer"></div>
+            <div class="mdl-cell mdl-cell--4-col">
+
+              <h3><%= t('.invite.heading') %></h3>
+
+              <%= form_tag(invite_group_path(@group)) do %>
+
+                  <%# Add contacts button (hidden by default) %>
+                  <div class="invite-form-btn">
+                    <%= button_tag t('.invite.add_contacts'), type: "button", id: "add_contacts_button",
+                                   class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+                    <%= submit_tag t('.invite.submit'),
+                                   class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored" %>
+                  </div>
+
+                  <%# Dynamic email inputs (see bottom of the file) %>
+                  <div id="addresses"></div>
+
+                  <%# Predefined email inputs for noscript %>
+                  <noscript>
+                    <% (0..9).each do |n| %>
+                        <div class="mdl-textfield mdl-js-textfield">
+                          <%= text_field_tag 'address[#{n.to_s}]', '',
+                                             placeholder: t('.invite.email_placeholder'),
+                                             class: "mdl-textfield__input" %>
+                        </div>
+                    <% end %>
+                  </noscript>
+
+
+
+              <% end %>
+
+            </div>
+        <% end %>
+
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-cell mdl-cell--8-col">
+
+          <%# @SSS_Support(edit circles): Remove this when SSS supports editing existing circles %>
+          <% unless sss %>
+              <% if policy(@group).edit? %>
+                  <%= link_to(t('.edit_button'), edit_group_path(@group),
+                              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+              <% end %>
+          <% end %>
+
+          <% if policy(@group).destroy? %>
+
+              <%# Delete button with confirmation if javascript is enabled, otherwise just DELETE link %>
+              <noscript>
+                <%= link_to(t('.delete.button'), @group, method: :delete,
+                            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+              </noscript>
+
+              <%= button_tag(t('.delete.button'), id: :delete_button,
+                             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+
+              <script>
+
+                // @Copy-Paste(confirm delete button)
+                var $delete_button = $("#delete_button");
+                $delete_button.removeClass("force-hidden-no-layout")
+                $delete_button.on("click", function() {
+                  // TODO: Material design dialog?
+                  // MDL didn't offer a solution when this was written
+                  if (confirm("<%=j t('.delete.confirm', group: @group.name) %>")) {
+                    getHTTP().deleteJson('', {
+                      success: function() {
+                        window.location.href = '<%=j groups_path() %>';
+                      },
+                      error: function(xhr) {
+                        <% if Rails.env.development? %>
+                        replaceContentWithXHR(xhr);
+                        <% else %>
+                        createToast("<%j= t('.delete.error') %>");
+                        <% end %>
+                      }
+                    });
+                  }
+                });
+              </script>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="mdl-cell mdl-cell--12-col hide-on-ios">
@@ -127,12 +142,12 @@
 
     <% unless @group.videos.empty? %>
 
-     <div class="mdl-grid">
+        <div class="mdl-grid">
           <%= render partial: 'videos/videocontainer', collection: @group.videos %>
-     </div>
+        </div>
     <% else %>
-     <p><%= t('.videos.empty_filler') %></p>
-  <% end %>
+        <p><%= t('.videos.empty_filler') %></p>
+    <% end %>
 
   </div>
 
@@ -140,81 +155,81 @@
 
 <script>
 
-$('#add_contacts_button').on('click', function() {
+  $('#add_contacts_button').on('click', function() {
     Android.openContactPicker();
   });
 
-function addInviteEmail(email) {
+  function addInviteEmail(email) {
     var $container = $("#addresses");
     $container.children().last().val(email);
     updateAddressList();
-}
+  }
 
-// Dynamic email list
+  // Dynamic email list
 
-function makeInput() {
+  function makeInput() {
     var $input = $('<input type="text" class="mdl-textfield__input" placeholder="<%=t('.invite.email_placeholder')%>">');
 
     $input.on('input', function(e) {
 
-        var $target = $(e.target);
+      var $target = $(e.target);
 
-        // Try to split the input into multiple whitespaces-separated addresses
-        var parts = $target.val().split(/\s+/);
-        if (parts.length > 1 && parts[1] != '') {
+      // Try to split the input into multiple whitespaces-separated addresses
+      var parts = $target.val().split(/\s+/);
+      if (parts.length > 1 && parts[1] != '') {
 
-            // Keep the first address in self
-            $target.val(parts[0]);
+        // Keep the first address in self
+        $target.val(parts[0]);
 
-            // Make new inputs for the rest
-            var $last = $target;
-            for (var i = 1; i < parts.length; i++) {
+        // Make new inputs for the rest
+        var $last = $target;
+        for (var i = 1; i < parts.length; i++) {
 
-                var $splitInput = makeInput();
-                $splitInput.val(parts[i]);
+          var $splitInput = makeInput();
+          $splitInput.val(parts[i]);
 
-                // Insert after each other
-                $splitInput.insertAfter($last);
-                $last = $splitInput;
-            }
-
-            // And select the last one created
-            $last.focus();
+          // Insert after each other
+          $splitInput.insertAfter($last);
+          $last = $splitInput;
         }
 
-        updateAddressList();
+        // And select the last one created
+        $last.focus();
+      }
+
+      updateAddressList();
     });
     return $input;
-}
+  }
 
-function updateAddressList() {
+  function updateAddressList() {
     var $container = $("#addresses");
     var inputs = $container.children();
     var count = inputs.length;
 
     if (count == 0) {
-        // Add an input if there are none
-        $container.append(makeInput());
+      // Add an input if there are none
+      $container.append(makeInput());
     } else {
 
-        // Remove empty inputs from the middle
-        // Note: Loop doesn't check the last one
-        for (var i = 0; i < count - 1; i++) {
-            var input = inputs[i];
-            if (input.value == '') {
-                $(input).remove();
+      // Remove empty inputs from the middle
+      // Note: Loop doesn't check the last one
+      for (var i = 0; i < count - 1; i++) {
+        var input = inputs[i];
+        if (input.value == '') {
+          $(input).remove();
 
-                // Focus on the previous one if the empty input is not the first
-                // one, otherwise select the next one (that will replace this)
-                inputs[i > 0 ? (i - 1) : (i + 1)].focus();
-            }
+          // Focus on the previous one if the empty input is not the first
+          // one, otherwise select the next one (that will replace this)
+          inputs[i > 0 ? (i - 1) : (i + 1)].focus();
         }
+      }
 
-        // Since the empty inputs from the middle are removed always keep the
-        // last one empty. (So add a new one if the last one isn't empty)
-        if (inputs[count - 1].value != '') {
-            $container.append(makeInput());
-        }
+      // Since the empty inputs from the middle are removed always keep the
+      // last one empty. (So add a new one if the last one isn't empty)
+      if (inputs[count - 1].value != '') {
+        $container.append(makeInput());
+      }
     }
 
     // Update the names of the inputs
@@ -223,9 +238,9 @@ function updateAddressList() {
     for (var i = 0; i < newCount; i++) {
       newInputs[i].name = "address[" + i + "]";
     }
-}
+  }
 
-updateAddressList();
+  updateAddressList();
 
 </script>
 
