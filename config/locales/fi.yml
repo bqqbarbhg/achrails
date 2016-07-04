@@ -64,6 +64,11 @@ fi:
         description: 'Ryhmä on julkinen ja siihen voi liittyä kuka tahansa (tällä palvelimella).'
 
   groups:
+    webhooks:
+      event_types:
+        video_view: 'Videon katsominen'
+        video_edit: 'Videon muokkaus'
+        new_video: 'Videon teko'
     edit:
       pagetitle:
         create: 'Luo ryhmä'

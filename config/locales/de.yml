@@ -43,6 +43,11 @@ de:
         title: 'Öffentlich gelistet'
         description: 'Diese Gruppe ist öffentlich und sichtbar für alle.'
   groups:
+    webhooks:
+      event_types:
+        video_view: 'View video'
+        video_edit: 'Edit video'
+        new_video: 'New video'
     edit:
       pagetitle:
         create: 'Erstelle Gruppe'

@@ -73,6 +73,11 @@ en:
         description: 'This group is public and shown to everyone.'
 
   groups:
+    webhooks:
+      event_types:
+        video_view: 'View video'
+        video_edit: 'Edit video'
+        new_video: 'New video'
     edit:
       pagetitle:
         create: 'Create group'
