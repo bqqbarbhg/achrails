@@ -3,9 +3,12 @@
 
   <a class="video-link" href="<%= video_path(videocontainer)  %>">
 
-    <div class="video-title">
+    <div class="video-heading video-title">
       <%= videocontainer.manifest_json["title"] %>
     </div>
-
+    <div class="video-heading video-author">
+      <span class="author-label"> <%= t('videos.revisions.video_property.author') %> </span>
+      <span class="author-name"> <%= videocontainer.manifest_json["author"]["name"] %> </span>
+    </div>
   </a>
 </div>
