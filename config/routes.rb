@@ -35,6 +35,7 @@ Rails.application.routes.draw do
         post 'join'
         post 'leave'
         post 'invite'
+        post 'add_webhook'
       end
       collection do
         get 'own'

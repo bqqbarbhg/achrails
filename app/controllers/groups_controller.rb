@@ -37,10 +37,25 @@ class GroupsController < ApplicationController
     render :edit
   end
 
+  def add_webhook
+    authenticate_user!
+    group = Group.find(params[:id])
+    authorize @group
+
+    webhook = Webhook.new(notification_url: params[:notification_url])
+    group.webhooks << webhook
+
+    head :created
+  end
+
   def create
     authenticate_user!
 
     @group = Group.new(group_params)
+    #webhook1 = Webhook.new(notification_url: "http://google.fi")
+    #webhook2 = Webhook.new(notification_url: "http://aalto.fi")
+    #@group.webhooks << webhook1
+    #@group.webhooks << webhook2
     sss.create_group(@group) if sss
 
     @group.save!
