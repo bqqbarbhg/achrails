@@ -13,7 +13,27 @@
     </div>
 
     <div class="mdl-tabs__panel" id="tab-advanced">
-      <h1>  ADVANCED</h1>
+      <div class="container mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+          <h3>Webhooks</h3>
+          <% for webhook in @group.webhooks %>
+            <div class="mdl-cell mdl-cell--12-col webhook-wrapper">
+                <div class="mdl-cell mdl-cell-12-col">
+                  <input id="webhook-url" type="text" class="mdl-textfield__input webhook-url" value="<%= webhook.notification_url %>">
+                  <select name="webhook-type">
+                    <option value="edit-video">Edit video</option>
+                    <option value="new-video">New video</option>
+                    <option value="view-video">View video</option>
+                  </select>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col webhook-buttons">
+                  <button class="webhook-delete-button mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Delete</button>
+                  <button class="webhook-save-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
+                 </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
 
     <div class="mdl-tabs__panel is-active" id="tab-basic">
