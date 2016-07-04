@@ -23,7 +23,9 @@
                   <%= select_tag "webhook-type", options_for_select(Webhook::event_types, webhook.event_type) %>
                 </div>
                 <div class="mdl-cell mdl-cell--12-col webhook-buttons">
-                  <button class="webhook-delete-button mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Delete</button>
+                  <%= link_to("Delete", { :method => 'delete', :controller => :groups, :action => :delete_webhook, params: {:webhook_id => webhook } },
+                              { class: "webhook-delete-button mdl-button mdl-js-button mdl-button--raised mdl-button--accent" }) %>
+
                   <button class="webhook-save-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Save</button>
                  </div>
             </div>

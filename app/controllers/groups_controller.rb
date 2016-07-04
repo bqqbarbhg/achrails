@@ -52,8 +52,21 @@ class GroupsController < ApplicationController
     else
       head :bad_request
     end
+  end
 
+  def delete_webhook
+    authenticate_user!
+    group = Group.find(params[:id])
+    authorize group
 
+    webhook = Webhook.find(params[:webhook_id])
+
+    if webhook
+      webhook.destroy
+      redirect_to group
+    else
+      head :not_found
+    end
   end
 
   def create

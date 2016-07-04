@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         post 'leave'
         post 'invite'
         post 'add_webhook'
+        get 'delete_webhook'
       end
       collection do
         get 'own'
