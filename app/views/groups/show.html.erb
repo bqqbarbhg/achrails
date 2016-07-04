@@ -21,9 +21,9 @@
                 <div class="mdl-cell mdl-cell-12-col">
                   <input id="webhook-url" type="text" class="mdl-textfield__input webhook-url" value="<%= webhook.notification_url %>">
                   <select name="webhook-type">
-                    <option value="edit-video">Edit video</option>
-                    <option value="new-video">New video</option>
-                    <option value="view-video">View video</option>
+                    <% for webhook_type in webhook.event_types %>
+                        <option value="<%= webhook_type %>"><%= webhook_type %></option>
+                    <% end %>
                   </select>
                 </div>
                 <div class="mdl-cell mdl-cell--12-col webhook-buttons">
