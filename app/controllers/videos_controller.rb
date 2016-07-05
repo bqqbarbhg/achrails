@@ -211,7 +211,6 @@ class VideosController < ApplicationController
     if is_new
       log_event(:upload_video, @video)
     else
-
       @video.groups.each do |group|
         group.video_edit_call_webhook(@video, current_user)
       end

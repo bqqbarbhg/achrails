@@ -50,7 +50,6 @@ class SharesController < ApplicationController
 
     sss.group_add_videos(group, @videos) if sss
 
-
     respond_to do |format|
       format.json { render json: { shared: true, ids: ids } }
     end
