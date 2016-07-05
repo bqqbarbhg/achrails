@@ -50,6 +50,11 @@ class SharesController < ApplicationController
 
     sss.group_add_videos(group, @videos) if sss
 
+
+    respond_to do |format|
+      format.json { render json: { shared: true, ids: ids } }
+    end
+
     # NOTE: This might be slow, but it doesn't seem that there's really any obvious
     # better way to do it.
     @videos.each do |video|
@@ -60,9 +65,6 @@ class SharesController < ApplicationController
       end
     end
 
-    respond_to do |format|
-      format.json { render json: { shared: true, ids: ids } }
-    end
   end
 
   def destroy
