@@ -64,9 +64,15 @@ fi:
         description: 'Ryhmä on julkinen ja siihen voi liittyä kuka tahansa (tällä palvelimella).'
 
   groups:
+    tabs:
+      basic: 'Perusasetukset'
+      advanced: 'Muut asetukset'
     webhooks:
+      notification_url: 'Ilmoitusosoite'
+      heading: 'Webhookit'
       delete: 'Poista'
       save: 'Tallenna'
+      add_new_heading: 'Lisää uusi webhook'
       add_new: 'Lisää webhook'
       event_types:
         video_view: 'Videon katsominen'

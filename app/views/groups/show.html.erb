@@ -8,9 +8,9 @@
 
   <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
     <div class="mdl-tabs__tab-bar">
-      <a href="#tab-basic" class="mdl-tabs__tab is-active">Basic settings</a>
+      <a href="#tab-basic" class="mdl-tabs__tab is-active"><%= t('groups.tabs.basic')%></a>
       <% if policy(@group).add_webhook?%>
-        <a href="#tab-advanced" class="mdl-tabs__tab">Advanced settings</a>
+        <a href="#tab-advanced" class="mdl-tabs__tab"><%=t('groups.tabs.advanced')%></a>
       <% end %>
     </div>
 
@@ -18,7 +18,7 @@
       <div class="mdl-tabs__panel" id="tab-advanced">
         <div class="mdl-grid">
           <div class="mdl-cell mdl-cell--12-col">
-              <h3>Webhooks</h3>
+              <h3><%= t('groups.webhooks.heading')%></h3>
               <div class="webhooks">
                 <% for webhook in @group.webhooks %>
                   <div class="mdl-cell mdl-cell--6-col webhook-wrapper" data-webhook-id="<%= webhook.id %>">
@@ -38,13 +38,13 @@
           </div>
 
             <div class="mdl-cell mdl-cell--12-col">
-              <h3>Add new webhook</h3>
+              <h3><%=t('groups.webhooks.add_new_heading')%></h3>
               <%= form_tag({ controller: "groups", action: "add_webhook" }, method: :post, :id => "add_webhook_form") do %>
 
                   <div class="mdl-cell mdl-cell--12-col">
                     <div class="mdl-textfield mdl-js-textfield">
                       <%= text_field_tag "notification_url", nil, class: 'mdl-textfield__input' %>
-                      <label for="notification_url" class="mdl-textfield__label">Notification URL</label>
+                      <label for="notification_url" class="mdl-textfield__label"><%=t('groups.webhooks.notification_url')%></label>
                     </div>
 
                     <%= select_tag "event_type", options_for_select(t('groups.webhooks.event_types').invert) %>

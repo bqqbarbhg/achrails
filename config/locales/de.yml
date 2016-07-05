@@ -43,9 +43,15 @@ de:
         title: 'Öffentlich gelistet'
         description: 'Diese Gruppe ist öffentlich und sichtbar für alle.'
   groups:
+    tabs:
+      basic: 'Grundeinstellungen'
+      advanced: 'Erweiterte Einstellungen'
     webhooks:
+      notification_url: 'Benachrichtigungs-URL'
+      heading: 'Webhooks'
       delete: 'Löschen'
       save: 'Speichern'
+      add_new_heading: 'Neuen Webhook'
       add_new: 'Webhook hinzufügen'
       event_types:
         video_view: 'View video'

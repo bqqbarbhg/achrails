@@ -73,9 +73,15 @@ en:
         description: 'This group is public and shown to everyone.'
 
   groups:
+    tabs:
+      basic: 'Basic settings'
+      advanced: 'Advanced settings'
     webhooks:
+      notification_url: 'Notification URL'
+      heading: 'Webhooks'
       delete: 'Delete'
       save: 'Save'
+      add_new_heading: 'Add new webhook'
       add_new: 'Add webhook'
       event_types:
         video_view: 'View video'
