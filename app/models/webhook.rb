@@ -36,4 +36,12 @@ class Webhook < ActiveRecord::Base
   def notify_new_video(video, user)
     call_self({ video_title: video.title, event_type: 'new_video', user: user })
   end
+
+  def notify_video_edit(video, user)
+    call_self({ video_title: video.title, event_type: 'video_edit', user: user })
+  end
+
+  def notify_video_view(video, user)
+    call_self({ video_title: video.title, event_type: 'video_view', user: user })
+  end
 end

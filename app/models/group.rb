@@ -50,4 +50,16 @@ class Group < ActiveRecord::Base
       webhook.notify_new_video(video, author)
     end
   end
+
+  def video_edit_call_webhook(video, author)
+    self.webhooks.each do |webhook|
+      webhook.notify_video_edit(video, author)
+    end
+  end
+
+  def video_view_call_webhook(video, author)
+    self.webhooks.each do |webhook|
+      webhook.notify_video_view(video, author)
+    end
+  end
 end

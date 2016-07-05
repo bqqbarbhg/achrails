@@ -79,6 +79,7 @@ class VideosController < ApplicationController
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
 
+
     respond_to do |format|
       format.html do
         # HACK: Force reauthentication since the page does XHR
@@ -87,6 +88,12 @@ class VideosController < ApplicationController
       end
       format.json { render json: @manifest }
     end
+
+    # Call webhook
+    @video.groups.each do |group|
+      group.video_view_call_webhook(@video, current_user)
+    end
+
   end
 
   def edit
@@ -204,6 +211,11 @@ class VideosController < ApplicationController
     if is_new
       log_event(:upload_video, @video)
     else
+
+      @video.groups.each do |group|
+        group.video_edit_call_webhook(@video, current_user)
+      end
+
       log_event(:edit_video, @video)
     end
 
