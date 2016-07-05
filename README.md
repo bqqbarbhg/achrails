@@ -176,6 +176,65 @@ docker run achrails yourcommand
 
 To find out the details of development environment, see https://github.com/jpurma/achrails-dev-Dockerfiles  
 
+
+Webhook integration
+------------------------------------------
+Within the group, you can define webhook URLs for the following events. Whenever an event is triggered, the URL is POST'ed with a JSON payload.
+The currentl available events are:
+
+## New video
+Triggered whenever a video is shared to the group
+
+Payload:
+
+```json
+{
+    video_title: "Example video",
+    event_type: "new_video",
+    user: {
+        email: "example@user.com".
+        name: "Guy Example".
+        preferred_username: "ExampleMan123"
+    }
+}
+
+```
+
+## Video edit
+Triggered whenever a video is edited within a group
+
+Payload:
+
+```json
+{
+    video_title: "Example video",
+    event_type: "video_edit",
+    user: {
+        email: "example@user.com".
+        name: "Guy Example".
+        preferred_username: "ExampleMan123"
+    }
+}
+
+```
+## Video view
+Triggered whenever a video belonging to a group is watched
+
+Payload:
+
+```json
+{
+    video_title: "Example video",
+    event_type: "video_view",
+    user: {
+        email: "example@user.com".
+        name: "Guy Example".
+        preferred_username: "ExampleMan123"
+    }
+}
+
+```
+
 Rake tasks
 ----------
 
