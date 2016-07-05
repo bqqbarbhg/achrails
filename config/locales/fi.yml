@@ -68,6 +68,7 @@ fi:
       basic: 'Perusasetukset'
       advanced: 'Muut asetukset'
     webhooks:
+      help: 'Apua'
       notification_url: 'Ilmoitusosoite'
       heading: 'Webhookit'
       delete: 'Poista'

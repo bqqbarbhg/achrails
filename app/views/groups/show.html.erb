@@ -18,7 +18,7 @@
       <div class="mdl-tabs__panel" id="tab-advanced">
         <div class="mdl-grid">
           <div class="mdl-cell mdl-cell--12-col">
-              <h3><%= t('groups.webhooks.heading')%></h3>
+              <h3><%= t('groups.webhooks.heading')%> <a class="webhook-help-link" href="https://github.com/learning-layers/achrails/#webhook-integration"><%=t('groups.webhooks.help')%></a></h3>
               <div class="webhooks">
                 <% for webhook in @group.webhooks %>
                   <div class="mdl-cell mdl-cell--6-col webhook-wrapper" data-webhook-id="<%= webhook.id %>">

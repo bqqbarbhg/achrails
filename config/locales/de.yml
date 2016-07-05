@@ -47,6 +47,7 @@ de:
       basic: 'Grundeinstellungen'
       advanced: 'Erweiterte Einstellungen'
     webhooks:
+      help: 'Hilfe'
       notification_url: 'Benachrichtigungs-URL'
       heading: 'Webhooks'
       delete: 'Löschen'
