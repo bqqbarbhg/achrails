@@ -20,6 +20,10 @@ class Webhook < ActiveRecord::Base
   end
 
   def call_self(data)
+    if data.key?(:user)
+      data[:user] = data[:user].as_json(only: [:email, :preferred_username, :name])
+    end
+
     response = Faraday.post(self.notification_url) do |req|
       req.headers['Content-Type'] = 'application/json'
       req.body = data.to_json
@@ -29,7 +33,7 @@ class Webhook < ActiveRecord::Base
     Rails.logger.debug "DATA: #{data.to_json}"
   end
 
-  def notify_new_video(video)
-    call_self({ video_title: video.title, event_type: 'new_video' })
+  def notify_new_video(video, user)
+    call_self({ video_title: video.title, event_type: 'new_video', user: user })
   end
 end

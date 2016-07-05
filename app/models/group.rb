@@ -45,9 +45,9 @@ class Group < ActiveRecord::Base
   end
 
   # Webhook notifcations
-  def new_video_call_webhook(video)
+  def new_video_call_webhook(video, author)
     self.webhooks.each do |webhook|
-      webhook.notify_new_video(video)
+      webhook.notify_new_video(video, author)
     end
   end
 end

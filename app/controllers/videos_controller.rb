@@ -3,7 +3,6 @@ class VideosController < ApplicationController
   def index
     authenticate_user!
 
-
     respond_to do |format|
       format.json do
 
