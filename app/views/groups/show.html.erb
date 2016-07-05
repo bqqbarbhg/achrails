@@ -24,7 +24,6 @@
                   <div class="mdl-cell mdl-cell--6-col webhook-wrapper" data-webhook-id="<%= webhook.id %>">
                       <div class="mdl-cell mdl-cell--12-col">
                         <input id="webhook-url" type="text" class="mdl-textfield__input webhook-url" value="<%= webhook.notification_url %>">
-                        <%= select_tag "event_type", options_for_select(t('groups.webhooks.event_types').invert, webhook.event_type) %>
                       </div>
                       <div class="mdl-cell mdl-cell--12-col webhook-buttons">
                         <%= link_to(t('groups.webhooks.delete'), { :method => 'delete', :remote => true, :controller => :groups, :action => :delete_webhook, params: {:webhook_id => webhook } },
@@ -46,8 +45,6 @@
                       <%= text_field_tag "notification_url", nil, class: 'mdl-textfield__input' %>
                       <label for="notification_url" class="mdl-textfield__label"><%=t('groups.webhooks.notification_url')%></label>
                     </div>
-
-                    <%= select_tag "event_type", options_for_select(t('groups.webhooks.event_types').invert) %>
                   </div>
                   <div class="mdl-cell mdl-cell--12-col webhook-buttons">
                     <%= submit_tag t('groups.webhooks.add_new'), class: 'mdl-button mdl-js-button mdl-button--raised mdl-button--colored'%>
@@ -199,9 +196,8 @@
   $('.webhook-save-button').on('click', function () {
     var hookId = $(this).data('webhook-id');
     var url = $('.webhook-wrapper[data-webhook-id="' + hookId + '"] #webhook-url').val();
-    var type = $('.webhook-wrapper[data-webhook-id="' + hookId + '"] #webhook-type').val();
 
-    getHTTP().putJson(document.URL + '/update_webhook', { webhook_id: hookId, notification_url: url, event_type: type },
+    getHTTP().putJson(document.URL + '/update_webhook', { webhook_id: hookId, notification_url: url },
         { error: function () {
           alert('Updating webhook failed');
     }});

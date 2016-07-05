@@ -43,10 +43,9 @@ class GroupsController < ApplicationController
     authorize group
 
     url = params[:notification_url]
-    type = params[:event_type]
 
-    if Webhook::validate_event_type(type) and Webhook::validate_url(url)
-      webhook = Webhook.new(notification_url: url, event_type: type)
+    if Webhook::validate_url(url)
+      webhook = Webhook.new(notification_url: url)
       group.webhooks << webhook
       redirect_to group
     else
@@ -77,10 +76,9 @@ class GroupsController < ApplicationController
     webhook = Webhook.find(params[:webhook_id])
 
     url = params[:notification_url]
-    type = params[:event_type]
 
-    if Webhook::validate_event_type(type) and Webhook::validate_url(url)
-      webhook.update(notification_url: url, event_type: type)
+    if Webhook::validate_url(url)
+      webhook.update(notification_url: url)
       head :ok
     else
       head :bad_request
