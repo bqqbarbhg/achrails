@@ -189,12 +189,12 @@ Payload:
 
 ```json
 {
-    video_title: "Example video",
-    event_type: "new_video",
-    user: {
-        email: "example@user.com".
-        name: "Guy Example".
-        preferred_username: "ExampleMan123"
+    "video_title": "Example video",
+    "event_type": "new_video",
+    "user": {
+        "email": "example@user.com",
+        "name": "Guy Example",
+        "preferred_username": "ExampleMan123"
     }
 }
 
@@ -207,12 +207,12 @@ Payload:
 
 ```json
 {
-    video_title: "Example video",
-    event_type: "video_edit",
-    user: {
-        email: "example@user.com".
-        name: "Guy Example".
-        preferred_username: "ExampleMan123"
+    "video_title": "Example video",
+    "event_type": "video_edit",
+    "user": {
+        "email": "example@user.com",
+        "name": "Guy Example",
+        "preferred_username": "ExampleMan123"
     }
 }
 
@@ -224,12 +224,12 @@ Payload:
 
 ```json
 {
-    video_title: "Example video",
-    event_type: "video_view",
-    user: {
-        email: "example@user.com".
-        name: "Guy Example".
-        preferred_username: "ExampleMan123"
+    "video_title": "Example video",
+    "event_type": "video_view",
+    "user": {
+        "email": "example@user.com",
+        "name": "Guy Example",
+        "preferred_username": "ExampleMan123"
     }
 }
 
