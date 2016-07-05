@@ -54,7 +54,8 @@ class SharesController < ApplicationController
     # better way to do it.
     @videos.each do |video|
       unless video.groups.exists?(group)
-        video.groups << group 
+        video.groups << group
+        group.new_video_call_webhook(video)
         log_event(:share_video, video, group.id, 1)
       end
     end

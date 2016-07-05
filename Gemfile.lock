@@ -288,6 +288,7 @@ DEPENDENCIES
   guard-livereload
   jbuilder (~> 2.0)
   jquery-rails
+  json
   jwt
   letter_opener_web
   lodash-rails
@@ -316,4 +317,4 @@ RUBY VERSION
    ruby 2.2.2p95
 
 BUNDLED WITH
-   1.12.3
+   1.12.5

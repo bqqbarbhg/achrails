@@ -18,4 +18,18 @@ class Webhook < ActiveRecord::Base
   rescue URI::InvalidUriError
     false
   end
+
+  def call_self(data)
+    response = Faraday.post(self.notification_url) do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.body = data.to_json
+    end
+
+    Rails.logger.debug "POST #{self.notification_url} -> #{response.status}"
+    Rails.logger.debug "DATA: #{data.to_json}"
+  end
+
+  def notify_new_video(video)
+    call_self({ video_title: video.title, event_type: 'new_video' })
+  end
 end

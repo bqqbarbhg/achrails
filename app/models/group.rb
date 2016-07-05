@@ -43,4 +43,11 @@ class Group < ActiveRecord::Base
       videos: self.videos.pluck(:uuid).as_json
     })
   end
+
+  # Webhook notifcations
+  def new_video_call_webhook(video)
+    self.webhooks.each do |webhook|
+      webhook.notify_new_video(video)
+    end
+  end
 end
