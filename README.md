@@ -180,7 +180,7 @@ To find out the details of development environment, see https://github.com/jpurm
 Webhook integration
 ------------------------------------------
 Within the group, you can define webhook URLs for the following events. Whenever an event is triggered, the URL is POST'ed with a JSON payload.
-The currentl available events are:
+The currently available events are:
 
 ## New video
 Triggered whenever a video is shared to the group
