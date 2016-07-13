@@ -286,7 +286,7 @@ class VideosController < ApplicationController
     end
 
     # SSS_Support(delete video)
-    @video.destroy
+    @video.soft_destroy
 
     respond_to do |format|
       format.html { redirect_to action: :index }

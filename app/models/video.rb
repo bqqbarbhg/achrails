@@ -1,5 +1,7 @@
 class Video < ActiveRecord::Base
 
+  default_scope { where(deleted_at: nil) }
+
   include PgSearch
 
   pg_search_scope :search, against: :searchable
@@ -26,6 +28,11 @@ class Video < ActiveRecord::Base
 
   def all_revisions
     revisions_in(1..revision_num)
+  end
+
+  def soft_destroy
+    self.deleted_at = Time.now
+    self.save!
   end
 
   def import_manifest_data(manifest)
