@@ -39,13 +39,17 @@ namespace :videos do
   end
 
   desc "Permanently removes soft deleted videos"
-  task :delete_permanently => :environment do
+  task :delete_permanently, [:arg1 ] => :environment do | t, args |
+
+    args.with_defaults(:arg1 => (Time.now - 3.weeks).to_s)
+
+    older_than = DateTime.parse(args[:arg1])
 
     num = 0
 
     puts "Permanently deleting videos"
 
-    Video.unscoped.where.not(:deleted_at => nil).each do | video |
+    Video.unscoped.where("deleted_at < ?", older_than).each do | video |
       num += 1
     end
 
