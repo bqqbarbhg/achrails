@@ -37,4 +37,19 @@ namespace :videos do
     puts "Updated #{num} videos to searchable"
 
   end
+
+  desc "Permanently removes soft deleted videos"
+  task :delete_permanently => :environment do
+
+    num = 0
+
+    puts "Permanently deleting videos"
+
+    Video.unscoped.where.not(:deleted_at => nil).each do | video |
+      num += 1
+    end
+
+    puts "Deleted #{num} videos permanently"
+
+  end
 end
