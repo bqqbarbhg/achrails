@@ -51,6 +51,18 @@ namespace :videos do
 
     Video.unscoped.where("deleted_at < ?", older_than).each do | video |
       num += 1
+
+      # Delete the video data
+      manifest = video.read_manifest
+      deleteUrl = manifest["deleteUri"]
+      if deleteUrl.present?
+        response = Faraday.delete(deleteUrl) do |req|
+          req.headers['Delete-Authorization'] = ENV['GOTR_DELETE_SECRET']
+        end
+        puts "DELETE #{deleteUrl} -> #{response.status}"
+      end
+
+      video.destroy
     end
 
     puts "Deleted #{num} videos permanently"

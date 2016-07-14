@@ -30,7 +30,7 @@ class Video < ActiveRecord::Base
     revisions_in(1..revision_num)
   end
 
-  def soft_destroy
+  def soft_destroy!
     self.deleted_at = Time.now
     self.save!
   end
