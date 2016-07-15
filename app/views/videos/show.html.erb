@@ -75,6 +75,10 @@
             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
+    <div onclick='exportVideo()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+      Export video
+    </div>
+
     <%# Edit button %>
     <% if policy(@video).edit? %>
       <%= link_to(t('.edit_button'), edit_video_path(@video),
@@ -223,7 +227,27 @@
     });
   }
 
-  var baseUrl = "<%=j player_video_url(@video) %>";
+  function exportVideo() {
+    var manifest = player.exportManifest();
+
+    request = $.ajax({
+      type: "POST",
+      url: "<%= ENV["VIDEO_EXPORT_URL"]%>",
+      contentType: "application/json",
+      dataType: 'json',
+      data: JSON.stringify({videos: [manifest], email: "matti.jokitulppo@gmail.com"})
+    });
+
+    request.done(function () {
+      createToast("Export queued succesfully1");
+    });
+
+    request.fail(function () {
+      createToast("Export failed!")
+    })
+  }
+
+  var baseUrl = "<%= player_video_url(@video) %>";
 
   var prevUrl = null;
   function updateCopyBoxes(url) {
