@@ -156,6 +156,11 @@ de:
       share_button: 'Teilen'
       share_link: 'Video teilen als %{name}'
       revisions_button: 'Versionen'
+      export_button: 'Export'
+      export_prompt: 'Schreiben Sie bitte die E-Mail- Adresse, an die Sie möchten, um Ihre Videos erhalten'
+      export_bad_mail: 'Ihre E-Mail scheint nicht im richtigen Format zu sein!'
+      export_success: 'Video Export der Warteschlange erfolgreich!'
+      export_fail: 'Exportieren von Videos fehlgeschlagen!'
       edit_button: 'Eigenschaften'
       save:
         button: 'Speichern'
