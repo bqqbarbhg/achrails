@@ -85,6 +85,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :get_relative_home
+
+  def get_relative_home
+    ENV['RAILS_RELATIVE_URL_ROOT'] || '/'
+  end
+
   def render_exception_forbidden(exception)
     logger.error exception.message
     logger.error exception.backtrace[0...10].join "\n"
