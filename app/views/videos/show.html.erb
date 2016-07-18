@@ -249,7 +249,11 @@
     var email = getUserEmail();
 
     if (email) {
-      exportVideo(email);
+      if (validateEmailAddress(email) === true) {
+        exportVideo(email);
+      } else {
+        createToast('<%=t('.export_bad_mail')%>');
+      }
     }
   });
 

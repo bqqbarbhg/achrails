@@ -28,7 +28,7 @@ en:
       group:
         name: 'Name'
         description: 'Description'
-  
+
   sign_in:
     learning_layers: "Sign in"
     developer: "Sign in (developer)"
@@ -115,14 +115,14 @@ en:
       join_button: 'Join group'
       leave_button: 'Leave group'
     invite:
-      users_invited_message: 
+      users_invited_message:
         one: 'Invited %{count} person to %{group}'
         other: 'Invited %{count} people to %{group}'
 
   home:
     oidc_error:
       required_information: 'Required information:'
-      failed_action: 
+      failed_action:
         generic: 'More permissions are required to complete the action.'
         log_in: 'Ach so needs to access your profile, email and openid to log in.'
         accept_invitation: 'Ach so requires access to your email to accept invitations.'
@@ -141,7 +141,7 @@ en:
     invite_email:
       body_text: '%{inviter} has invited you to "Ach so!" group "%{group_name}" at %{url}.\nClick the link to accept the invitation.\n\nThank you, \nAch so! Team'
       body_text_html: '%{inviter} has invited you to "Ach so!" group "%{group_name}" at <a href="%{url}">%{url}</a>.<br/>Click the link to accept the invitation.<br/><br/>Thank you, <br/>Ach so! Team'
-    subject_line: 'You have been invited to "Ach so!" group: %{group_name}' 
+    subject_line: 'You have been invited to "Ach so!" group: %{group_name}'
 
   invitations:
     error_expected_email: 'Expected to join with email %{email}'
@@ -167,7 +167,7 @@ en:
       share_error:
         share: 'Failed to share video'
         unshare: 'Failed to unshare video'
-  
+
   videos:
     index:
       pagetitle: 'Videos'
@@ -182,7 +182,7 @@ en:
       pagetitle: 'Video revisions'
       revision_title: 'Revision %{num} by %{name} (uploaded %{time} ago)'
       revert_button: 'Revert to this version'
-      video_property: 
+      video_property:
         title: "Title: "
         genre: "Genre: "
         author: "Author: "
@@ -196,6 +196,7 @@ en:
       edit_button: 'Properties'
       export_button: 'Export'
       export_prompt: 'Please write the email address where you would like to receive your videos.'
+      export_bad_mail: 'Your email does not seem to be in the correct format!'
       export_success: 'Video export queued succesfully!'
       export_fail: 'Video exporting failed!'
       save:
