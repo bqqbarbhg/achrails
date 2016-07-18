@@ -184,6 +184,8 @@ fi:
       share_link: 'Linkitä käyttäjän %{name} video '
       revisions_button: 'Versiot'
       edit_button: 'Ominaisuudet'
+      export_button: 'Vie ulos'
+      export_prompt: 'Kirjoita sähköpostiosoite johon haluat videoiden latauslinkin'
       save:
         button: 'Tallenna'
         success: 'Video tallennettu'

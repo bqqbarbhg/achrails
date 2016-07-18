@@ -75,9 +75,9 @@
             class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
     <% end %>
 
-    <div onclick='exportVideo()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-      Export video
-    </div>
+    <button id="exportButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+      <%= t('.export_button') %>
+    </button>
 
     <%# Edit button %>
     <% if policy(@video).edit? %>
@@ -227,7 +227,23 @@
     });
   }
 
-  function exportVideo() {
+  $('#exportButton').on('click', function (e) {
+     e.preventDefault();
+    var email = getUserEmail();
+
+    if (email) {
+      alert(1)
+      //exportVideo(email);
+    }
+  });
+
+  
+  function getUserEmail () {
+    var email = prompt('<%= t('.export_prompt') %>', '<%= @email %>');
+    return email;
+  }
+
+  function exportVideo(email) {
     var manifest = player.exportManifest();
 
     request = $.ajax({
@@ -235,7 +251,7 @@
       url: "<%= ENV["VIDEO_EXPORT_URL"]%>",
       contentType: "application/json",
       dataType: 'json',
-      data: JSON.stringify({videos: [manifest], email: "matti.jokitulppo@gmail.com"})
+      data: JSON.stringify({videos: [manifest], email: email})
     });
 
     request.done(function () {

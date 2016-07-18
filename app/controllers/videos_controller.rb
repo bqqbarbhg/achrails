@@ -79,6 +79,7 @@ class VideosController < ApplicationController
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
 
+    @email = current_user.email
 
     respond_to do |format|
       format.html do
