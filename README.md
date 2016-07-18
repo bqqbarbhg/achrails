@@ -50,6 +50,9 @@ ACHRAILS_OIDC_CLIENT_ID ACHRAILS_OIDC_CLIENT_SECRET = [optional] Credentials of 
 
 GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET = [optional] Enable Google OAuth with credentials
 
+# Exporter
+VIDEO_EXPORT_URL = [optional] The URL for the AchSo!-video export service. See: https://github.com/melonmanchan/achso-video-exporter
+
 # Mailer
 SENDGRID_USER SENDGRID_PASS = [optional] Use Sendgrid to send mail with these
 
