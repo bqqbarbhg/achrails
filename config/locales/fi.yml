@@ -186,6 +186,8 @@ fi:
       edit_button: 'Ominaisuudet'
       export_button: 'Vie ulos'
       export_prompt: 'Kirjoita sähköpostiosoite johon haluat videoiden latauslinkin'
+      export_success: 'Videoiden vientitapahtuma onnistui!'
+      export_fail: 'Videoiden vienti ei onnistunut!'
       save:
         button: 'Tallenna'
         success: 'Video tallennettu'

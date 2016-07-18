@@ -232,8 +232,7 @@
     var email = getUserEmail();
 
     if (email) {
-      alert(1)
-      //exportVideo(email);
+      exportVideo(email);
     }
   });
 
@@ -255,11 +254,11 @@
     });
 
     request.done(function () {
-      createToast("Export queued succesfully1");
+      createToast('<%=t('.export_success')%>');
     });
 
     request.fail(function () {
-      createToast("Export failed!")
+      createToast('<%=t('.export_fail')%>');
     })
   }
 

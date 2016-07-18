@@ -158,6 +158,8 @@ de:
       revisions_button: 'Versionen'
       export_button: 'Export'
       export_prompt: 'Schreiben Sie bitte die E-Mail- Adresse, an die Sie möchten, um Ihre Videos erhalten'
+      export_success: 'Video Export der Warteschlange erfolgreich!'
+      export_fail: 'Exportieren von Videos fehlgeschlagen!'
       edit_button: 'Eigenschaften'
       save:
         button: 'Speichern'

@@ -196,6 +196,8 @@ en:
       edit_button: 'Properties'
       export_button: 'Export'
       export_prompt: 'Please write the email address where you would like to receive your videos.'
+      export_success: 'Video export queued succesfully!'
+      export_fail: 'Video exporting failed!'
       save:
         button: 'Save'
         success: 'Video saved'
