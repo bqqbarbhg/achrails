@@ -62,67 +62,84 @@
 
     <div id="save_spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner"></div>
 
-    <%# Update button %>
-    <% if policy(@video).update? %>
-      <div onclick='saveChanges()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-        <%= t('.save.button') %>
+    <div class="mdl-grid">
+
+      <%# Update button %>
+      <div class="mdl-cell mdl-cell--4-col">
+        <% if policy(@video).update? %>
+          <div onclick='saveChanges()' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            <%= t('.save.button') %>
+          </div>
+        <% end %>
       </div>
-    <% end %>
 
-    <%# Share button %>
-    <% if policy(@video).share? %>
-      <%= link_to(t('.share_button'), shares_path(@video),
-            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-    <% end %>
+      <div class="mdl-cell mdl-cell--4-col">
+        <%# Share button %>
+        <% if policy(@video).share? %>
+          <%= link_to(t('.share_button'), shares_path(@video),
+                class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+        <% end %>
+      </div>
 
-    <button id="exportButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-      <%= t('.export_button') %>
-    </button>
+      <div class="mdl-cell mdl-cell--4-col">
+        <button id="exportButton" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+          <%= t('.export_button') %>
+        </button>
+        </div>
+    </div>
 
-    <%# Edit button %>
-    <% if policy(@video).edit? %>
-      <%= link_to(t('.edit_button'), edit_video_path(@video),
-            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-    <% end %>
+    <div class="mdl-grid">
 
-    <%# Revisions button %>
-    <% if policy(@video).revisions? %>
-      <%= link_to(t('.revisions_button'), revisions_video_path(@video),
-            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
-    <% end %>
+      <div class="mdl-cell mdl-cell--4-col">
+        <%# Edit button %>
+        <% if policy(@video).edit? %>
+            <%= link_to(t('.edit_button'), edit_video_path(@video),
+                        class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+        <% end %>
+      </div>
 
-    <%# Delete button %>
-    <% if policy(@video).destroy? %>
+      <div class="mdl-cell mdl-cell--4-col">
+        <%# Revisions button %>
+        <% if policy(@video).revisions? %>
+            <%= link_to(t('.revisions_button'), revisions_video_path(@video),
+                        class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored") %>
+        <% end %>
+      </div>
+      <div class="mdl-cell mdl-cell--4-col">
+        <%# Delete button %>
+        <% if policy(@video).destroy? %>
 
-      <%# Delete button with confirmation if javascript is enabled, otherwise just DELETE link %>
-      <noscript>
-        <%= link_to(t('.delete.button'), video_path(@video), method: :delete,
-              class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
-      </noscript>
+            <%# Delete button with confirmation if javascript is enabled, otherwise just DELETE link %>
+            <noscript>
+              <%= link_to(t('.delete.button'), video_path(@video), method: :delete,
+                          class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent") %>
+            </noscript>
 
-      <%= button_tag(t('.delete.button'), id: :delete_button,
-            class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
+            <%= button_tag(t('.delete.button'), id: :delete_button,
+                           class: "mdl-button mdl-js-button mdl-button--raised mdl-button--accent force-hidden-no-layout") %>
 
-      <script>
-        // @Copy-Paste(confirm delete button)
-        var $delete_button = $("#delete_button");
-        $delete_button.removeClass("force-hidden-no-layout")
-        $delete_button.on("click", function() {
-          // TODO: Material design dialog?
-          // MDL didn't offer a solution when this was written
-          if (confirm("<%=j t('.delete.confirm') %>")) {
-            getHTTP().deleteJson('', {
-              success: function() {
-                window.location.href = '<%=j videos_path() %>';
-              },
-              error: function() {
-                createToast("<%j= t('.delete.error') %>");
-              }
-            })
-          }
-        });
-      </script>
-    <% end %>
+            <script>
+              // @Copy-Paste(confirm delete button)
+              var $delete_button = $("#delete_button");
+              $delete_button.removeClass("force-hidden-no-layout")
+              $delete_button.on("click", function() {
+                // TODO: Material design dialog?
+                // MDL didn't offer a solution when this was written
+                if (confirm("<%=j t('.delete.confirm') %>")) {
+                  getHTTP().deleteJson('', {
+                    success: function() {
+                      window.location.href = '<%=j videos_path() %>';
+                    },
+                    error: function() {
+                      createToast("<%j= t('.delete.error') %>");
+                    }
+                  })
+                }
+              });
+            </script>
+        <% end %>
+      </div>
+    </div>
 
     <%# Embed codes %>
     <h4><%= t('.share_link', name: @video.author.name) %></h4>
