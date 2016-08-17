@@ -1,0 +1,16 @@
+<% provide(:title, t('.pagetitle')) %>
+
+<% content_for :homelink do %>
+    <a href="#" onClick="closeActivity()" id="ach_so_link">
+      <%= image_tag("ic_launcher.png", alt: "Ach so!", width: 32, height: 32) %>
+    </a>
+<% end %>
+
+<% content_for :pagetitle do %>
+    <%= t('.pagetitle') %>
+<% end %>
+
+<div class="mdl-grid">
+  <%= render(partial: 'videocontainer', collection: @public_videos) || render(html: "<h2 class='mdl-color-text--grey-600'>#{t('.empty_filler')}</h2>".html_safe)%>
+</div>
+

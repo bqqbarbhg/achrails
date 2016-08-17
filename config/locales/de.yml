@@ -15,11 +15,12 @@ de:
     developer: "Angemeldet (Entwickler)"
     learning_layers_oidc: "Mit Learning Layers Konto angemeldet"
     google_oauth2: "Mit Google Konto angemeldet"
-  nav:
+  nvav:
     sign_out: 'Abmelden'
     groups: 'Gruppen'
     videos: 'Videos'
     my_videos: 'Meine Videos'
+    public_videos: 'Öffentliche Videos'
     language_name: 'Deutsch'
     logged_in_as_html: 'Eingeloggt als <strong>%{user}</strong>'
   player:
@@ -135,6 +136,8 @@ de:
     index:
       pagetitle: 'Videos'
       empty_filler: 'Keine Videos'
+    all:
+      pagetitle: 'Alle öffentlichen Videos'
     own:
       pagetitle: 'Meine Videos'
       empty_filler: "Du hast noch keine Videos hochgeladen"

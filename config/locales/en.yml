@@ -46,6 +46,7 @@ en:
     groups: 'Groups'
     videos: 'Videos'
     my_videos: 'My videos'
+    public_videos: 'Public videos'
     language_name: 'English'
     logged_in_as_html: 'Logged in as <strong>%{user}</strong>'
 
@@ -176,6 +177,8 @@ en:
       pagetitle: 'My videos'
       empty_filler: "You haven't uploaded videos yet"
       upload_button: 'Upload video'
+    all:
+      pagetitle: 'All public videos'
     player:
       title: '%{video} - Ach so!'
     revisions:

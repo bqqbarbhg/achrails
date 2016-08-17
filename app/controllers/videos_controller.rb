@@ -34,6 +34,21 @@ class VideosController < ApplicationController
     render
   end
 
+
+  def all
+    @public_videos = Video.where({ is_public: true })
+
+    respond_to do |format|
+      format.json do
+        @public_videos = @public_videos.map { |c| { id: c[0].to_s, uuid: c[1], revision: c[2] } }
+        render json: { videos: @public_videos }
+      end
+      format.html do
+        render
+      end
+    end
+  end
+
   def show
     @video = Video.find_by_uuid(params[:id])
     authorize @video

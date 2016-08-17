@@ -32,11 +32,12 @@ fi:
     learning_layers: "Kirjaudu"
     developer: "Kirjaudu (kehittäjä)"
 
-  nav:
+  nvav:
     sign_out: 'Kirjaudu ulos'
     groups: 'Ryhmät'
     videos: 'Videot'
-    my_videos: 'My videos'
+    my_videos: 'Minun videoni'
+    public_videos: 'Julkiset videot'
     language_name: 'Suomi'
     logged_in_as_html: 'Kirjauduttu käyttäjällä <strong>%{user}</strong>'
 
@@ -162,6 +163,8 @@ fi:
     index:
       pagetitle: 'Videot'
       empty_filler: 'Videoita ei ole'
+    all:
+      pagetitle: 'Kaikki julkiset videot'
     own:
       pagetitle: 'Omat videot'
       empty_filler: 'Et ole vielä jakanut videoita'

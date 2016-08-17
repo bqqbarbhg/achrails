@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         get 'find'
         get 'search'
         get 'own'
+        get 'all'
         get 'upload_callback'
       end
       member do
