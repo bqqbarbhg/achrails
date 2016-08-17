@@ -15,7 +15,7 @@ de:
     developer: "Angemeldet (Entwickler)"
     learning_layers_oidc: "Mit Learning Layers Konto angemeldet"
     google_oauth2: "Mit Google Konto angemeldet"
-  nvav:
+  nav:
     sign_out: 'Abmelden'
     groups: 'Gruppen'
     videos: 'Videos'

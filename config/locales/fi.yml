@@ -32,7 +32,7 @@ fi:
     learning_layers: "Kirjaudu"
     developer: "Kirjaudu (kehittäjä)"
 
-  nvav:
+  nav:
     sign_out: 'Kirjaudu ulos'
     groups: 'Ryhmät'
     videos: 'Videot'
