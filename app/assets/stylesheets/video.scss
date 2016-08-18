@@ -39,3 +39,16 @@
     margin-top: 5px;
   }
 }
+
+.acp-subtitles {
+  span {
+    background-color:rgba(0,0,0,0.5);
+    display: table;
+    margin: auto;
+    padding: 5px;
+
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+}
