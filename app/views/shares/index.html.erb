@@ -37,7 +37,7 @@
       <%# Group share switch %>
       <label id="grouplabel<%= share_group.group.id %>"
           for="group<%= share_group.group.id %>"
-          class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect group-checkbox">
         <%= check_box_tag "group#{ share_group.group.id }", 2, share_group.shareclass != :unshared,
               class:"mdl-checkbox__input" %>
         <span class="mdl-checkbox__label">
@@ -62,7 +62,7 @@
 
 <script>
 
-  var groups = document.querySelectorAll(".mdl-checkbox__input");
+  var groups = document.querySelectorAll(".group-checkbox");
   var pending = { };
   var state = {
   <% for share_group in @share_groups %>
