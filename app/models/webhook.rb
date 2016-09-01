@@ -33,16 +33,26 @@ class Webhook < ActiveRecord::Base
     Rails.logger.debug "DATA: #{data.to_json}"
   end
 
+  def format_payload(video, user)
+    return { uuid: video.uuid, video_player: video.get_player_url, video_title: video.title, video_uri: video.video_url, thumb_uri: video.manifest_json["thumbUri"], user: user  }
+
+  end
+
   def notify_new_video(video, user)
-    call_self({ uuid: video.uuid, video_player: video.get_player_url, video_title: video.title, video_uri: video.video_url, thumb_uri: video.manifest_json["thumbUri"], event_type: 'new_video', user: user })
+    payload = format_payload(video, user)
+    payload[:event_type] = 'new_video'
+    call_self(payload)
   end
 
   def notify_video_edit(video, user)
-    call_self({ uuid: video.uuid, video_player: video.get_player_url, video_title: video.title, video_uri: video.video_url, thumb_uri: video.manifest_json["thumbUri"], event_type: 'video_edit', user: user })
+    payload = format_payload(video, user)
+    payload[:event_type] = 'video_edit'
+    call_self(payload)
   end
 
   def notify_video_view(video, user)
-    Rails.logger.debug video.manifest_json["thumbUri"]
-    call_self({ uuid: video.uuid, video_player: video.get_player_url,  video_title: video.title, video_uri: video.video_url, thumb_uri: video.manifest_json["thumbUri"], event_type: 'video_view', user: user })
+    payload = format_payload(video, user)
+    payload[:event_type] = 'video_view'
+    call_self(payload)
   end
 end
