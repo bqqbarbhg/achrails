@@ -34,14 +34,15 @@ class Webhook < ActiveRecord::Base
   end
 
   def notify_new_video(video, user)
-    call_self({ uuid: video.uuid, video_player: video.get_player_url, video_title: video.title, video_uri: video.video_url, event_type: 'new_video', user: user })
+    call_self({ uuid: video.uuid, video_player: video.get_player_url, video_title: video.title, video_uri: video.video_url, thumb_uri: video.manifest_json["thumbUri"], event_type: 'new_video', user: user })
   end
 
   def notify_video_edit(video, user)
-    call_self({ uuid: video.uuid, video_player: video.get_player_url, video_title: video.title, video_uri: video.video_url, event_type: 'video_edit', user: user })
+    call_self({ uuid: video.uuid, video_player: video.get_player_url, video_title: video.title, video_uri: video.video_url, thumb_uri: video.manifest_json["thumbUri"], event_type: 'video_edit', user: user })
   end
 
   def notify_video_view(video, user)
-    call_self({ uuid: video.uuid, video_player: video.get_player_url,  video_title: video.title, video_uri: video.video_url, event_type: 'video_view', user: user })
+    Rails.logger.debug video.manifest_json["thumbUri"]
+    call_self({ uuid: video.uuid, video_player: video.get_player_url,  video_title: video.title, video_uri: video.video_url, thumb_uri: video.manifest_json["thumbUri"], event_type: 'video_view', user: user })
   end
 end

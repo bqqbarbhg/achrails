@@ -194,7 +194,8 @@ Payload:
 {
     "id": "video_id",
     "video_title": "Example video",
-    "video_url": "http://videohost.com/video_id.mp4",
+    "video_uri": "http://videohost.com/video_id.mp4",
+    "thumb_uri": "http://videohost.com/video_id.jpg",
     "player_url": "http://achrails.com/videos/video_id/player",
     "event_type": "new_video",
     "user": {
@@ -216,7 +217,8 @@ Payload:
 
     "id": "video_id",
     "video_title": "Example video",
-    "video_url": "http://videohost.com/video_id.mp4",
+    "video_uri": "http://videohost.com/video_id.mp4",
+    "thumb_uri": "http://videohost.com/video_id.jpg",
     "player_url": "http://achrails.com/videos/video_id/player",
     "event_type": "video_edit",
     "user": {
@@ -236,7 +238,8 @@ Payload:
 {
     "id": "video_id",
     "video_title": "Example video",
-    "video_url": "http://videohost.com/video_id.mp4",
+    "video_uri": "http://videohost.com/video_id.mp4",
+    "thumb_uri": "http://videohost.com/video_id.jpg",
     "player_url": "http://achrails.com/videos/video_id/player",
     "event_type": "video_view",
     "user": {
