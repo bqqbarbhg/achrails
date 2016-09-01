@@ -20,7 +20,11 @@ module Util
 
   def self.normalize_manifest!(manifest)
     manifest["genre"] ||= "good_work"
-    
+
+    # Trimming info no longer needed after uploading
+    manifest.delete("startTime")
+    manifest.delete("endTime")
+
     manifest["annotations"].sort_by! do |a|
       [a["time"], a["position"]["x"], a["position"]["y"], a["text"],
        a["author"]["id"], a["author"]["uri"], a["author"]["name"]]
