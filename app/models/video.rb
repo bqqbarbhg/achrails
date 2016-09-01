@@ -31,7 +31,7 @@ class Video < ActiveRecord::Base
   end
 
   def get_player_url
-
+    Rails.application.routes.url_helpers.url_for(action: 'player', controller: 'videos', id: self.uuid)
   end
 
   def soft_destroy!
