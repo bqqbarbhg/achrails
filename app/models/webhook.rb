@@ -34,14 +34,14 @@ class Webhook < ActiveRecord::Base
   end
 
   def notify_new_video(video, user)
-    call_self({ video_title: video.title, event_type: 'new_video', user: user })
+    call_self({ uuid: video.uuid, video_title: video.title, video_uri: video.video_url, event_type: 'video_view', user: user })
   end
 
   def notify_video_edit(video, user)
-    call_self({ video_title: video.title, event_type: 'video_edit', user: user })
+    call_self({ uuid: video.uuid, video_title: video.title, video_uri: video.video_url, event_type: 'video_view', user: user })
   end
 
   def notify_video_view(video, user)
-    call_self({ video_title: video.title, event_type: 'video_view', user: user })
+    call_self({ uuid: video.uuid, video_title: video.title, video_uri: video.video_url, event_type: 'video_view', user: user })
   end
 end
