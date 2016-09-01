@@ -230,7 +230,7 @@ class VideosController < ApplicationController
     else
       @video.groups.each do |group|
         group.video_edit_call_webhook(@video, current_user)
-      end
+    end
 
       log_event(:edit_video, @video)
     end
