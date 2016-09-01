@@ -192,7 +192,10 @@ Payload:
 
 ```json
 {
+    "id": "video_id",
     "video_title": "Example video",
+    "video_url": "http://videohost.com/video_id.mp4",
+    "player_url": "http://achrails.com/videos/video_id/player",
     "event_type": "new_video",
     "user": {
         "email": "example@user.com",
@@ -210,7 +213,11 @@ Payload:
 
 ```json
 {
+
+    "id": "video_id",
     "video_title": "Example video",
+    "video_url": "http://videohost.com/video_id.mp4",
+    "player_url": "http://achrails.com/videos/video_id/player",
     "event_type": "video_edit",
     "user": {
         "email": "example@user.com",
@@ -227,7 +234,10 @@ Payload:
 
 ```json
 {
+    "id": "video_id",
     "video_title": "Example video",
+    "video_url": "http://videohost.com/video_id.mp4",
+    "player_url": "http://achrails.com/videos/video_id/player",
     "event_type": "video_view",
     "user": {
         "email": "example@user.com",
