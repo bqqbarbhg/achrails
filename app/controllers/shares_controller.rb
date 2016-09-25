@@ -52,6 +52,7 @@ class SharesController < ApplicationController
 
     respond_to do |format|
       format.json { render json: { shared: true, ids: ids } }
+      format.html { render nothing: true, status: :ok }
     end
 
     # NOTE: This might be slow, but it doesn't seem that there's really any obvious
@@ -84,6 +85,7 @@ class SharesController < ApplicationController
 
     respond_to do |format|
       format.json { render json: { shared: false, ids: ids } }
+      format.html { render nothing: true, status: :ok }
     end
   end
 
