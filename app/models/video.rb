@@ -42,6 +42,11 @@ class Video < ActiveRecord::Base
   def import_manifest_data(manifest)
     self.manifest_json = manifest
     self.title = manifest["title"]
+
+    if manifest.key?("isPublic")
+        self.is_public = manifest["isPublic"]
+    end
+
     self.uuid = manifest["id"]
     self.searchable = Util.manifest_to_searchable(manifest)
     self.video_url = Util.normalize_url(manifest["videoUri"])

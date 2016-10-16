@@ -198,7 +198,7 @@ class VideosController < ApplicationController
       end
 
       # Only allow the following keys to be mutable
-      mutable_keys = ["title", "genre", "tag", "formatVersion", "annotations"]
+      mutable_keys = ["title", "genre", "tag", "formatVersion", "isPublic", "annotations"]
 
       mutable_manifest = manifest.clone.extract!(*mutable_keys)
       previous_manifest = @video.manifest_json.clone
