@@ -103,6 +103,7 @@ class VideosController < ApplicationController
         sss.force_authenticate() if current_user && sss
         render
       end
+      @manifest["isPublic"] = @video.is_public
       format.json { render json: @manifest }
     end
 
