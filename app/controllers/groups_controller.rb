@@ -179,7 +179,7 @@ class GroupsController < ApplicationController
       else
       end
 
-      invitation = Invitation.create(expect_email: address_to_invite, group: @group)
+      invitation = Invitation.create(expect_email: address_to_invite.downcase, group: @group)
       next unless invitation
 
       address_list.push(address_to_invite)

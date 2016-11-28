@@ -11,7 +11,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def can_join?(user)
-    expect_email == user.email
+      expect_email.downcase == user.email.downcase
   end
 
   def self.group_from_token(token)
