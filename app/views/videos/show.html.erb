@@ -126,7 +126,7 @@
                 // TODO: Material design dialog?
                 // MDL didn't offer a solution when this was written
                 if (confirm("<%=j t('.delete.confirm') %>")) {
-                  getHTTP().deleteJson('', {
+                  getHTTP().deleteJson(window.location.href, {
                     success: function() {
                       window.location.href = '<%=j videos_path() %>';
                     },
@@ -224,7 +224,7 @@
       return;
     }
 
-    http.putJson('', manifest, {
+    http.putJson(window.location.href, manifest, {
       success: function(xhr) {
         createToast("<%=j t('.save.success') %>");
         var newManifest = JSON.parse(xhr.responseText);

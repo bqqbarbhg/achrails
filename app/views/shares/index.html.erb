@@ -160,7 +160,7 @@
 
       $('#sharing_spinner').addClass('is-active');
       if (state[id]) {
-        http.postJson("", { 'group': id }, params);
+        http.postJson(window.location.href, { 'group': id }, params);
       } else {
         http.deleteJson("shares/" + id, params);
       }
