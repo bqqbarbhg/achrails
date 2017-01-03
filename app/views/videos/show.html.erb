@@ -168,7 +168,7 @@
         <span class="mdl-checkbox__label" id="share_at_time_label">Checkbox</span>
     </label>
 
-    <h4>Annotation list</h4>
+    <h4> <%= t('.annotations_list') %></h4>
     <div class="annotations-wrapper">
         <ul class="mdl-list annotation-list">
             <% @manifest['annotations'].sort_by {|a| a["time"]}.each do |a| %>

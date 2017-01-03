@@ -156,6 +156,7 @@ de:
       search_placeholder: 'Suchen...'
       no_results: 'Keine Ergebnisse gefunden!'
     show:
+      annotations_list: 'Annotations List'
       share_button: 'Teilen'
       share_link: 'Video teilen als %{name}'
       revisions_button: 'Versionen'

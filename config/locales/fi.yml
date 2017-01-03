@@ -183,6 +183,7 @@ fi:
       search_placeholder: 'Hae...'
       no_results: 'Tuloksia ei löytynyt!'
     show:
+      annotations_list: 'Merkintälistaus'
       share_button: 'Jaa'
       share_link: 'Linkitä käyttäjän %{name} video '
       revisions_button: 'Versiot'
