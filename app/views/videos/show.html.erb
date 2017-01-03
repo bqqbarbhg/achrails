@@ -164,10 +164,21 @@
     </div>
 
     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="share_at_time">
-      <input type="checkbox" id="share_at_time" class="mdl-checkbox__input">
-      <span class="mdl-checkbox__label" id="share_at_time_label">Checkbox</span>
+        <input type="checkbox" id="share_at_time" class="mdl-checkbox__input">
+        <span class="mdl-checkbox__label" id="share_at_time_label">Checkbox</span>
     </label>
-  </div>
+
+    <h4>Annotation list</h4>
+    <ul class="mdl-list">
+    <% @manifest['annotations'].each do |a| %>
+        <li class="mdl-list__item">
+            <span data-time="<%= a["time"] %>"class="mdl-list__item-primary-content annotation-list-item">
+            <%= a["author"]["name"] %> : "<%= a["text"] %>"
+            </span>
+        </li>
+    <% end %>
+    </ul>
+</div>
 </div>
 
 <script>
@@ -196,6 +207,19 @@
 
   var player = new AchSoPlayer(playerElement, manifest, user, {
     startTime: startTime
+  });
+
+  $('.annotation-list-item').on('click', function () {
+      var time = $(this).data('time');
+
+      if (window.player && (typeof time !== 'undefined')) {
+          var fixedTime = time / 1000;
+          var batch = player.batchAt(fixedTime);
+
+          player.seekVideo(fixedTime);
+          player.setBatch(batch);
+          player.switchState(AnnotationPause)
+      }
   });
 
   var saveSpinner = document.querySelector("#save_spinner");
