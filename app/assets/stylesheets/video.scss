@@ -33,6 +33,20 @@
   background-position: center !important;
 }
 
+.annotation-list {
+    padding-left: 0;
+    list-style: none;
+    list-style-type: none;
+}
+
+.annotation-list-item {
+    list-style: none;
+    cursor: pointer;
+    &:active {
+        opacity: 0.6;
+    }
+}
+
 .share-link-wrapper {
   margin-bottom: 20px;
   input {
