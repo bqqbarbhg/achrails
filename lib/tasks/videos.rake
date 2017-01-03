@@ -55,11 +55,16 @@ namespace :videos do
       # Delete the video data
       manifest = video.read_manifest
       deleteUrl = manifest["deleteUri"]
+
       if deleteUrl.present?
-        response = Faraday.delete(deleteUrl) do |req|
-          req.headers['Delete-Authorization'] = ENV['GOTR_DELETE_SECRET']
+        begin
+          response = Faraday.delete(deleteUrl) do |req|
+            req.headers['Delete-Authorization'] = ENV['GOTR_DELETE_SECRET']
+          end
+          puts "DELETE #{deleteUrl} -> #{response.status}"
+        rescue SocketError => e
+          puts e.message
         end
-        puts "DELETE #{deleteUrl} -> #{response.status}"
       end
 
       video.destroy
