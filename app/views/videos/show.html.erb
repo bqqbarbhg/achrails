@@ -216,9 +216,9 @@
           var fixedTime = time / 1000;
           var batch = player.batchAt(fixedTime);
 
-          player.seekVideo(fixedTime);
+          player.doSeek(fixedTime);
           player.setBatch(batch);
-          player.switchState(AnnotationPause)
+          player.switchState(ManualPause)
       }
   });
 
