@@ -62,7 +62,7 @@ namespace :videos do
             req.headers['Delete-Authorization'] = ENV['GOTR_DELETE_SECRET']
           end
           puts "DELETE #{deleteUrl} -> #{response.status}"
-        rescue SocketError => e
+        rescue => e
           puts e.message
         end
       end
