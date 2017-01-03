@@ -41,9 +41,24 @@
 
 .annotation-list-item {
     list-style: none;
+
+    max-width: 400px;
     cursor: pointer;
+
     &:active {
         opacity: 0.6;
+    }
+
+    .name {
+        width: 30%;
+    }
+
+    .text {
+        width: 70%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        float: right;
     }
 }
 
