@@ -33,6 +33,11 @@
   background-position: center !important;
 }
 
+.annotations-wrapper {
+    overflow-y: auto;
+    max-height: 280px;
+}
+
 .annotation-list {
     padding-left: 0;
     list-style: none;

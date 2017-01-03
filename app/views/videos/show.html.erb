@@ -169,16 +169,18 @@
     </label>
 
     <h4>Annotation list</h4>
-    <ul class="mdl-list annotation-list">
-        <% @manifest['annotations'].sort_by {|a| a["time"]}.each do |a| %>
-        <li data-time="<%= a["time"] %>" class="mdl-list__item annotation-list-item">
-            <span class="mdl-list__item-primary-content">
-                <span class="name"> <%= a["author"]["name"] %> </span>
-                <span class="text">: "<%= a["text"] %>"</span>
-            </span>
-        </li>
-    <% end %>
-    </ul>
+    <div class="annotations-wrapper">
+        <ul class="mdl-list annotation-list">
+            <% @manifest['annotations'].sort_by {|a| a["time"]}.each do |a| %>
+                <li data-time="<%= a["time"] %>" class="mdl-list__item annotation-list-item">
+                    <span class="mdl-list__item-primary-content">
+                        <span class="name"> <%= a["author"]["name"] %> </span>
+                        <span class="text"> "<%= a["text"] %>"</span>
+                    </span>
+                </li>
+            <% end %>
+        </ul>
+    </div>
 </div>
 </div>
 
