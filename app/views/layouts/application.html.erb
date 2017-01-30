@@ -21,7 +21,8 @@
         <%= yield(:homelink) %>
       <% else %>
         <%= link_to groups_path() do %>
-          <i class="material-icons" style="color:white;">&#xE7EF;</i>
+          <i class="material-icons hide-on-android" style="color:white;">&#xE7EF;</i>
+          <i class="material-icons show-on-android back-button">&#xE5C4;</i>
         <% end %>
       <% end %>
     </div>
