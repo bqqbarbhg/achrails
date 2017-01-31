@@ -1,5 +1,5 @@
 ;$(document).ready(function() {
-    if (true) {
+    if (typeof Android !== 'undefined') {
         $('.hide-on-android').hide();
         $('.show-on-android').show();
     } else {
