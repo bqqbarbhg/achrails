@@ -7,6 +7,14 @@
     user-select: none;
 }
 
+.acp-current-time {
+    width: 46px;
+    color: #fff;
+    font-style: normal;
+    margin-right: 3px;
+    font-size: .9em;
+}
+
 .acp-player {
 	position: relative;
 	overflow: hidden;
