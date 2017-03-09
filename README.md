@@ -263,6 +263,12 @@ rake events:names
 
 # Delete expired sessions
 rake sessions:purge
+
+# Delete soft-deleted videos that are older than the argument given
+rake videos:delete_permanently
+
+# Delete events that are older than the argument given
+rake events:delete_permanently
 ```
 
 Web player
