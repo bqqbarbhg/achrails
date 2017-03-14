@@ -127,8 +127,8 @@ de:
         other: '%{count} Videos teilen'
       mixed_share_warning: 'Einige Videos sind geteilt'
       is_public:
-        one: 'Ist das Video durchsuchbar?'
-        other: 'Sind die Videos durchsuchbar?'
+        one: 'Ist das Video öffentlich?'
+        other: 'Sind Videos öffentlich?'
       share_error:
         share: 'Konnte Video nicht teilen'
         unshare: 'Konnte das Teilen der Videos nicht entfernen'

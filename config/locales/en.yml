@@ -162,9 +162,8 @@ en:
         other: 'Share %{count} videos'
       mixed_share_warning: 'Some of the videos are shared'
       is_public:
-
-        one: 'Is video searchable?'
-        other: 'Are videos searchable?'
+        one: 'Is video public?'
+        other: 'Are videos public?'
       share_error:
         share: 'Failed to share video'
         unshare: 'Failed to unshare video'
