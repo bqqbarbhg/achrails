@@ -10,7 +10,7 @@ module Notifications
     def create_notification_key(key_name, registration_id)
         return fcm.create(key_name: key_name,
                           project_id: ENV["FIREBASE_PROJECT_ID"],
-                          registrationd_ids: [registration_id])
+                          registration_ids: [registration_id])
     end
 
     def add_registration_token(key_name, notification_key, registration_id)

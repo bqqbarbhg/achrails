@@ -56,4 +56,24 @@ class User < ActiveRecord::Base
       break random_token unless User.exists?(token: random_token)
     end
   end
+
+  def add_device_token(token)
+      response = nil
+
+      if self.notification_token is nil then
+          response = Notifications.create_notification_key("achso-user-#{self.uid}", token)
+      else
+          response = Notifications.add_registration_token("achso-user-#{self.uid}", self.notification_token, token)
+      end
+
+      Rails.logger.info "#{response.inspect}"
+
+      if response[:status] == 200 then
+
+      end
+  end
+
+
+  def remove_device_token(token)
+  end
 end

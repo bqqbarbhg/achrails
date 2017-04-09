@@ -1,5 +1,8 @@
 
 Rails.application.routes.draw do
+  put 'notifications/register_token'
+  put 'notifications/unregister_token'
+
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks"
   }
