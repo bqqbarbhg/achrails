@@ -65,6 +65,9 @@ gem 'jwt'
 # Addressable::URI
 gem 'addressable'
 
+# Push notifications
+gem 'fcm'
+
 group :development do
   # View sent emails
   gem 'letter_opener_web'
