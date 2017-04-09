@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160713132723) do
+ActiveRecord::Schema.define(version: 20170409171202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20160713132723) do
     t.string   "token"
     t.string   "preferred_username"
     t.string   "upload_token"
+    t.string   "notification_token"
   end
 
   create_table "video_revision_blocks", force: :cascade do |t|
