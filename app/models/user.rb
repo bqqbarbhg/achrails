@@ -68,14 +68,39 @@ class User < ActiveRecord::Base
           response = Notifications.add_registration_token("achso-user-#{self.uid}", self.notification_token, token)
       end
 
-      Rails.logger.info "#{response.inspect}"
+      Rails.logger.info "Adding token: #{response.inspect}"
 
-      if response[:status] == 200 then
-
+      if response[:status_code] == 200 then
+          self.notification_token = response[:body][:registration_id]
+          self.save!
       end
   end
 
 
   def remove_device_token(token)
+      if not self.notification_token then
+          return
+      end
+
+      response = Notifications.remove_registration_token("achso-user-#{self.uid}", self.notification_token, token)
+
+      Rails.logger.info "Removing token: #{response.inspect}"
+
+      if response[:status_code] == 200 then
+          self.notification_token = response[:body][:registration_id]
+          self.save!
+      end
+  end
+
+  def notify_user(title, body)
+      if not self.notification_token then
+          return
+      end
+
+      payload = { notification: { title: title, body: body } }
+
+      response = Notifications.send_notification(self.notification_token, payload, "")
+
+      Rails.logger.info "Notified user: #{response.inspect}"
   end
 end
