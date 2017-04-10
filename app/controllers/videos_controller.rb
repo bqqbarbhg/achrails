@@ -227,13 +227,19 @@ class VideosController < ApplicationController
     @video.update_manifest(manifest)
 
     if is_new
-      log_event(:upload_video, @video)
+        log_event(:upload_video, @video)
     else
-      @video.groups.each do |group|
-        group.video_edit_call_webhook(@video, current_user)
-    end
+        @video.groups.each do |group|
+            group.video_edit_call_webhook(@video, current_user)
+        end
 
-      log_event(:edit_video, @video)
+        # TODO: Get diff manifest
+        if not @video.author?(current_user)
+            video.author.notify_user("Video updated!", "#{current_user.name}
+                                 updated your video #{@video.title}")
+        end
+
+        log_event(:edit_video, @video)
     end
 
     return :created
