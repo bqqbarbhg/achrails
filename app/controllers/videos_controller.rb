@@ -233,8 +233,13 @@ class VideosController < ApplicationController
             group.video_edit_call_webhook(@video, current_user)
         end
 
-        # TODO: Get diff manifest
-        if not @video.author?(current_user)
+        # TODO: Get diff of annotations
+        if not @video.author?(current_user) and new_annotations.length > old_annotations.length
+            old_annotations = previous_manifest["annotations"]
+            new_annotations = manifest["annotations"]
+
+            diff = new_annotations - old_annotations
+
             video.author.notify_user("Video updated!", "#{current_user.name}
                                  updated your video #{@video.title}")
         end
