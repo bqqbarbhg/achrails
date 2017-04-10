@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Notifications
+
   devise :rememberable, :omniauthable
 
   before_validation :generate_token
@@ -60,7 +62,7 @@ class User < ActiveRecord::Base
   def add_device_token(token)
       response = nil
 
-      if self.notification_token is nil then
+      if not self.notification_token then
           response = Notifications.create_notification_key("achso-user-#{self.uid}", token)
       else
           response = Notifications.add_registration_token("achso-user-#{self.uid}", self.notification_token, token)
