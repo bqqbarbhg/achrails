@@ -68,10 +68,9 @@ class User < ActiveRecord::Base
           response = Notifications.add_registration_token("achso-user-#{self.uid}", self.notification_token, token)
       end
 
-      Rails.logger.info "Adding token: #{response.inspect}"
-
       if response[:status_code] == 200 then
-          self.notification_token = response[:body][:registration_id]
+          req_hash = eval(response[:body])
+          self.notification_token = req_hash[:notification_key]
           self.save!
       end
   end
@@ -87,7 +86,8 @@ class User < ActiveRecord::Base
       Rails.logger.info "Removing token: #{response.inspect}"
 
       if response[:status_code] == 200 then
-          self.notification_token = response[:body][:registration_id]
+          req_hash = eval(response[:body])
+          self.notification_token = req_hash[:notification_key]
           self.save!
       end
   end

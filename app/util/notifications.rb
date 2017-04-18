@@ -25,7 +25,9 @@ module Notifications
     end
 
     def self.remove_registration_token(key_name, notification_key, registration_id)
-        return fcm.remove(key_name,
+        c = client
+
+        return c.remove(key_name,
                         ENV["FIREBASE_PROJECT_ID"],
                         notification_key,
                         [registration_id])
