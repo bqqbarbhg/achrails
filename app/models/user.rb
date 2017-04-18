@@ -62,11 +62,13 @@ class User < ActiveRecord::Base
   def add_device_token(token)
       response = nil
 
-      if not self.notification_token then
+       if not self.notification_token then
           response = Notifications.create_notification_key("achso-user-#{self.uid}", token)
-      else
+       else
           response = Notifications.add_registration_token("achso-user-#{self.uid}", self.notification_token, token)
-      end
+       end
+
+      Rails.logger.info "adding token: #{response.inspect}"
 
       if response[:status_code] == 200 then
           req_hash = eval(response[:body])
@@ -97,10 +99,8 @@ class User < ActiveRecord::Base
           return
       end
 
-      payload = { notification: { title: title, body: body } }
+      payload = { notification: { title: title, body: body , icon: "ic_launcher" }}
 
-      response = Notifications.send_notification(self.notification_token, payload, "")
-
-      Rails.logger.info "Notified user: #{response.inspect}"
+      response = Notifications.send_notification(self.notification_token, payload)
   end
 end

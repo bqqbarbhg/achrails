@@ -3,9 +3,10 @@ module Notifications
         @fcm ||= FCM.new(ENV["FIREBASE_API_KEY"])
     end
 
-    def self.send_notification(token, data, collapse_key)
-        return fcm.send_with_notification_key(token,
-                                              data)
+    def self.send_notification(token, data)
+        c = client
+
+        return c.send_with_notification_key(token, data)
     end
 
     def self.create_notification_key(key_name, registration_id)
