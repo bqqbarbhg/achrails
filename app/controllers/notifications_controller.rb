@@ -8,7 +8,7 @@ class NotificationsController < ApplicationController
         current_user.add_device_token(token)
     end
 
-    render :status => 200
+    render :nothing => true, :status => 200
   end
 
   def unregister_token
@@ -20,6 +20,6 @@ class NotificationsController < ApplicationController
         current_user.remove_device_token(token)
     end
 
-    render :status => 200
+    render :nothing => true, :status => 200
   end
 end
