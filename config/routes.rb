@@ -1,8 +1,5 @@
 
 Rails.application.routes.draw do
-  put 'notifications/register_token'
-  put 'notifications/unregister_token'
-
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks"
   }
@@ -25,6 +22,11 @@ Rails.application.routes.draw do
     get '/oidc_error/:failed_action', to: 'home#oidc_error', as: 'oidc_action_error'
     get '/oidc_tokens', to: 'home#oidc_tokens'
     get '/user', to: 'home#show_user'
+
+    scope 'notifications' do
+        put 'unregister_token', to: 'notifications#unregister_token'
+        put 'register_token', to: 'notifications#register_token'
+    end
 
     scope 'oidc' do
       get 'authorize', to: 'oidc#show_authorize'
