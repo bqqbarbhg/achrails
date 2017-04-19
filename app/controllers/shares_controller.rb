@@ -62,9 +62,13 @@ class SharesController < ApplicationController
         video.groups << group
         group.new_video_call_webhook(video, current_user)
         log_event(:share_video, video, group.id, 1)
+
+        group.members.each do |member|
+            member.notify_user("New video to group " + group.name, "User " +
+                               current_user.name  + " shared a new video!")
+        end
       end
     end
-
   end
 
   def destroy
