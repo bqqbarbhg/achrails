@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
 
   def add_device_token(token)
       response = nil
+      Rails.logger.info "adding device token"
 
        if not self.notification_token then
           response = Notifications.create_notification_key("achso-user-#{self.uid}", token)
@@ -77,6 +78,8 @@ class User < ActiveRecord::Base
 
 
   def remove_device_token(token)
+      Rails.logger.info "removing device token"
+
       if not self.notification_token then
           return
       end
