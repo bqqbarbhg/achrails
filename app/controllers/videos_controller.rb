@@ -233,15 +233,30 @@ class VideosController < ApplicationController
             group.video_edit_call_webhook(@video, current_user)
         end
 
+        old_annotations = previous_manifest["annotations"]
+        new_annotations = manifest["annotations"]
+
+        diff = new_annotations - old_annotations
+
         # TODO: Get diff of annotations
-        if not @video.author?(current_user) and new_annotations.length > old_annotations.length
-            old_annotations = previous_manifest["annotations"]
-            new_annotations = manifest["annotations"]
+        if new_annotations.length > old_annotations.length
+            Thread.new do
+                new_annotation_text = diff.flat_map{|a| a["text"] }
+                as_text = new_annotation_text.join(", ")
+                if not @video.author?(current_user)
+                    video.author.notify_user(current_user.name + " annotated your video " + @video.title, "\"" +  as_text + "\"")
+                end
 
-            diff = new_annotations - old_annotations
+                @video.groups.each do |group|
+                    group.members.each do |member|
+                        if not @video.author?(member)
+                            member.notify_user(current_user.name + " annotated video " + @video.title, "\"" +  as_text + "\"")
+                        end
+                    end
+                end
 
-            video.author.notify_user("Video updated!", "#{current_user.name}
-                                 updated your video #{@video.title}")
+                ActiveRecord::Base.connection.close
+            end
         end
 
         log_event(:edit_video, @video)
