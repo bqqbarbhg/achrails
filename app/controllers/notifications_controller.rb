@@ -2,8 +2,6 @@ class NotificationsController < ApplicationController
   def register_token
     authenticate_user!
 
-    Rails.logger.info current_user
-
     token = params[:registration_token]
 
     if token
@@ -15,8 +13,6 @@ class NotificationsController < ApplicationController
 
   def unregister_token
     authenticate_user!
-
-    Rails.logger.info current_user
 
     token = params[:registration_token]
 

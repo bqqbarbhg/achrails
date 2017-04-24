@@ -60,55 +60,22 @@ class User < ActiveRecord::Base
   end
 
   def add_device_token(token)
-      response = nil
-      Rails.logger.info "adding device token"
-
-       if not self.notification_token then
-           Rails.logger.info "No token found, creating..."
-          response = Notifications.create_notification_key("achso-user-#{self.uid}", token)
-       else
-           Rails.logger.info "Token found, registering new..."
-          response = Notifications.add_registration_token("achso-user-#{self.uid}", self.notification_token, token)
-       end
-
-       Rails.logger.info "Added/created device :#{response.inspect}"
-
-      if response[:status_code] == 200 then
-          req_hash = eval(response[:body])
-          self.notification_token = req_hash[:notification_key]
+      if not self.registration_ids.include? token
+          self.registration_ids.push(token)
           self.save!
       end
   end
 
-
   def remove_device_token(token)
-      Rails.logger.info "Removing device token for user #{self.name}"
-
-      if not self.notification_token then
-          Rails.logger.info "No notification token set!"
-          return
-      end
-
-      response = Notifications.remove_registration_token("achso-user-#{self.uid}", self.notification_token, token)
-
-      Rails.logger.info "Removed token: #{response.inspect}"
-
-      if response[:status_code] == 200 then
-          req_hash = eval(response[:body])
-          self.notification_token = req_hash[:notification_key]
-          self.save!
-      end
+      self.registration_ids.delete(token)
+      self.save!
   end
 
   def notify_user(title, body)
-      Rails.logger.info "Attempting to notify user #{self.name}"
-      if not self.notification_token then
-          Rails.logger.info "No token to notify with!"
-          return
-      end
-
       payload = { notification: { title: title, body: body , icon: "ic_launcher" }}
 
-      response = Notifications.send_notification(self.notification_token, payload)
+      response = Notifications.send_notification(self.registration_ids, payload)
+
+      Rails.logger.info "#{response.inspect!}"
   end
 end
