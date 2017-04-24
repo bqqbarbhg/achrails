@@ -72,10 +72,12 @@ class User < ActiveRecord::Base
   end
 
   def notify_user(title, body)
+      if self.registration_ids.empty?
+          return
+      end
+
       payload = { notification: { title: title, body: body , icon: "ic_launcher" }}
 
       response = Notifications.send_notification(self.registration_ids, payload)
-
-      Rails.logger.info "#{response.inspect!}"
   end
 end
