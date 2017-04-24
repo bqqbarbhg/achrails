@@ -238,7 +238,6 @@ class VideosController < ApplicationController
 
         diff = new_annotations - old_annotations
 
-        # TODO: Get diff of annotations
         if new_annotations.length > old_annotations.length
             Thread.new do
                 new_annotation_text = diff.flat_map{|a| a["text"] }
@@ -248,8 +247,10 @@ class VideosController < ApplicationController
                 end
 
                 @video.groups.each do |group|
+                    Rails.logger.info "Notifying group #{group.id}"
                     group.members.each do |member|
                         if not @video.author?(member)
+                            Rails.logger.info "Notifying member #{member.id}"
                             member.notify_user(current_user.name + " annotated video " + @video.title, "\"" +  as_text + "\"")
                         end
                     end
