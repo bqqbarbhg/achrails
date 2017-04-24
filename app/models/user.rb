@@ -64,10 +64,14 @@ class User < ActiveRecord::Base
       Rails.logger.info "adding device token"
 
        if not self.notification_token then
+           Rails.logger.info "No token found, creating..."
           response = Notifications.create_notification_key("achso-user-#{self.uid}", token)
        else
+           Rails.logger.info "Token found, registering new..."
           response = Notifications.add_registration_token("achso-user-#{self.uid}", self.notification_token, token)
        end
+
+       Rails.logger.info "Added/created device :#{response.inspect}"
 
       if response[:status_code] == 200 then
           req_hash = eval(response[:body])
@@ -78,15 +82,16 @@ class User < ActiveRecord::Base
 
 
   def remove_device_token(token)
-      Rails.logger.info "removing device token"
+      Rails.logger.info "Removing device token for user #{self.name}"
 
       if not self.notification_token then
+          Rails.logger.info "No notification token set!"
           return
       end
 
       response = Notifications.remove_registration_token("achso-user-#{self.uid}", self.notification_token, token)
 
-      Rails.logger.info "Removing token: #{response.inspect}"
+      Rails.logger.info "Removed token: #{response.inspect}"
 
       if response[:status_code] == 200 then
           req_hash = eval(response[:body])
@@ -96,7 +101,9 @@ class User < ActiveRecord::Base
   end
 
   def notify_user(title, body)
+      Rails.logger.info "Attempting to notify user #{self.name}"
       if not self.notification_token then
+          Rails.logger.info "No token to notify with!"
           return
       end
 
