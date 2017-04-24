@@ -240,7 +240,7 @@ class VideosController < ApplicationController
 
         if new_annotations.length > old_annotations.length
             Rails.logger.info "Firing up thread!"
-            #Thread.new do
+            Thread.new do
                 new_annotation_text = diff.flat_map{|a| a["text"] }
                 as_text = new_annotation_text.join(", ")
                 if not @video.author?(current_user)
@@ -257,8 +257,8 @@ class VideosController < ApplicationController
                     end
                 end
 
-                #ActiveRecord::Base.connection.close
-            #end
+                ActiveRecord::Base.connection.close
+            end
         end
 
         log_event(:edit_video, @video)
